@@ -8,7 +8,7 @@ import com.j256.ormlite.table.DatabaseTable;
 public class Film {
 	public final static String ID_FIELD_NAME = "id";
 	
-	@DatabaseField(id = true, index = true, columnName = ID_FIELD_NAME)
+	@DatabaseField(id = true, columnName = ID_FIELD_NAME)
 	int id;
 	@DatabaseField(index = true)
 	String name;

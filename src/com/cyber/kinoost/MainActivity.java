@@ -21,7 +21,7 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		//doDBDataStuff(); -- uncomment to see in logs db queries examples.
+		//doDBDataStuff(); //-- uncomment to see in logs db queries examples.
 	}
 	
 	// test func remove from prod
