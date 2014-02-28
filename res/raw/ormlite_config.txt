@@ -1,0 +1,160 @@
+#
+# generated on 2014/02/28 03:53:05
+#
+# --table-start--
+dataClass=com.cyber.kinoost.db.models.Favorites
+tableName=favorites
+# --table-fields-start--
+# --field-start--
+fieldName=id
+columnName=id
+generatedId=true
+# --field-end--
+# --field-start--
+fieldName=user
+columnName=user_id
+foreign=true
+# --field-end--
+# --field-start--
+fieldName=music
+columnName=music_id
+foreign=true
+# --field-end--
+# --field-start--
+fieldName=date
+# --field-end--
+# --table-fields-end--
+# --table-end--
+#################################
+# --table-start--
+dataClass=com.cyber.kinoost.db.models.Film
+tableName=film
+# --table-fields-start--
+# --field-start--
+fieldName=id
+columnName=id
+id=true
+# --field-end--
+# --field-start--
+fieldName=name
+indexName=film_name_idx
+# --field-end--
+# --field-start--
+fieldName=year
+indexName=film_year_idx
+# --field-end--
+# --field-start--
+fieldName=img
+# --field-end--
+# --field-start--
+fieldName=rating
+indexName=film_rating_idx
+# --field-end--
+# --table-fields-end--
+# --table-end--
+#################################
+# --table-start--
+dataClass=com.cyber.kinoost.db.models.FilmMusic
+tableName=film_music
+# --table-fields-start--
+# --field-start--
+fieldName=id
+generatedId=true
+# --field-end--
+# --field-start--
+fieldName=film
+columnName=film_id
+foreign=true
+# --field-end--
+# --field-start--
+fieldName=music
+columnName=music_id
+foreign=true
+# --field-end--
+# --table-fields-end--
+# --table-end--
+#################################
+# --table-start--
+dataClass=com.cyber.kinoost.db.models.Music
+tableName=music
+# --table-fields-start--
+# --field-start--
+fieldName=id
+columnName=id
+id=true
+# --field-end--
+# --field-start--
+fieldName=name
+indexName=music_name_idx
+# --field-end--
+# --field-start--
+fieldName=rating
+indexName=music_rating_idx
+# --field-end--
+# --field-start--
+fieldName=performer
+columnName=performer_id
+foreign=true
+# --field-end--
+# --table-fields-end--
+# --table-end--
+#################################
+# --table-start--
+dataClass=com.cyber.kinoost.db.models.MusicRating
+tableName=music_rating
+# --table-fields-start--
+# --field-start--
+fieldName=id
+generatedId=true
+# --field-end--
+# --field-start--
+fieldName=user
+columnName=user_id
+foreign=true
+# --field-end--
+# --field-start--
+fieldName=music
+columnName=music_id
+foreign=true
+# --field-end--
+# --field-start--
+fieldName=date
+# --field-end--
+# --field-start--
+fieldName=value
+indexName=music_rating_value_idx
+# --field-end--
+# --table-fields-end--
+# --table-end--
+#################################
+# --table-start--
+dataClass=com.cyber.kinoost.db.models.Performer
+tableName=performer
+# --table-fields-start--
+# --field-start--
+fieldName=id
+columnName=id
+id=true
+# --field-end--
+# --field-start--
+fieldName=name
+indexName=performer_name_idx
+# --field-end--
+# --table-fields-end--
+# --table-end--
+#################################
+# --table-start--
+dataClass=com.cyber.kinoost.db.models.User
+tableName=user
+# --table-fields-start--
+# --field-start--
+fieldName=id
+columnName=id
+id=true
+# --field-end--
+# --field-start--
+fieldName=name
+# --field-end--
+# --table-fields-end--
+# --table-end--
+#################################
