@@ -3,9 +3,10 @@ package com.cyber.kinoost;
 
 import java.util.ArrayList;
 
-import views.MenuView;
-import adapters.Film;
-import adapters.ListAdapter;
+import com.cyber.kinoost.adapters.Film;
+import com.cyber.kinoost.adapters.ListAdapter;
+import com.cyber.kinoost.views.MenuView;
+
 import android.annotation.SuppressLint;
 import android.app.ActionBar.LayoutParams;
 import android.app.Activity;

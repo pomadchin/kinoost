@@ -4,11 +4,8 @@ import java.util.List;
 
 import android.os.Bundle;
 import android.app.Activity;
-<<<<<<< HEAD
 import android.content.Intent;
-=======
 import android.util.Log;
->>>>>>> 44d771a628e2e36cd3c82e758f82461486e40155
 import android.view.Menu;
 
 import com.j256.ormlite.android.apptools.OpenHelperManager;
@@ -19,7 +16,6 @@ import com.cyber.kinoost.db.models.*;
 
 public class MainActivity extends Activity {
 	
-<<<<<<< HEAD
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -27,7 +23,6 @@ public class MainActivity extends Activity {
 		intent.setClass(this, KinoostActivity.class);
 		this.startActivity(intent);
 		finish();
-=======
 	DatabaseHelper dbHelper;
 
 	@Override

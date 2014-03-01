@@ -1,6 +1,7 @@
 package com.cyber.kinoost;
 
-import views.MenuView;
+import com.cyber.kinoost.views.MenuView;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.text.Html;
