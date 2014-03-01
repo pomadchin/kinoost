@@ -15,7 +15,8 @@ import com.cyber.kinoost.db.DatabaseHelper;
 import com.cyber.kinoost.db.models.*;
 
 public class MainActivity extends Activity {
-	
+
+	DatabaseHelper dbHelper;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -23,13 +24,6 @@ public class MainActivity extends Activity {
 		intent.setClass(this, KinoostActivity.class);
 		this.startActivity(intent);
 		finish();
-	DatabaseHelper dbHelper;
-
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
-		//doDBDataStuff(); //-- uncomment to see in logs db queries examples.
 	}
 	
 	// test func remove from prod
@@ -104,7 +98,6 @@ public class MainActivity extends Activity {
 		Log.d("kinoost-filmMusics", filmMusics.toString());
 		
 		OpenHelperManager.releaseHelper();
->>>>>>> 44d771a628e2e36cd3c82e758f82461486e40155
 	}
 
 
