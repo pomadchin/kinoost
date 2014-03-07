@@ -1,9 +1,12 @@
 package com.cyber.kinoost;
 
+import java.util.Date;
 import java.util.List;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.Menu;
 
@@ -12,18 +15,47 @@ import com.j256.ormlite.dao.RuntimeExceptionDao;
 
 import com.cyber.kinoost.db.DatabaseHelper;
 import com.cyber.kinoost.db.models.*;
+import com.cyber.kinoost.api.*;
 
 public class MainActivity extends Activity {
 	
+	public static final String APP_PREFERENCES = "com.cyber.kinoost";
+	public static final String APP_PREFERENCES_UPDATE_DATETIME = "com.cyber.kinoost.update.datetime";
+	public static final long APP_PREFERENCES_DAYS_UPDATE = 1;
+	
 	DatabaseHelper dbHelper;
+	SharedPreferences prefs;
+	SharedPreferences.Editor editor;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		
+		// init preferences && editor
+		prefs = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
+		editor = prefs.edit();
+		
 		//doDBDataStuff(); //-- uncomment to see in logs db queries examples.
 	}
 	
+	@Override
+	protected void onStart() {
+		super.onStart();
+		
+		ApiHelper.dbUpdate(getBaseContext(), new Date());
+		
+		// check data update on start
+		Date storedDate = new Date(prefs.getLong(APP_PREFERENCES_UPDATE_DATETIME, 0));
+		Date newDate = new Date();
+		long diffDays = (newDate.getTime() - storedDate.getTime()) / (24 * 60 * 60 * 1000);
+		
+		if(diffDays >= APP_PREFERENCES_DAYS_UPDATE) {
+			editor.putLong(APP_PREFERENCES_UPDATE_DATETIME, newDate.getTime());
+			editor.commit();
+			// TODO update DB
+		}
+	}
 	// test func remove from prod
 	private void doDBDataStuff() {
 		dbHelper = OpenHelperManager.getHelper(this, DatabaseHelper.class);
