@@ -43,8 +43,6 @@ public class MainActivity extends Activity {
 	protected void onStart() {
 		super.onStart();
 		
-		ApiHelper.dbUpdate(getBaseContext(), new Date());
-		
 		// check data update on start
 		Date storedDate = new Date(prefs.getLong(APP_PREFERENCES_UPDATE_DATETIME, 0));
 		Date newDate = new Date();
@@ -53,7 +51,7 @@ public class MainActivity extends Activity {
 		if(diffDays >= APP_PREFERENCES_DAYS_UPDATE) {
 			editor.putLong(APP_PREFERENCES_UPDATE_DATETIME, newDate.getTime());
 			editor.commit();
-			// TODO update DB
+			ApiHelper.dbUpdate(getBaseContext(), newDate);
 		}
 	}
 	// test func remove from prod
