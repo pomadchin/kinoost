@@ -1,4 +1,4 @@
-package com.cyber.kinoost.api;
+package com.cyber.kinoost.api.tasks;
 
 import java.io.IOException;
 
@@ -11,10 +11,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import android.os.AsyncTask;
 import android.util.Log;
 
-public class HttpAsyncTask extends AsyncTask<String, Void, String> {
+import com.cyber.kinoost.api.*;
+
+public class HttpAsyncTaskUpdate extends AsyncTask<String, Void, String> {
     @Override
-    protected String doInBackground(String... urls) {
-        return ApiHelper.GET(urls[0]);
+    protected String doInBackground(String... params) {
+    	if(params.length > 2)
+    		ApiHelper.POST(params[0], params[2]);
+    	
+        return ApiHelper.GET(params[0]);
     }
     // onPostExecute displays the results of the AsyncTask.
     @Override
