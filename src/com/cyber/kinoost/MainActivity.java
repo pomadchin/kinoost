@@ -77,10 +77,10 @@ public class MainActivity extends Activity {
 		Performer performer3 = new Performer(3, "performer3");
 		Performer performer4 = new Performer(4, "performer4");
 		
-		Film film1 = new Film(1, "film1", 1, 1, 1.0);
-		Film film2 = new Film(2, "film2", 2, 2, 2.0);
-		Film film3 = new Film(3, "film3", 3, 3, 3.0);
-		Film film4 = new Film(4, "film4", 4, 4, 4.0);
+		Film film1 = new Film(1, "film1", 1, "1", 1.0);
+		Film film2 = new Film(2, "film2", 2, "2", 2.0);
+		Film film3 = new Film(3, "film3", 3, "3", 3.0);
+		Film film4 = new Film(4, "film4", 4, "4", 4.0);
 		
 		Music music1 = new Music(1, "music1", 1.0, performer1);
 		Music music2 = new Music(2, "music2", 2.0, performer2);

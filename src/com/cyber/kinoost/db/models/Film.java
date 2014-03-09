@@ -15,14 +15,14 @@ public class Film {
 	@DatabaseField(index = true)
 	int year;
 	@DatabaseField
-	int img;
+	String img;
 	@DatabaseField(index = true)
 	double rating;
 	
 	public Film() {
 	}
 	
-	public Film(int id, String name, int year, int img, double rating) {
+	public Film(int id, String name, int year, String img, double rating) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -55,11 +55,11 @@ public class Film {
 		this.year = year;
 	}
 
-	public int getImg() {
+	public String getImg() {
 		return img;
 	}
 
-	public void setImg(int img) {
+	public void setImg(String img) {
 		this.img = img;
 	}
 
