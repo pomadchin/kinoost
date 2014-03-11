@@ -35,6 +35,10 @@ public class ApiHelper {
 		else Log.d("dbUpdate", "connection failed");
 	}
 	
+	public static void userEdit(Context updateContext, Date date) {
+		// TODO ~ works like edit and create
+	}
+	
 	public static String GET(String url){
         InputStream inputStream = null;
         String result = "";
