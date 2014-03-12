@@ -1,7 +1,6 @@
 package com.cyber.kinoost.db.repositories;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.Callable;
 
@@ -18,14 +17,14 @@ import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.stmt.SelectArg;
 
 public class FilmMusicRepository {
-	DatabaseHelper dbHelper;
+	protected DatabaseHelper dbHelper;
 	
-	private RuntimeExceptionDao<Film, Integer> filmDao = null;
-	private RuntimeExceptionDao<Music, Integer> musicDao = null;
-	private RuntimeExceptionDao<FilmMusic, Integer> filmMusicDao = null;
+	protected RuntimeExceptionDao<Film, Integer> filmDao = null;
+	protected RuntimeExceptionDao<Music, Integer> musicDao = null;
+	protected RuntimeExceptionDao<FilmMusic, Integer> filmMusicDao = null;
 	
-	private PreparedQuery<Film> filmsForMusicQuery = null;
-	private PreparedQuery<Music> musicForFilmQuery = null;
+	protected PreparedQuery<Film> filmsForMusicQuery = null;
+	protected PreparedQuery<Music> musicForFilmQuery = null;
 	
 	public FilmMusicRepository(Context context) {
 		dbHelper = OpenHelperManager.getHelper(context, DatabaseHelper.class);
@@ -41,54 +40,6 @@ public class FilmMusicRepository {
 		filmDao = dbHelper.getFilmRuntimeExceptionDao();
 		filmMusicDao = dbHelper.getFilmMusicRuntimeExceptionDao();
 		musicDao = dbHelper.getMusicRuntimeExceptionDao();
-	}
-	
-	public void createFilm(Film film) {
-		filmDao.create(film);
-	}
-	
-	public void createFilmList(final List<Film> films) {
-        filmDao.callBatchTasks(new Callable<Void>() {
-	        @Override
-	        public Void call() throws Exception {
-	            for (Film film : films) {
-	                filmDao.create(film);
-	            }
-	            return null;
-	        }
-	    });
-	}
-	
-	public void deleteFilm(Film film) {
-		filmDao.delete(film);
-	}
-	
-	public void deleteFilmList(List<Film> films) {
-		filmDao.delete(films);
-	}
-	
-	public void createMusic(Music music) {
-		musicDao.create(music);
-	}
-	
-	public void createMusicList(final List<Music> music) {
-        musicDao.callBatchTasks(new Callable<Void>() {
-	        @Override
-	        public Void call() throws Exception {
-	            for (Music song : music) {
-	                musicDao.create(song);
-	            }
-	            return null;
-	        }
-	    });
-	}
-	
-	public void deleteMusic(Music music) {
-		musicDao.delete(music);
-	}
-	
-	public void deleteMusicList(List<Music> music) {
-		musicDao.delete(music);
 	}
 	
 	public void createFilmMusic(FilmMusic filmMusic) {
@@ -154,7 +105,7 @@ public class FilmMusicRepository {
 		return musicDao.query(musicForFilmQuery);
 	}
 
-	private PreparedQuery<Film> makeFilmsForMusicQuery() throws SQLException {
+	protected PreparedQuery<Film> makeFilmsForMusicQuery() throws SQLException {
 		// build our inner query for FilmMusic objects
 		QueryBuilder<FilmMusic, Integer> filmMusicQb = filmMusicDao.queryBuilder();
 		// just select the film-id field
@@ -169,7 +120,7 @@ public class FilmMusicRepository {
 		return filmQb.prepare();
 	}
 
-	private PreparedQuery<Music> makeMusicForFilmQuery() throws SQLException {
+	protected PreparedQuery<Music> makeMusicForFilmQuery() throws SQLException {
 		QueryBuilder<FilmMusic, Integer> filmMusicQb = filmMusicDao.queryBuilder();
 		// this time selecting for the music-id field
 		filmMusicQb.selectColumns(FilmMusic.MUSIC_ID_FIELD_NAME);

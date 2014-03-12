@@ -8,12 +8,25 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
 import com.cyber.kinoost.api.*;
+import com.cyber.kinoost.db.repositories.FilmRepository;
 
 public class HttpAsyncTaskUpdate extends AsyncTask<String, Void, String> {
+	private Context context;
+	
+	public HttpAsyncTaskUpdate(Context context) {
+		super();
+		this.context = context;
+	}
+	
+	private Context getContext() {
+		return this.context;
+	}
+	
     @Override
     protected String doInBackground(String... params) {
     	if(params.length > 2)
@@ -34,7 +47,11 @@ public class HttpAsyncTaskUpdate extends AsyncTask<String, Void, String> {
 			jp.nextToken();
 			JsonUpdate jsonUpdate = mapper.readValue(jp, JsonUpdate.class);
 			Log.d("HttpAsyncTask.onPostExecute", jsonUpdate.toString());
-			// TODO: persist data
+			
+			FilmRepository filmRepo = new FilmRepository(getContext());
+			filmRepo.createFilmList(jsonUpdate.getFilms());
+			
+			// TODO: persist data Diman
 		} catch (JsonParseException e) {
 			Log.d("HttpAsyncTask.onPostExecute", e.getMessage());
 			//e.printStackTrace();

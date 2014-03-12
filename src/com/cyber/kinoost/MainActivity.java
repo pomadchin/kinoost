@@ -12,9 +12,6 @@ import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.Menu;
 
-import com.j256.ormlite.android.apptools.OpenHelperManager;
-import com.j256.ormlite.dao.RuntimeExceptionDao;
-
 import com.cyber.kinoost.db.DatabaseHelper;
 import com.cyber.kinoost.db.models.*;
 import com.cyber.kinoost.api.*;
@@ -60,6 +57,8 @@ public class MainActivity extends Activity {
 	// test func remove from prod
 	private void doDBDataStuff() {
 		FavoritesRepository favoritesRepo = new FavoritesRepository(this);
+		FilmRepository filmRepo = new FilmRepository(this);
+		MusicRepository musicRepo = new MusicRepository(this);
 		FilmMusicRepository filmMusicRepo = new FilmMusicRepository(this);
 		MusicRatingRepository musicRatingRepo = new MusicRatingRepository(this);
 		PerformerRepository performerRepo = new PerformerRepository(this);
@@ -105,8 +104,8 @@ public class MainActivity extends Activity {
 		// create
 		userRepo.createUserList(userList);
 		performerRepo.createPerformerList(performerList);
-		filmMusicRepo.createFilmList(filmList);
-		filmMusicRepo.createMusicList(musicList);
+		filmRepo.createFilmList(filmList);
+		musicRepo.createMusicList(musicList);
 		filmMusicRepo.createFilmMusicList(filmMusicList);
 		musicRatingRepo.createMusicRatingList(musicRatingList);
 		

@@ -30,7 +30,7 @@ public class ApiHelper {
 		// form json!
 		
 		if(isConnected(updateContext)) {
-			new HttpAsyncTaskUpdate().execute(update);
+			new HttpAsyncTaskUpdate(updateContext).execute(update);
 		}
 		else Log.d("dbUpdate", "connection failed");
 	}
