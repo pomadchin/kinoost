@@ -47,6 +47,22 @@ public class FavoritesRepository {
 	    });
 	}
 	
+	public void editFavorites(Favorites favorites) {
+		favoritesDao.createOrUpdate(favorites);
+	}
+	
+	public void editFavoritesList(final List<Favorites> favorites) {
+        favoritesDao.callBatchTasks(new Callable<Void>() {
+	        @Override
+	        public Void call() throws Exception {
+	            for (Favorites favorite : favorites) {
+	                favoritesDao.createOrUpdate(favorite);
+	            }
+	            return null;
+	        }
+	    });
+	}
+	
 	public void deleteFavorites(Favorites favorites) {
 		favoritesDao.delete(favorites);
 	}

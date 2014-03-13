@@ -47,6 +47,22 @@ public class MusicRatingRepository {
 	    });
 	}
 	
+	public void editMusicRating(MusicRating musicRating) {
+		musicRatingDao.createOrUpdate(musicRating);
+	}
+	
+	public void editMusicRatingList(final List<MusicRating> musicRating) {
+        musicRatingDao.callBatchTasks(new Callable<Void>() {
+	        @Override
+	        public Void call() throws Exception {
+	            for (MusicRating mr : musicRating) {
+	                musicRatingDao.createOrUpdate(mr);
+	            }
+	            return null;
+	        }
+	    });
+	}
+	
 	public void deleteMusicRating(MusicRating musicRating) {
 		musicRatingDao.delete(musicRating);
 	}

@@ -47,6 +47,22 @@ public class PerformerRepository {
 	    });
 	}
 	
+	public void editPerformer(Performer performer) {
+		performerDao.createOrUpdate(performer);
+	}
+	
+	public void editPerformerList(final List<Performer> performers) {
+        performerDao.callBatchTasks(new Callable<Void>() {
+	        @Override
+	        public Void call() throws Exception {
+	            for (Performer performer : performers) {
+	            	performerDao.createOrUpdate(performer);
+	            }
+	            return null;
+	        }
+	    });
+	}
+	
 	public void deletePerformer(Performer performer) {
 		performerDao.delete(performer);
 	}

@@ -58,6 +58,22 @@ public class FilmMusicRepository {
 	    });
 	}
 	
+	public void editFilmMusic(FilmMusic filmMusic) {
+		filmMusicDao.createOrUpdate(filmMusic);
+	}
+	
+	public void editFilmMusicList(final List<FilmMusic> filmMusic) {
+        filmMusicDao.callBatchTasks(new Callable<Void>() {
+	        @Override
+	        public Void call() throws Exception {
+	            for (FilmMusic fm : filmMusic) {
+	                filmMusicDao.createOrUpdate(fm);
+	            }
+	            return null;
+	        }
+	    });
+	}
+	
 	public void deleteFilmMusic(FilmMusic filmMusic) {
 		filmMusicDao.delete(filmMusic);
 	}

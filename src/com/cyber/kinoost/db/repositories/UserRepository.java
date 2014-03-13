@@ -53,6 +53,22 @@ public class UserRepository {
 	    });
 	}
 	
+	public void editUser(User user) {
+		userDao.createOrUpdate(user);
+	}
+	
+	public void editUserList(final List<User> users) {
+        userDao.callBatchTasks(new Callable<Void>() {
+	        @Override
+	        public Void call() throws Exception {
+	            for (User user : users) {
+	                userDao.createOrUpdate(user);
+	            }
+	            return null;
+	        }
+	    });
+	}
+	
 	public void deleteUser(User user) {
 		userDao.delete(user);
 	}

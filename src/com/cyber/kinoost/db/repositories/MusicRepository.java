@@ -34,6 +34,22 @@ public class MusicRepository extends FilmMusicRepository {
 	    });
 	}
 	
+	public void editMusic(Music music) {
+		musicDao.createOrUpdate(music);
+	}
+	
+	public void editMusicList(final List<Music> music) {
+        musicDao.callBatchTasks(new Callable<Void>() {
+	        @Override
+	        public Void call() throws Exception {
+	            for (Music song : music) {
+	                musicDao.createOrUpdate(song);
+	            }
+	            return null;
+	        }
+	    });
+	}
+	
 	public void deleteMusic(Music music) {
 		musicDao.delete(music);
 	}

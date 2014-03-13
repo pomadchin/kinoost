@@ -33,6 +33,22 @@ public class FilmRepository extends FilmMusicRepository {
 	    });
 	}
 	
+	public void editFilm(Film film) {
+		filmDao.createOrUpdate(film);
+	}
+	
+	public void editFilmList(final List<Film> films) {
+        filmDao.callBatchTasks(new Callable<Void>() {
+	        @Override
+	        public Void call() throws Exception {
+	            for (Film film : films) {
+	                filmDao.createOrUpdate(film);
+	            }
+	            return null;
+	        }
+	    });
+	}
+	
 	public void deleteFilm(Film film) {
 		filmDao.delete(film);
 	}
