@@ -31,7 +31,6 @@ public class MainActivity extends Activity {
 	SharedPreferences prefs;
 	SharedPreferences.Editor editor;
 
-	DatabaseHelper dbHelper;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);

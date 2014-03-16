@@ -9,6 +9,11 @@
         android:id="@+id/table_l"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/border"
+   	 	android:layout_marginRight="10dp"
+   	 	android:layout_marginLeft="10dp"
+   	 	android:layout_marginTop="10dp"
+   	 	android:layout_marginBottom="10dp"
         android:layout_weight="1" >
 
         <ImageView
@@ -42,6 +47,11 @@
       		android:id="@+id/table_r"
     	    android:layout_width="fill_parent"
     	    android:layout_height="wrap_content" 
+        	android:background="@drawable/border"
+   	 		android:layout_marginRight="10dp"
+   	 		android:layout_marginLeft="10dp"
+   	 		android:layout_marginTop="10dp"
+   	 		android:layout_marginBottom="10dp"
     	    android:layout_weight="1">
    		<ImageView
         	android:id="@+id/image_r"
@@ -57,8 +67,8 @@
         	android:layout_below="@+id/image_r"
         	android:layout_alignLeft="@+id/image_r"
         	android:layout_alignRight="@+id/image_r"
-      	 	android:layout_marginRight="15dp"
-        	android:text="Осуждение и убийство Жана Поля Марата, осуществленные пациентами Чарентонской психбольницы под руководством маркиза де Сада" />
+      	 	android:layout_marginRight="20dp"
+        	android:text="кино" />
 	
         <TextView
             android:id="@+id/text_rate_r"

@@ -78,9 +78,18 @@ public class ListAdapter extends BaseAdapter {
 
 		    RelativeLayout rightTable = (RelativeLayout) view.findViewById(R.id.table_r);
 		    RelativeLayout leftTable = (RelativeLayout) view.findViewById(R.id.table_l);
+		    
+		    ImageView imgl = (ImageView) view.findViewById(R.id.image_l);
+		    ImageView imgr = (ImageView) view.findViewById(R.id.image_r);
+
+		    imgr.getLayoutParams().height = 170;
+		    imgl.getLayoutParams().width = 170;
+		    imgl.getLayoutParams().height = 170;
+		    imgr.getLayoutParams().width = 170;
+		    
 		    rightTable.setOnClickListener(new OnClickListener() {
 
-				@Override
+				@Override 
 				public void onClick(View arg0) {
 					Intent intent = new Intent();
 					intent.setClass(ctx, FilmActivity.class);
