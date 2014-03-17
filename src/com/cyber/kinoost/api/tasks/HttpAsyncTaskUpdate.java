@@ -13,7 +13,11 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.cyber.kinoost.api.*;
+import com.cyber.kinoost.db.repositories.FavoritesRepository;
+import com.cyber.kinoost.db.repositories.FilmMusicRepository;
 import com.cyber.kinoost.db.repositories.FilmRepository;
+import com.cyber.kinoost.db.repositories.MusicRepository;
+import com.cyber.kinoost.db.repositories.PerformerRepository;
 
 public class HttpAsyncTaskUpdate extends AsyncTask<String, Void, String> {
 	private Context context;
@@ -50,6 +54,18 @@ public class HttpAsyncTaskUpdate extends AsyncTask<String, Void, String> {
 			
 			FilmRepository filmRepo = new FilmRepository(getContext());
 			filmRepo.createFilmList(jsonUpdate.getFilms());
+			
+			MusicRepository musicRepo = new MusicRepository(getContext());
+			musicRepo.createMusicList(jsonUpdate.getMusic());
+			
+			FavoritesRepository favoritesRepo = new FavoritesRepository(getContext());
+			favoritesRepo.createFavoritesList(jsonUpdate.getFavorites());
+						
+			PerformerRepository performerRepo = new PerformerRepository(getContext());
+			performerRepo.createPerformerList(jsonUpdate.getPerformers());
+			
+			FilmMusicRepository filmmusicRepo =  new FilmMusicRepository(getContext());
+			filmmusicRepo.createFilmMusicList(jsonUpdate.getFilmMusic());
 			
 			// TODO: persist data Diman
 		} catch (JsonParseException e) {
