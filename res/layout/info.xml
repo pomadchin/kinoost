@@ -55,27 +55,26 @@
 	    </RelativeLayout>
 
    	 	<RelativeLayout android:id="@+id/list_container"
-    	    android:layout_width="wrap_content"
-    	    android:layout_height="wrap_content"
+    	    android:layout_width="match_parent"
+    	    android:layout_height="match_parent"
     	    android:layout_alignParentBottom="true"
     	    android:layout_toRightOf="@+id/menu_container"
     	    android:layout_alignParentTop="true"
+			android:background="#dddddd"
     	    android:layerType="software" >
 
-   	 	    <ListView
-	           android:id="@+id/listView1"
-    	       android:layout_width="wrap_content"
-       		   android:layout_height="wrap_content"
- 		       android:layout_alignParentLeft="true"
-         	   android:layout_alignParentTop="true"
-         	   android:divider="@null"
-			   android:dividerHeight="0dp"
-			   android:background="#dddddd">
- 	       </ListView>
+   	    <TextView
+   	 	    android:id="@+id/text_info"
+   	 	    android:layout_width="wrap_content"
+   	 	    android:layout_height="wrap_content"
+   	 	    android:layout_centerHorizontal="true"
+   	 	    android:text="Данное приложение создано в рамках учебного проекта группой К8-223 с ненавистью к миру"/>
+    
    	 	    
 
     	</RelativeLayout>
-    
+
+
     </FrameLayout>
     
     </RelativeLayout>

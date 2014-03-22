@@ -7,8 +7,12 @@ import java.util.List;
 
 import android.os.Bundle;
 import android.app.Activity;
+
+import android.content.Intent;
+
 import android.content.Context;
 import android.content.SharedPreferences;
+
 import android.util.Log;
 import android.view.Menu;
 
@@ -18,7 +22,7 @@ import com.cyber.kinoost.api.*;
 import com.cyber.kinoost.db.repositories.*;
 
 public class MainActivity extends Activity {
-	
+
 	public static final String APP_PREFERENCES = "com.cyber.kinoost";
 	public static final String APP_PREFERENCES_UPDATE_DATETIME = "com.cyber.kinoost.update.datetime";
 	public static final long APP_PREFERENCES_DAYS_UPDATE = 1;
@@ -30,12 +34,15 @@ public class MainActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		Intent intent = new Intent();
+		intent.setClass(this, KinoostActivity.class);
+		this.startActivity(intent);
+		finish();		
 		setContentView(R.layout.activity_main);
 		
 		// init preferences && editor
 		prefs = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
 		editor = prefs.edit();
-		
 		//doDBDataStuff(); //-- uncomment to see in logs db queries examples.
 	}
 	
