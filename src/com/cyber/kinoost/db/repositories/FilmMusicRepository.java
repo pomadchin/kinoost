@@ -23,6 +23,8 @@ public class FilmMusicRepository {
 	protected RuntimeExceptionDao<Music, Integer> musicDao = null;
 	protected RuntimeExceptionDao<FilmMusic, Integer> filmMusicDao = null;
 	
+	protected PerformerRepository performerRepo = null;
+	
 	protected PreparedQuery<Film> filmsForMusicQuery = null;
 	protected PreparedQuery<Music> musicForFilmQuery = null;
 	
@@ -32,6 +34,7 @@ public class FilmMusicRepository {
 		filmDao = dbHelper.getFilmRuntimeExceptionDao();
 		filmMusicDao = dbHelper.getFilmMusicRuntimeExceptionDao();
 		musicDao = dbHelper.getMusicRuntimeExceptionDao();
+		performerRepo = new PerformerRepository(context);
 	}
 	
 	public FilmMusicRepository(DatabaseHelper dbHelper) {
@@ -40,6 +43,7 @@ public class FilmMusicRepository {
 		filmDao = dbHelper.getFilmRuntimeExceptionDao();
 		filmMusicDao = dbHelper.getFilmMusicRuntimeExceptionDao();
 		musicDao = dbHelper.getMusicRuntimeExceptionDao();
+		performerRepo = new PerformerRepository(dbHelper);
 	}
 	
 	public void createFilmMusic(FilmMusic filmMusic) {
@@ -101,6 +105,21 @@ public class FilmMusicRepository {
 	    if(name.length() > 0) queryBuilder.where().like("name", "%"+name+"%");
 	    musicList = musicDao.query(queryBuilder.prepare());
 
+	    return musicList;
+	}
+	
+	public List<Music> findMusicByPerformer(String name, int offset, int limit) throws SQLException {
+		Performer performer = null;
+		List<Performer> performerList = performerRepo.findPerformerByName(name, 0, 1);
+		if(performerList.size() > 0) performer = performerList.get(0);
+	    List<Music> musicList = new ArrayList<Music>();
+	    if(performer != null){
+	    	QueryBuilder<Music, Integer> queryBuilder = musicDao.queryBuilder();
+	    	if(offset > 0) queryBuilder.offset(Long.valueOf(offset));
+	    	if(limit > 0) queryBuilder.limit(Long.valueOf(limit));
+	    	queryBuilder.where().eq(Music.PERFORMER_ID_FIELD_NAME, performer);
+	    	musicList = musicDao.query(queryBuilder.prepare());
+	    }	    
 	    return musicList;
 	}
 
