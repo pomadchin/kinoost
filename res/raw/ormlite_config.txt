@@ -1,5 +1,5 @@
 #
-# generated on 2014/03/11 10:37:57
+# generated on 2014/03/24 10:19:24
 #
 # --table-start--
 dataClass=com.cyber.kinoost.db.models.Favorites
@@ -119,6 +119,8 @@ foreign=true
 # --field-end--
 # --field-start--
 fieldName=date
+columnName=date_time
+dataPersister=DATE
 # --field-end--
 # --field-start--
 fieldName=value

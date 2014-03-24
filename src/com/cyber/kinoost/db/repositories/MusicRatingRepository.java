@@ -1,6 +1,7 @@
 package com.cyber.kinoost.db.repositories;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Callable;
 
@@ -76,6 +77,17 @@ public class MusicRatingRepository {
 	    QueryBuilder<MusicRating, Integer> queryBuilder = musicRatingDao.queryBuilder();
 	    if(offset > 0) queryBuilder.offset(Long.valueOf(offset));
 	    if(limit > 0) queryBuilder.limit(Long.valueOf(limit));
+	    musicRatingList = musicRatingDao.query(queryBuilder.prepare());
+
+	    return musicRatingList;
+	}
+	
+	public List<MusicRating> getMusciRatingByDate(Date date, int offset, int limit) throws SQLException {
+		List<MusicRating> musicRatingList = new ArrayList<MusicRating>();
+	    QueryBuilder<MusicRating, Integer> queryBuilder = musicRatingDao.queryBuilder();
+	    if(offset > 0) queryBuilder.offset(Long.valueOf(offset));
+	    if(limit > 0) queryBuilder.limit(Long.valueOf(limit));
+	    if(date.getTime() > 0) queryBuilder.where().gt(MusicRating.DATE_TIME, date);
 	    musicRatingList = musicRatingDao.query(queryBuilder.prepare());
 
 	    return musicRatingList;

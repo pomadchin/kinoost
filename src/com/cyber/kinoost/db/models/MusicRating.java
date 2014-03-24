@@ -2,6 +2,7 @@ package com.cyber.kinoost.db.models;
 
 import java.util.Date;
 
+import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
@@ -10,6 +11,7 @@ public class MusicRating {
 	
 	public final static String USER_ID_FIELD_NAME = "user_id";
 	public final static String MUSIC_ID_FIELD_NAME = "music_id";
+	public final static String DATE_TIME = "date_time";
 	
 	@DatabaseField(generatedId = true)
 	int id;
@@ -17,7 +19,7 @@ public class MusicRating {
 	private User user;
 	@DatabaseField(foreign = true, columnName = MUSIC_ID_FIELD_NAME)
 	private Music music;
-	@DatabaseField
+	@DatabaseField(columnName = DATE_TIME, dataType = DataType.DATE)
 	Date date;
 	@DatabaseField(index = true)
 	int value;
