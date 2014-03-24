@@ -26,7 +26,23 @@ public class InfoActivity extends Activity{
         setContentView(R.layout.info);
         TextView tv = (TextView) findViewById(R.id.text_info);
         //СДЕЛАЙТЕ ХТМЛЬКУ ПЛЗ, МНЕ ВЛОМ!
-        tv.setText(Html.fromHtml("<h2>Описание</h2><br><p>Дичайшее, например</p>"));
+        tv.setText(Html.fromHtml("<p>Данное приложение создано в рамках учебного проекта стадом упоротых обезьян</p>" +
+        		"<br>Над проектом работали:</br>" +
+        		"<br>Благидзе Дмитрий</br>" +
+        		"<br>Бушмелев Игорь</br>" +
+        		"<br>Дьяченко Анастасия</br>" +
+        		"<br>Закиров Хасан</br>" +
+        		"<br>Ибрагимова Юлия</br>" +
+        		"<br>Костяев Дмитрий</br>" +
+        		"<br>Лисина Екатерина</br>" +
+        		"<br>Лещук Виталий</br>" +
+        		"<br>Малов Игорь</br>" +
+        		"<br>Новак Дмитрий</br>" +
+        		"<br>Помадчин Григорий</br>" +
+        		"<br>Скрипко Ольга</br>" +
+        		"<br>Сурган Павел</br>" +
+        		"<br>Пресняков Александр</br>" +
+        		"<br>Федоров Дмитрий</br>"));
 		menu = new MenuView(this);
 		Log.v(Integer.toString(menu.getChildCount()), "asd");
 		menuContainer = (RelativeLayout) findViewById(R.id.menu_container);

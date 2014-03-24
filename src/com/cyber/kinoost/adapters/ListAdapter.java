@@ -9,6 +9,7 @@ import com.cyber.kinoost.R;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -96,9 +97,18 @@ public class ListAdapter extends BaseAdapter {
 					ctx.startActivity(intent);
 					
 				}} );
+		    TextView tr = (TextView) view.findViewById(R.id.text_name_r);
+		    TextView tl = (TextView) view.findViewById(R.id.text_name_l);
+Log.v("size", Integer.toString(position));
+		    tr.setText(objects.get(position).name);
+		    if(objects.size()<(position+1))
+		    tl.setText(objects.get(position+1).name);
+		    
 		    return view;
 		  }
 
+
+		  
 		  // товар по позиции
 		  Film getFilm(int position) {
 		    return ((Film) getItem(position));

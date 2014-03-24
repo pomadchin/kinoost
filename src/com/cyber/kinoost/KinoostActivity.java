@@ -1,10 +1,15 @@
 package com.cyber.kinoost;
 
 
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import com.cyber.kinoost.adapters.Film;
 import com.cyber.kinoost.adapters.ListAdapter;
+import com.cyber.kinoost.db.models.User;
+import com.cyber.kinoost.db.repositories.FilmMusicRepository;
+import com.cyber.kinoost.db.repositories.UserRepository;
 import com.cyber.kinoost.views.MenuView;
 
 import android.annotation.SuppressLint;
@@ -66,10 +71,18 @@ public class KinoostActivity  extends Activity {
 
 	  // генерируем данные для адаптера
 	  void fillData() {
-	    for (int i = 1; i <= 20; i++) {
-	      films.add(new Film("Product " + i, i * 1000,
+		FilmMusicRepository filmMusicRepo = new FilmMusicRepository(this);
+		try {
+			List<com.cyber.kinoost.db.models.Film> dbFilms = filmMusicRepo.findFilmByName("", 0, 10);
+Log.d("SIZE", Integer.toString(dbFilms.size()));
+	    for (int i = 1; i < dbFilms.size(); i++) {
+	      films.add(new Film(dbFilms.get(i).getName(), i * 1000,
 	          R.drawable.ic_launcher, false));
 	    }
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	  }
 
 	  // выводим информацию
