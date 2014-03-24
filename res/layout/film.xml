@@ -17,19 +17,21 @@
 
    	    <ToggleButton
    	        android:id="@+id/main_button"
-   	        android:layout_width="wrap_content"
-   	        android:layout_height="wrap_content"
+   	        android:layout_width="30dp"
+   	        android:layout_height="30dp"
    	        android:layout_alignParentLeft="true"
    	        android:layout_alignParentTop="true"
-   	        android:text="ToggleButton" />
+            android:textOff=""
+            android:textOn=""
+   	        android:background="@drawable/menu_button"/>
 
    	    <Button
    	        android:id="@+id/button_home"
-   	        android:layout_width="wrap_content"
-   	        android:layout_height="wrap_content"
+   	        android:layout_width="30dp"
+   	        android:layout_height="30dp"
    	        android:layout_alignParentRight="true"
    	        android:layout_alignParentTop="true"
-   	        android:text="Button" />
+   	        android:background="@drawable/home_button"/>
 
 
     
