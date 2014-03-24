@@ -121,7 +121,7 @@ public class MainActivity extends Activity {
 			List<MusicRating> musicRating = musicRatingRepo.getMusicRating(0, 0);
 			Log.d("kinoost-musicRatingRepo-getMusicRating:", musicRating.toString());
 			
-			List<MusicRating> musicRatingDate = musicRatingRepo.getMusciRatingByDate(new Date(), 0, 0);
+			List<MusicRating> musicRatingDate = musicRatingRepo.getMusicRatingByDate(new Date(), 0, 0);
 			Log.d("kinoost-musicRatingRepo-getMusicRatingDate:", musicRatingDate.toString());
 			
 		} catch (SQLException e) {

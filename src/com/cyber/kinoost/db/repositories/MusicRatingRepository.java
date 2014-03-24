@@ -82,7 +82,7 @@ public class MusicRatingRepository {
 	    return musicRatingList;
 	}
 	
-	public List<MusicRating> getMusciRatingByDate(Date date, int offset, int limit) throws SQLException {
+	public List<MusicRating> getMusicRatingByDate(Date date, int offset, int limit) throws SQLException {
 		List<MusicRating> musicRatingList = new ArrayList<MusicRating>();
 	    QueryBuilder<MusicRating, Integer> queryBuilder = musicRatingDao.queryBuilder();
 	    if(offset > 0) queryBuilder.offset(Long.valueOf(offset));
