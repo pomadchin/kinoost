@@ -26,7 +26,7 @@ public class InfoActivity extends Activity{
         setContentView(R.layout.info);
         TextView tv = (TextView) findViewById(R.id.text_info);
         //СДЕЛАЙТЕ ХТМЛЬКУ ПЛЗ, МНЕ ВЛОМ!
-        tv.setText(Html.fromHtml("<p>Данное приложение создано в рамках учебного проекта стадом упоротых обезьян</p>" +
+        tv.setText(Html.fromHtml("<p>Данное приложение создано в рамках учебного проекта студентами группы к8-223</p>" +
         		"<br>Над проектом работали:</br>" +
         		"<br>Благидзе Дмитрий</br>" +
         		"<br>Бушмелев Игорь</br>" +
