@@ -110,21 +110,21 @@ public class HttpAsyncTaskUpdate extends AsyncTask<String, Void, String> {
 			//e.printStackTrace();
 		}
         
-		try{					
+		try {
 			List<Film> film = filmRepo.findFilmByName("", 0, 10);
-			Log.d("kinoost-filmRepo-findFilmByName", film.toString() );
-			
-			List<Music> music = musicRepo.findMusicByName("",0, 10);
+			Log.d("kinoost-filmRepo-findFilmByName", film.toString());
+
+			List<Music> music = musicRepo.findMusicByName("", 0, 10);
 			Log.d("kinoost-musicRepo-findMusicByName", music.toString());
-			
-			List<Performer> performer = performerRepo.findPerformerByName("", 0, 10);
-			Log.d("kinoost-performerRepo-findPeromerByName", performer.toString());
-			
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				Log.d("repoFail:", e.getMessage());
-				e.printStackTrace();
-			}
+
+			List<Performer> performer = performerRepo.findPerformerByName("",0, 10);
+			Log.d("kinoost-performerRepo-findPeromerByName",performer.toString());
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			Log.d("repoFail:", e.getMessage());
+			e.printStackTrace();
+		}
    }
     
     private String jsonCreate(){
