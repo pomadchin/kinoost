@@ -102,12 +102,12 @@ public class MainActivity extends Activity {
 		musicRatingList.add(new MusicRating(userList.get(0), musicList.get(3), 4));
 		
 		// create
-		userRepo.createUserList(userList);
-		performerRepo.createPerformerList(performerList);
-		filmRepo.createFilmList(filmList);
-		musicRepo.createMusicList(musicList);
-		filmMusicRepo.createFilmMusicList(filmMusicList);
-		musicRatingRepo.createMusicRatingList(musicRatingList);
+		userRepo.editUserList(userList);
+		performerRepo.editPerformerList(performerList);
+		filmRepo.editFilmList(filmList);
+		musicRepo.editMusicList(musicList);
+		filmMusicRepo.editFilmMusicList(filmMusicList);
+		musicRatingRepo.editMusicRatingList(musicRatingList);
 		
 		try{
 		
@@ -138,6 +138,9 @@ public class MainActivity extends Activity {
 			
 			List<MusicRating> musicRating = musicRatingRepo.getMusicRating(0, 0);
 			Log.d("kinoost-musicRatingRepo-getMusicRating:", musicRating.toString());
+			
+			List<MusicRating> musicRatingDate = musicRatingRepo.getMusicRatingByDate(new Date(), 0, 0);
+			Log.d("kinoost-musicRatingRepo-getMusicRatingDate:", musicRatingDate.toString());
 			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
