@@ -1,8 +1,10 @@
 package com.cyber.kinoost.db.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 @DatabaseTable(tableName = "user")
 public class User {
 	

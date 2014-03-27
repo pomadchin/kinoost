@@ -1,26 +1,41 @@
 package com.cyber.kinoost.api.tasks;
 
-import java.io.IOException;
+import java.sql.SQLException;
+import java.util.Date;
 
-import com.cyber.kinoost.api.models.JsonUpdate;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.util.Log;
+
+import com.cyber.kinoost.api.*;
+
+import java.io.IOException;
+import java.util.List;
+
+import com.cyber.kinoost.api.models.*;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Log;
-
-import com.cyber.kinoost.api.*;
-import com.cyber.kinoost.db.repositories.FilmRepository;
+import com.cyber.kinoost.db.models.*;
+import com.cyber.kinoost.db.repositories.*;
 
 public class HttpAsyncTaskUpdate extends AsyncTask<String, Void, String> {
+	public static final String APP_PREFERENCES = "com.cyber.kinoost";
+	public static final String APP_PREFERENCES_UPDATE_DATE = "com.cyber.kinoost.update.date";
+	
 	private Context context;
+
+	private SharedPreferences prefs;
+	private SharedPreferences.Editor editor;
 	
 	public HttpAsyncTaskUpdate(Context context) {
 		super();
 		this.context = context;
+		prefs = context.getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
+		editor = prefs.edit();
 	}
 	
 	private Context getContext() {
@@ -29,15 +44,19 @@ public class HttpAsyncTaskUpdate extends AsyncTask<String, Void, String> {
 	
     @Override
     protected String doInBackground(String... params) {
-    	if(params.length > 2)
-    		ApiHelper.POST(params[0], params[2]);
-    	
-        return ApiHelper.GET(params[0]);
+    	ApiHelper.POST(params[0], jsonCreate());
+        return ApiHelper.GET(params[0] + params[1]);
     }
     // onPostExecute displays the results of the AsyncTask.
     @Override
     protected void onPostExecute(String result) {
         Log.d("onPostExecute", result);
+        
+        FilmRepository filmRepo = new FilmRepository(getContext());
+		MusicRepository musicRepo = new MusicRepository(getContext());
+		FavoritesRepository favoritesRepo = new FavoritesRepository(getContext());
+		PerformerRepository performerRepo = new PerformerRepository(getContext());
+		FilmMusicRepository filmmusicRepo =  new FilmMusicRepository(getContext());
         
         JsonFactory f = new JsonFactory();
         ObjectMapper mapper = new ObjectMapper();
@@ -45,13 +64,44 @@ public class HttpAsyncTaskUpdate extends AsyncTask<String, Void, String> {
         try {
 			JsonParser jp = f.createParser(result);
 			jp.nextToken();
-			JsonUpdate jsonUpdate = mapper.readValue(jp, JsonUpdate.class);
-			Log.d("HttpAsyncTask.onPostExecute", jsonUpdate.toString());
+			JsonUpdateList jsonUpdateList = mapper.readValue(jp, JsonUpdateList.class);
+			List<JsonUpdate> listUpdate = jsonUpdateList.getUpdates();
+			Log.d("HttpAsyncTask.onPostExecute", listUpdate.toString());
+			Date updDate = new Date();
 			
-			FilmRepository filmRepo = new FilmRepository(getContext());
-			filmRepo.createFilmList(jsonUpdate.getFilms());
+			for (JsonUpdate jsonUpdate: listUpdate) {
+				switch (jsonUpdate.getMethod()){
+				    case ADD:
+					    filmRepo.createFilmList(jsonUpdate.getFilms());
+					    performerRepo.createPerformerList(jsonUpdate.getPerformers());
+					    musicRepo.createMusicList(jsonUpdate.getMusic());
+					    favoritesRepo.createFavoritesList(jsonUpdate.getFavorites());
+					    filmmusicRepo.createFilmMusicList(jsonUpdate.getFilmMusic());
+					    updDate = jsonUpdate.getUpdateDate();
+					break;
+
+                    case DELETE:					
+					    filmmusicRepo.deleteFilmMusicList(jsonUpdate.getFilmMusic());
+					    favoritesRepo.deleteFavoritesList(jsonUpdate.getFavorites());
+					    musicRepo.deleteMusicList(jsonUpdate.getMusic());
+					    performerRepo.deletePerformerList(jsonUpdate.getPerformers());
+					    filmRepo.deleteFilmList(jsonUpdate.getFilms());
+					    updDate = jsonUpdate.getUpdateDate();
+					break;
+				
+                    case REPLACE:
+                    	filmRepo.editFilmList(jsonUpdate.getFilms());
+					    performerRepo.editPerformerList(jsonUpdate.getPerformers());
+					    musicRepo.editMusicList(jsonUpdate.getMusic());
+					    favoritesRepo.editFavoritesList(jsonUpdate.getFavorites());
+					    filmmusicRepo.editFilmMusicList(jsonUpdate.getFilmMusic());
+					    updDate = jsonUpdate.getUpdateDate();
+					break;
+                }	
+			}
 			
-			// TODO: persist data Diman
+			editor.putLong(APP_PREFERENCES_UPDATE_DATE, updDate.getTime());
+			editor.commit();
 		} catch (JsonParseException e) {
 			Log.d("HttpAsyncTask.onPostExecute", e.getMessage());
 			//e.printStackTrace();
@@ -59,5 +109,40 @@ public class HttpAsyncTaskUpdate extends AsyncTask<String, Void, String> {
 			Log.d("HttpAsyncTask.onPostExecute", e.getMessage());
 			//e.printStackTrace();
 		}
+        
+		try{					
+			List<Film> film = filmRepo.findFilmByName("", 0, 10);
+			Log.d("kinoost-filmRepo-findFilmByName", film.toString() );
+			
+			List<Music> music = musicRepo.findMusicByName("",0, 10);
+			Log.d("kinoost-musicRepo-findMusicByName", music.toString());
+			
+			List<Performer> performer = performerRepo.findPerformerByName("", 0, 10);
+			Log.d("kinoost-performerRepo-findPeromerByName", performer.toString());
+			
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				Log.d("repoFail:", e.getMessage());
+				e.printStackTrace();
+			}
    }
+    
+    private String jsonCreate(){
+		JsonSend json = new JsonSend();
+		FavoritesRepository favoritesRepo = new FavoritesRepository(getContext());
+		MusicRatingRepository musicRatingRepo = new MusicRatingRepository(getContext());
+	    Date updDate = new Date(prefs.getLong(APP_PREFERENCES_UPDATE_DATE, 0));
+	    String result = "";
+		try{
+		    json.setFavorites(favoritesRepo.getFavorites(0, 0));
+		    json.setMusicRating(musicRatingRepo.getMusicRatingByDate(updDate, 0, 0));
+		    result = json.toString();
+		    Log.d("jsonCreate", result);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
+	
 }

@@ -25,6 +25,7 @@ public class MainActivity extends Activity {
 
 	public static final String APP_PREFERENCES = "com.cyber.kinoost";
 	public static final String APP_PREFERENCES_UPDATE_DATETIME = "com.cyber.kinoost.update.datetime";
+	public static final String APP_PREFERENCES_UPDATE_DATE = "com.cyber.kinoost.update.date";
 	public static final long APP_PREFERENCES_DAYS_UPDATE = 1;
 	
 	DatabaseHelper dbHelper;
@@ -53,12 +54,13 @@ public class MainActivity extends Activity {
 		// check data update on start
 		Date storedDate = new Date(prefs.getLong(APP_PREFERENCES_UPDATE_DATETIME, 0));
 		Date newDate = new Date();
+		Date updDate = new Date(prefs.getLong(APP_PREFERENCES_UPDATE_DATE, 0));
 		long diffDays = (newDate.getTime() - storedDate.getTime()) / (24 * 60 * 60 * 1000);
 		
 		if(diffDays >= APP_PREFERENCES_DAYS_UPDATE) {
 			editor.putLong(APP_PREFERENCES_UPDATE_DATETIME, newDate.getTime());
 			editor.commit();
-			ApiHelper.dbUpdate(getBaseContext(), newDate);
+			ApiHelper.dbUpdate(getBaseContext(), updDate);
 		}
 	}
 	// test func remove from prod
@@ -115,6 +117,24 @@ public class MainActivity extends Activity {
 		musicRepo.editMusicList(musicList);
 		filmMusicRepo.editFilmMusicList(filmMusicList);
 		musicRatingRepo.editMusicRatingList(musicRatingList);
+		
+		try{
+		
+		List<Film> film = filmRepo.findFilmByName("", 0, 10);
+		Log.d("kinoost-filmRepo-findFilmByName", film.toString() );
+		
+		List<Music> music = musicRepo.findMusicByName("",0, 10);
+		Log.d("kinoost-musicRepo-findMusicByName", music.toString());
+		
+		List<Performer> performer = performerRepo.findPerformerByName("", 0, 10);
+		Log.d("kinoost-performerRepo-findPeromerByName", performer.toString());
+		
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			Log.d("repoFail:", e.getMessage());
+			e.printStackTrace();
+		}
+		
 		
 		// stuff
 		try {
