@@ -24,7 +24,7 @@ import com.cyber.kinoost.api.tasks.*;
 
 public class ApiHelper {
 	
-	public static String update = " http://kinoserver-cybern223.rhcloud.com/kinoserver/mobile/update/";
+	public static String update = "http://kinoserver-cybern223.rhcloud.com/kinoserver/mobile/update/";
 	
 	public static void dbUpdate(Context updateContext, Date date) {
 		if(isConnected(updateContext)) {

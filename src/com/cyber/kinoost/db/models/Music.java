@@ -1,8 +1,13 @@
 package com.cyber.kinoost.db.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 @DatabaseTable(tableName = "music")
 public class Music {
 	
@@ -55,6 +60,18 @@ public class Music {
 
 	public void setRating(double rating) {
 		this.rating = rating;
+	}
+	
+	public Performer getPerformer() {
+		return performer;
+	}
+	
+	public void setPerformer(Performer performer){
+		this.performer = performer;
+	}
+	
+	public void setPerformerJackson(JsonNode jsonNode) throws JsonProcessingException {
+		performer = new ObjectMapper().treeToValue(jsonNode, Performer.class);
 	}
 
 	@Override

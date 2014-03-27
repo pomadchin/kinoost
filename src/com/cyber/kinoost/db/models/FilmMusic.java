@@ -1,8 +1,13 @@
 package com.cyber.kinoost.db.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 @DatabaseTable(tableName = "film_music")
 public class FilmMusic {
 	
@@ -43,6 +48,14 @@ public class FilmMusic {
 
 	public void setMusic(Music music) {
 		this.music = music;
+	}
+	
+	public void setFilmJackson(JsonNode jsonNode) throws JsonProcessingException {
+		film = new ObjectMapper().treeToValue(jsonNode, Film.class);
+	}
+	
+	public void setMusicJackson(JsonNode jsonNode) throws JsonProcessingException {
+		music = new ObjectMapper().treeToValue(jsonNode, Music.class);
 	}
 
 	@Override

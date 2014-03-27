@@ -2,10 +2,15 @@ package com.cyber.kinoost.db.models;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 @DatabaseTable(tableName = "music_rating")
 public class MusicRating {
 	
@@ -69,6 +74,14 @@ public class MusicRating {
 
 	public int getId() {
 		return id;
+	}
+	
+	public void setUserJackson(JsonNode jsonNode) throws JsonProcessingException {
+		user = new ObjectMapper().treeToValue(jsonNode, User.class);
+	}
+	
+	public void setMusicJackson(JsonNode jsonNode) throws JsonProcessingException {
+		music = new ObjectMapper().treeToValue(jsonNode, Music.class);
 	}
 
 	@Override

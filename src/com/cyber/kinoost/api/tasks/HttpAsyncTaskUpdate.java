@@ -10,20 +10,15 @@ import android.util.Log;
 import com.cyber.kinoost.api.*;
 
 import java.io.IOException;
-import java.sql.SQLException;
-import java.util.Date;
 import java.util.List;
 
-import com.cyber.kinoost.api.models.JsonUpdate;
-import com.cyber.kinoost.api.models.JsonSend;
+import com.cyber.kinoost.api.models.*;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.type.TypeFactory;
 
 import android.os.AsyncTask;
-import com.cyber.kinoost.api.*;
 import com.cyber.kinoost.db.models.*;
 import com.cyber.kinoost.db.repositories.*;
 
@@ -69,37 +64,36 @@ public class HttpAsyncTaskUpdate extends AsyncTask<String, Void, String> {
         try {
 			JsonParser jp = f.createParser(result);
 			jp.nextToken();
-			
-			List<JsonUpdate> listUpdate = mapper.readValue(jp,TypeFactory.defaultInstance().constructCollectionType(List.class,JsonUpdate.class));
+			JsonUpdateList jsonUpdateList = mapper.readValue(jp, JsonUpdateList.class);
+			List<JsonUpdate> listUpdate = jsonUpdateList.getUpdates();
 			Log.d("HttpAsyncTask.onPostExecute", listUpdate.toString());
-			
 			Date updDate = new Date();
 			
 			for (JsonUpdate jsonUpdate: listUpdate) {
 				switch (jsonUpdate.getMethod()){
 				    case ADD:
 					    filmRepo.createFilmList(jsonUpdate.getFilms());
+					    performerRepo.createPerformerList(jsonUpdate.getPerformers());
 					    musicRepo.createMusicList(jsonUpdate.getMusic());
 					    favoritesRepo.createFavoritesList(jsonUpdate.getFavorites());
-						performerRepo.createPerformerList(jsonUpdate.getPerformers());
 					    filmmusicRepo.createFilmMusicList(jsonUpdate.getFilmMusic());
 					    updDate = jsonUpdate.getUpdateDate();
 					break;
 
                     case DELETE:					
-					    filmRepo.deleteFilmList(jsonUpdate.getFilms());
-					    musicRepo.deleteMusicList(jsonUpdate.getMusic());
-					    favoritesRepo.deleteFavoritesList(jsonUpdate.getFavorites());
-					    performerRepo.deletePerformerList(jsonUpdate.getPerformers());
 					    filmmusicRepo.deleteFilmMusicList(jsonUpdate.getFilmMusic());
+					    favoritesRepo.deleteFavoritesList(jsonUpdate.getFavorites());
+					    musicRepo.deleteMusicList(jsonUpdate.getMusic());
+					    performerRepo.deletePerformerList(jsonUpdate.getPerformers());
+					    filmRepo.deleteFilmList(jsonUpdate.getFilms());
 					    updDate = jsonUpdate.getUpdateDate();
 					break;
 				
                     case REPLACE:
-					    filmRepo.editFilmList(jsonUpdate.getFilms());
+                    	filmRepo.editFilmList(jsonUpdate.getFilms());
+					    performerRepo.editPerformerList(jsonUpdate.getPerformers());
 					    musicRepo.editMusicList(jsonUpdate.getMusic());
 					    favoritesRepo.editFavoritesList(jsonUpdate.getFavorites());
-					    performerRepo.editPerformerList(jsonUpdate.getPerformers());
 					    filmmusicRepo.editFilmMusicList(jsonUpdate.getFilmMusic());
 					    updDate = jsonUpdate.getUpdateDate();
 					break;
