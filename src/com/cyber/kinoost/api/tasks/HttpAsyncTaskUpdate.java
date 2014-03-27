@@ -1,39 +1,38 @@
 package com.cyber.kinoost.api.tasks;
 
+import java.sql.SQLException;
+import java.util.Date;
+
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.util.Log;
+
+import com.cyber.kinoost.api.*;
+
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 
 import com.cyber.kinoost.api.models.JsonUpdate;
+import com.cyber.kinoost.api.models.JsonSend;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
-import android.util.Log;
-
 import com.cyber.kinoost.api.*;
-import com.cyber.kinoost.db.models.Film;
-import com.cyber.kinoost.db.models.Music;
-import com.cyber.kinoost.db.models.Performer;
-import com.cyber.kinoost.db.repositories.FavoritesRepository;
-import com.cyber.kinoost.db.repositories.FilmMusicRepository;
-import com.cyber.kinoost.db.repositories.FilmRepository;
-import com.cyber.kinoost.db.repositories.MusicRatingRepository;
-import com.cyber.kinoost.db.repositories.MusicRepository;
-import com.cyber.kinoost.db.repositories.PerformerRepository;
-import com.cyber.kinoost.db.repositories.UserRepository;
+import com.cyber.kinoost.db.models.*;
+import com.cyber.kinoost.db.repositories.*;
 
 public class HttpAsyncTaskUpdate extends AsyncTask<String, Void, String> {
 	public static final String APP_PREFERENCES = "com.cyber.kinoost";
 	public static final String APP_PREFERENCES_UPDATE_DATE = "com.cyber.kinoost.update.date";
 	
 	private Context context;
+
 	private SharedPreferences prefs;
 	private SharedPreferences.Editor editor;
 	
@@ -50,10 +49,8 @@ public class HttpAsyncTaskUpdate extends AsyncTask<String, Void, String> {
 	
     @Override
     protected String doInBackground(String... params) {
-    	if(params.length > 2)
-    		ApiHelper.POST(params[0], params[2]);
-    	
-        return ApiHelper.GET(params[0]);
+    	ApiHelper.POST(params[0], jsonCreate());
+        return ApiHelper.GET(params[0] + params[1]);
     }
     // onPostExecute displays the results of the AsyncTask.
     @Override
@@ -135,4 +132,23 @@ public class HttpAsyncTaskUpdate extends AsyncTask<String, Void, String> {
 				e.printStackTrace();
 			}
    }
+    
+    private String jsonCreate(){
+		JsonSend json = new JsonSend();
+		FavoritesRepository favoritesRepo = new FavoritesRepository(getContext());
+		MusicRatingRepository musicRatingRepo = new MusicRatingRepository(getContext());
+	    Date updDate = new Date(prefs.getLong(APP_PREFERENCES_UPDATE_DATE, 0));
+	    String result = "";
+		try{
+		    json.setFavorites(favoritesRepo.getFavorites(0, 0));
+		    json.setMusicRating(musicRatingRepo.getMusicRatingByDate(updDate, 0, 0));
+		    result = json.toString();
+		    Log.d("jsonCreate", result);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
+	
 }
