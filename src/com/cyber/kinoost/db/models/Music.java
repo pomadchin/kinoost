@@ -22,6 +22,8 @@ public class Music {
 	double rating;
 	@DatabaseField(foreign = true, columnName = PERFORMER_ID_FIELD_NAME)
 	private Performer performer;
+	@DatabaseField
+	String fileName;
 	
 	public static String getPerformerIdFieldName() {
 		return PERFORMER_ID_FIELD_NAME;
@@ -68,6 +70,14 @@ public class Music {
 	
 	public void setPerformer(Performer performer){
 		this.performer = performer;
+	}
+	
+	public String getFileName() {
+		return fileName;
+	}
+	
+	public void setFileName(String fileName){
+		this.fileName = fileName;
 	}
 	
 	public void setPerformerJackson(JsonNode jsonNode) throws JsonProcessingException {
