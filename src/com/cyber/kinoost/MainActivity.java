@@ -21,6 +21,7 @@ public class MainActivity extends Activity {
 	
 	public static final String APP_PREFERENCES = "com.cyber.kinoost";
 	public static final String APP_PREFERENCES_UPDATE_DATETIME = "com.cyber.kinoost.update.datetime";
+	public static final String APP_PREFERENCES_UPDATE_DATE = "com.cyber.kinoost.update.date";
 	public static final long APP_PREFERENCES_DAYS_UPDATE = 1;
 	
 	DatabaseHelper dbHelper;
@@ -46,12 +47,13 @@ public class MainActivity extends Activity {
 		// check data update on start
 		Date storedDate = new Date(prefs.getLong(APP_PREFERENCES_UPDATE_DATETIME, 0));
 		Date newDate = new Date();
+		Date updDate = new Date(prefs.getLong(APP_PREFERENCES_UPDATE_DATE, 0));
 		long diffDays = (newDate.getTime() - storedDate.getTime()) / (24 * 60 * 60 * 1000);
 		
 		if(diffDays >= APP_PREFERENCES_DAYS_UPDATE) {
 			editor.putLong(APP_PREFERENCES_UPDATE_DATETIME, newDate.getTime());
 			editor.commit();
-			ApiHelper.dbUpdate(getBaseContext(), newDate);
+			ApiHelper.dbUpdate(getBaseContext(), updDate);
 		}
 	}
 	// test func remove from prod

@@ -9,9 +9,6 @@ import com.cyber.kinoost.db.models.FilmMusic;
 import com.cyber.kinoost.db.models.Music;
 import com.cyber.kinoost.db.models.Performer;
 
-/**
- * Created by virtuozzo on 06.03.14.
- */
 public class JsonUpdate {
     public static enum Method {ADD, DELETE, REPLACE}
     private Method method;
@@ -78,4 +75,13 @@ public class JsonUpdate {
     public void setUpdateDate(Date updateDate) {
         this.updateDate = updateDate;
     }
+
+	@Override
+	public String toString() {
+		return "JsonUpdate [method=" + method + ", favorites=" + favorites
+				+ ", films=" + films + ", music=" + music + ", filmMusic="
+				+ filmMusic + ", performers=" + performers + ", updateDate="
+				+ updateDate + "]";
+	}
+    
 }
