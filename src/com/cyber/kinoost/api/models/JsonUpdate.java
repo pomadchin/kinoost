@@ -3,11 +3,15 @@ package com.cyber.kinoost.api.models;
 import java.util.Date;
 import java.util.List;
 
+import android.content.Context;
+
 import com.cyber.kinoost.db.models.Favorites;
 import com.cyber.kinoost.db.models.Film;
 import com.cyber.kinoost.db.models.FilmMusic;
 import com.cyber.kinoost.db.models.Music;
 import com.cyber.kinoost.db.models.Performer;
+import com.cyber.kinoost.db.repositories.FavoritesRepository;
+import com.cyber.kinoost.db.repositories.FilmMusicRepository;
 
 public class JsonUpdate {
     public static enum Method {ADD, DELETE, REPLACE}
@@ -75,6 +79,20 @@ public class JsonUpdate {
     public void setUpdateDate(Date updateDate) {
         this.updateDate = updateDate;
     }
+    
+    public Date persist(Context context) {
+    	FilmMusicRepository filmMusicRepo =  new FilmMusicRepository(context);
+		FavoritesRepository favoritesRepo = new FavoritesRepository(context);
+		
+		if((getMethod() == Method.ADD) || (getMethod() == Method.REPLACE)) {
+			filmMusicRepo.editFilmMusicListCascade(getFilmMusic());
+		    favoritesRepo.editFavoritesList(getFavorites());
+		} else if(getMethod() == Method.DELETE) {
+			filmMusicRepo.deleteFilmMusicListCascade(getFilmMusic());
+		}
+		
+		return getUpdateDate();
+    }
 
 	@Override
 	public String toString() {
@@ -83,5 +101,4 @@ public class JsonUpdate {
 				+ filmMusic + ", performers=" + performers + ", updateDate="
 				+ updateDate + "]";
 	}
-    
 }

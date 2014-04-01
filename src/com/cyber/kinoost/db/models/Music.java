@@ -1,5 +1,6 @@
 package com.cyber.kinoost.db.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -22,6 +23,7 @@ public class Music {
 	double rating;
 	@DatabaseField(foreign = true, columnName = PERFORMER_ID_FIELD_NAME)
 	private Performer performer;
+	@JsonIgnore
 	@DatabaseField
 	String fileName;
 	

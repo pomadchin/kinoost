@@ -19,7 +19,7 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import android.os.AsyncTask;
-import com.cyber.kinoost.db.models.*;
+// import com.cyber.kinoost.db.models.*;
 import com.cyber.kinoost.db.repositories.*;
 
 public class HttpAsyncTaskUpdate extends AsyncTask<String, Void, String> {
@@ -50,14 +50,16 @@ public class HttpAsyncTaskUpdate extends AsyncTask<String, Void, String> {
     // onPostExecute displays the results of the AsyncTask.
     @Override
     protected void onPostExecute(String result) {
-        Log.d("onPostExecute", result);
+        /*Log.d("onPostExecute", result);
         
-        FilmRepository filmRepo = new FilmRepository(getContext());
+        FavoritesRepository favoritesRepo = new FavoritesRepository(getContext());
+		FilmRepository filmRepo = new FilmRepository(getContext());
 		MusicRepository musicRepo = new MusicRepository(getContext());
-		FavoritesRepository favoritesRepo = new FavoritesRepository(getContext());
+		FilmMusicRepository filmMusicRepo = new FilmMusicRepository(getContext());
+		MusicRatingRepository musicRatingRepo = new MusicRatingRepository(getContext());
 		PerformerRepository performerRepo = new PerformerRepository(getContext());
-		FilmMusicRepository filmmusicRepo =  new FilmMusicRepository(getContext());
-        
+		UserRepository userRepo = new UserRepository(getContext());*/
+      
         JsonFactory f = new JsonFactory();
         ObjectMapper mapper = new ObjectMapper();
         
@@ -70,34 +72,7 @@ public class HttpAsyncTaskUpdate extends AsyncTask<String, Void, String> {
 			Date updDate = new Date();
 			
 			for (JsonUpdate jsonUpdate: listUpdate) {
-				switch (jsonUpdate.getMethod()){
-				    case ADD:
-					    filmRepo.createFilmList(jsonUpdate.getFilms());
-					    performerRepo.createPerformerList(jsonUpdate.getPerformers());
-					    musicRepo.createMusicList(jsonUpdate.getMusic());
-					    favoritesRepo.createFavoritesList(jsonUpdate.getFavorites());
-					    filmmusicRepo.createFilmMusicList(jsonUpdate.getFilmMusic());
-					    updDate = jsonUpdate.getUpdateDate();
-					break;
-
-                    case DELETE:					
-					    filmmusicRepo.deleteFilmMusicList(jsonUpdate.getFilmMusic());
-					    favoritesRepo.deleteFavoritesList(jsonUpdate.getFavorites());
-					    musicRepo.deleteMusicList(jsonUpdate.getMusic());
-					    performerRepo.deletePerformerList(jsonUpdate.getPerformers());
-					    filmRepo.deleteFilmList(jsonUpdate.getFilms());
-					    updDate = jsonUpdate.getUpdateDate();
-					break;
-				
-                    case REPLACE:
-                    	filmRepo.editFilmList(jsonUpdate.getFilms());
-					    performerRepo.editPerformerList(jsonUpdate.getPerformers());
-					    musicRepo.editMusicList(jsonUpdate.getMusic());
-					    favoritesRepo.editFavoritesList(jsonUpdate.getFavorites());
-					    filmmusicRepo.editFilmMusicList(jsonUpdate.getFilmMusic());
-					    updDate = jsonUpdate.getUpdateDate();
-					break;
-                }	
+				updDate = jsonUpdate.persist(getContext());
 			}
 			
 			editor.putLong(APP_PREFERENCES_UPDATE_DATE, updDate.getTime());
@@ -110,7 +85,7 @@ public class HttpAsyncTaskUpdate extends AsyncTask<String, Void, String> {
 			//e.printStackTrace();
 		}
         
-		try {
+		/*try {
 			List<Film> film = filmRepo.findFilmByName("", 0, 10);
 			Log.d("kinoost-filmRepo-findFilmByName", film.toString());
 
@@ -124,7 +99,7 @@ public class HttpAsyncTaskUpdate extends AsyncTask<String, Void, String> {
 			// TODO Auto-generated catch block
 			Log.d("repoFail:", e.getMessage());
 			e.printStackTrace();
-		}
+		}*/
    }
     
     private String jsonCreate(){
