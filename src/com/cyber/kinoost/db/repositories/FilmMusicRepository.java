@@ -21,6 +21,7 @@ public class FilmMusicRepository {
 	
 	protected RuntimeExceptionDao<Film, Integer> filmDao = null;
 	protected RuntimeExceptionDao<Music, Integer> musicDao = null;
+	protected RuntimeExceptionDao<Performer, Integer> performerDao = null;
 	protected RuntimeExceptionDao<FilmMusic, Integer> filmMusicDao = null;
 	
 	protected PerformerRepository performerRepo = null;
@@ -34,6 +35,7 @@ public class FilmMusicRepository {
 		filmDao = dbHelper.getFilmRuntimeExceptionDao();
 		filmMusicDao = dbHelper.getFilmMusicRuntimeExceptionDao();
 		musicDao = dbHelper.getMusicRuntimeExceptionDao();
+		performerDao = dbHelper.getPerformerRuntimeExceptionDao();
 		performerRepo = new PerformerRepository(context);
 	}
 	
@@ -62,6 +64,21 @@ public class FilmMusicRepository {
 	    });
 	}
 	
+	public void createFilmMusicListCascade(final List<FilmMusic> filmMusic) {
+        filmMusicDao.callBatchTasks(new Callable<Void>() {
+	        @Override
+	        public Void call() throws Exception {
+	            for (FilmMusic fm : filmMusic) {
+	            	filmDao.create(fm.getFilm());
+	            	performerDao.create(fm.getMusic().getPerformer());
+	            	musicDao.create(fm.getMusic());
+	                filmMusicDao.create(fm);
+	            }
+	            return null;
+	        }
+	    });
+	}
+	
 	public void editFilmMusic(FilmMusic filmMusic) {
 		filmMusicDao.createOrUpdate(filmMusic);
 	}
@@ -78,12 +95,42 @@ public class FilmMusicRepository {
 	    });
 	}
 	
+	public void editFilmMusicListCascade(final List<FilmMusic> filmMusic) {
+        filmMusicDao.callBatchTasks(new Callable<Void>() {
+	        @Override
+	        public Void call() throws Exception {
+	            for (FilmMusic fm : filmMusic) {
+	            	filmDao.createOrUpdate(fm.getFilm());
+	            	performerDao.createOrUpdate(fm.getMusic().getPerformer());
+	            	musicDao.createOrUpdate(fm.getMusic());
+	                filmMusicDao.createOrUpdate(fm);
+	            }
+	            return null;
+	        }
+	    });
+	}
+	
 	public void deleteFilmMusic(FilmMusic filmMusic) {
 		filmMusicDao.delete(filmMusic);
 	}
 	
 	public void deleteFilmMusicList(List<FilmMusic> filmMusic) {
 		filmMusicDao.delete(filmMusic);
+	}
+	
+	public void deleteFilmMusicListCascade(final List<FilmMusic> filmMusic) {
+        filmMusicDao.callBatchTasks(new Callable<Void>() {
+	        @Override
+	        public Void call() throws Exception {
+	            for (FilmMusic fm : filmMusic) {
+	                filmMusicDao.delete(fm);
+	                musicDao.delete(fm.getMusic());
+	                performerDao.delete(fm.getMusic().getPerformer());
+	                filmDao.delete(fm.getFilm());
+	            }
+	            return null;
+	        }
+	    });
 	}
 	
 	public List<Film> findFilmByName(String name, int offset, int limit) throws SQLException {
