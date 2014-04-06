@@ -19,7 +19,7 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import android.os.AsyncTask;
-// import com.cyber.kinoost.db.models.*;
+//import com.cyber.kinoost.db.models.*;
 import com.cyber.kinoost.db.repositories.*;
 
 public class HttpAsyncTaskUpdate extends AsyncTask<String, Void, String> {
