@@ -20,6 +20,7 @@ import com.cyber.kinoost.db.DatabaseHelper;
 import com.cyber.kinoost.db.models.*;
 import com.cyber.kinoost.api.*;
 import com.cyber.kinoost.db.repositories.*;
+import com.cyber.kinoost.img.*;
 
 public class MainActivity extends Activity {
 
@@ -31,6 +32,7 @@ public class MainActivity extends Activity {
 	DatabaseHelper dbHelper;
 	SharedPreferences prefs;
 	SharedPreferences.Editor editor;
+	ImageLoader imageLoader;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -87,10 +89,10 @@ public class MainActivity extends Activity {
 		performerList.add(new Performer(4, "performer4"));
 		
 		List<Film> filmList = new ArrayList<Film>();
-		filmList.add(new Film(1, "film1", 1, "1", 1.0));
-		filmList.add(new Film(2, "film2", 2, "2", 2.0));
-		filmList.add(new Film(3, "film3", 3, "3", 3.0));
-		filmList.add(new Film(4, "film4", 4, "4", 4.0));
+		filmList.add(new Film(1, "film1", 1, "kp_822_200x200.jpg", 1.0));
+		filmList.add(new Film(2, "film2", 2, "kp_822_200x200.jpg", 2.0));
+		filmList.add(new Film(3, "film3", 3, "kp_822_200x200.jpg", 3.0));
+		filmList.add(new Film(4, "film4", 4, "kp_822_200x200.jpg", 4.0));
 		
 		List<Music> musicList = new ArrayList<Music>();
 		musicList.add(new Music(1, "music1", 1.0, performerList.get(0)));

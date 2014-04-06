@@ -6,6 +6,7 @@ import com.cyber.kinoost.FilmActivity;
 import com.cyber.kinoost.InfoActivity;
 import com.cyber.kinoost.KinoostActivity;
 import com.cyber.kinoost.R;
+import com.cyber.kinoost.img.ImageLoader;
 
 import android.content.Context;
 import android.content.Intent;
@@ -21,29 +22,32 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.CheckBox;
+import com.cyber.kinoost.db.models.*;
 
 public class ListAdapter extends BaseAdapter {
-		  Context ctx;
+		  Context context;
 		  LayoutInflater lInflater;
-		  ArrayList<Film> objects;
+		  ArrayList<Tuple<Film, Film>> filmTuples;
+		  ImageLoader imageLoader; 
 
-		  public ListAdapter(Context context, ArrayList<Film> products) {
-		    ctx = context;
-		    objects = products;
-		    lInflater = (LayoutInflater) ctx
+		  public ListAdapter(Context context, ArrayList<Tuple<Film, Film>> products) {
+		    this.context = context;
+		    filmTuples = products;
+		    lInflater = (LayoutInflater) context
 		        .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		    imageLoader = new ImageLoader(context);
 		  }
 
 		  // кол-во элементов
 		  @Override
 		  public int getCount() {
-		    return objects.size();
+		    return filmTuples.size();
 		  }
 
 		  // элемент по позиции
 		  @Override
-		  public Object getItem(int position) {
-		    return objects.get(position);
+		  public Tuple<Film, Film> getItem(int position) {
+		    return filmTuples.get(position);
 		  }
 
 		  // id по позиции
@@ -60,8 +64,6 @@ public class ListAdapter extends BaseAdapter {
 		    if (view == null) {
 		      view = lInflater.inflate(R.layout.item, parent, false);
 		    }
-
-		    Film p = getFilm(position);
 
 		    // заполняем View в пункте списка данными из товаров: наименование, цена
 		    // и картинка
@@ -88,52 +90,36 @@ public class ListAdapter extends BaseAdapter {
 		    imgl.getLayoutParams().height = 170;
 		    imgr.getLayoutParams().width = 170;
 		    
+		    // подгрузим картинки
+		    Film fst = getItem(position).getFst();
+		    Film snd = getItem(position).getSnd();
+		    
+		    if(fst != null)
+		    	imageLoader.DisplayImage(fst.getImgUrl(), imgl);
+		    
+		    if(snd != null)
+		    	imageLoader.DisplayImage(snd.getImgUrl(), imgl);
+		    
 		    rightTable.setOnClickListener(new OnClickListener() {
 
-				@Override 
-				public void onClick(View arg0) {
-					Intent intent = new Intent();
-					intent.setClass(ctx, FilmActivity.class);
-					ctx.startActivity(intent);
-					
-				}} );
-		    TextView tr = (TextView) view.findViewById(R.id.text_name_r);
-		    TextView tl = (TextView) view.findViewById(R.id.text_name_l);
-Log.v("size", Integer.toString(position));
-		    tr.setText(objects.get(position).name);
-		    if(objects.size()<(position+1))
-		    tl.setText(objects.get(position+1).name);
+		    	@Override 
+		    	public void onClick(View arg0) {
+		    		Intent intent = new Intent();
+		    		intent.setClass(context, FilmActivity.class);
+		    		context.startActivity(intent);
+		    	}} );
 		    
-		    return view;
-		  }
-
-
-		  
-		  // товар по позиции
-		  Film getFilm(int position) {
-		    return ((Film) getItem(position));
-		  }
-
-		  // содержимое корзины
-		  public ArrayList<Film> getBox() {
-		    ArrayList<Film> box = new ArrayList<Film>();
-		    for (Film p : objects) {
-		      // если в корзине
-		      if (p.box)
-		        box.add(p);
-		    }
-		    return box;
-		  }
-
-		  // обработчик для чекбоксов
-		  OnCheckedChangeListener myCheckChangList = new OnCheckedChangeListener() {
-		    public void onCheckedChanged(CompoundButton buttonView,
-		        boolean isChecked) {
-		      // меняем данные товара (в корзине или нет)
-		      getFilm((Integer) buttonView.getTag()).box = isChecked;
-		    }
-		  };
-		
-
+		    	TextView tr = (TextView) view.findViewById(R.id.text_name_r);
+		    	TextView tl = (TextView) view.findViewById(R.id.text_name_l);
+		    
+		    	Log.v("size", Integer.toString(position));
+		    	
+		    	if(fst != null)
+		    		tr.setText(fst.getName());
+		    
+		    	if(snd != null)
+		    		tr.setText(snd.getName());
+		    
+		    	return view;
+		  	}
 	}
-

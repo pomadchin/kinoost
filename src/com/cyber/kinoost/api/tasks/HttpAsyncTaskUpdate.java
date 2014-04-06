@@ -19,7 +19,7 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import android.os.AsyncTask;
-//import com.cyber.kinoost.db.models.*;
+import com.cyber.kinoost.db.models.*;
 import com.cyber.kinoost.db.repositories.*;
 
 public class HttpAsyncTaskUpdate extends AsyncTask<String, Void, String> {
@@ -50,7 +50,7 @@ public class HttpAsyncTaskUpdate extends AsyncTask<String, Void, String> {
     // onPostExecute displays the results of the AsyncTask.
     @Override
     protected void onPostExecute(String result) {
-        /*Log.d("onPostExecute", result);
+        Log.d("onPostExecute", result);
         
         FavoritesRepository favoritesRepo = new FavoritesRepository(getContext());
 		FilmRepository filmRepo = new FilmRepository(getContext());
@@ -58,7 +58,7 @@ public class HttpAsyncTaskUpdate extends AsyncTask<String, Void, String> {
 		FilmMusicRepository filmMusicRepo = new FilmMusicRepository(getContext());
 		MusicRatingRepository musicRatingRepo = new MusicRatingRepository(getContext());
 		PerformerRepository performerRepo = new PerformerRepository(getContext());
-		UserRepository userRepo = new UserRepository(getContext());*/
+		UserRepository userRepo = new UserRepository(getContext());
       
         JsonFactory f = new JsonFactory();
         ObjectMapper mapper = new ObjectMapper();
@@ -85,9 +85,12 @@ public class HttpAsyncTaskUpdate extends AsyncTask<String, Void, String> {
 			//e.printStackTrace();
 		}
         
-		/*try {
+		try {
 			List<Film> film = filmRepo.findFilmByName("", 0, 10);
 			Log.d("kinoost-filmRepo-findFilmByName", film.toString());
+			
+			List<Tuple<Film, Film>> tfilm = filmRepo.findTuplesFilmByName("", 0, 10);
+			Log.d("kinoost-filmRepo-findFilmByName", tfilm.toString());
 
 			List<Music> music = musicRepo.findMusicByName("", 0, 10);
 			Log.d("kinoost-musicRepo-findMusicByName", music.toString());
@@ -99,7 +102,7 @@ public class HttpAsyncTaskUpdate extends AsyncTask<String, Void, String> {
 			// TODO Auto-generated catch block
 			Log.d("repoFail:", e.getMessage());
 			e.printStackTrace();
-		}*/
+		}
    }
     
     private String jsonCreate(){
