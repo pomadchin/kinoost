@@ -105,7 +105,7 @@ public class ListAdapter extends BaseAdapter {
 		    	imageLoader.DisplayImage(fst.getImgUrl(), imgl);
 		    
 		    if(snd != null)
-		    	imageLoader.DisplayImage(snd.getImgUrl(), imgl);
+		    	imageLoader.DisplayImage(snd.getImgUrl(), imgr);
 		    
 		    Log.d("ListAdapter", item.toString());
 		    
