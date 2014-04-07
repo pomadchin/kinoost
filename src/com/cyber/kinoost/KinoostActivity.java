@@ -34,11 +34,6 @@ import android.widget.ToggleButton;
 
 public class KinoostActivity  extends Activity {
 	
-	public static final String APP_PREFERENCES = "com.cyber.kinoost";
-	public static final String APP_PREFERENCES_UPDATE_DATETIME = "com.cyber.kinoost.update.datetime";
-	public static final String APP_PREFERENCES_UPDATE_DATE = "com.cyber.kinoost.update.date";
-	public static final long APP_PREFERENCES_DAYS_UPDATE = 1;
-	
 	ArrayList<Tuple<Film, Film>> films = new ArrayList<Tuple<Film, Film>>();
     ListAdapter la;
 	
@@ -60,6 +55,11 @@ public class KinoostActivity  extends Activity {
 		listContainer = (RelativeLayout) findViewById(R.id.list_container);
 		menuContainer.addView(menu);
 		ToggleButton toogleButton = (ToggleButton) findViewById(R.id.main_button);
+		
+		// init preferences && editor
+		prefs = getSharedPreferences(MainActivity.APP_PREFERENCES, Context.MODE_PRIVATE);
+		editor = prefs.edit();
+		
 		toogleButton.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 
 @Override
@@ -116,13 +116,13 @@ public class KinoostActivity  extends Activity {
 		super.onStart();
 		
 		// check data update on start
-		Date storedDate = new Date(prefs.getLong(APP_PREFERENCES_UPDATE_DATETIME, 0));
+		Date storedDate = new Date(prefs.getLong(MainActivity.APP_PREFERENCES_UPDATE_DATETIME, 0));
 		Date newDate = new Date();
-		Date updDate = new Date(prefs.getLong(APP_PREFERENCES_UPDATE_DATE, 0));
+		Date updDate = new Date(prefs.getLong(MainActivity.APP_PREFERENCES_UPDATE_DATE, 0));
 		long diffDays = (newDate.getTime() - storedDate.getTime()) / (24 * 60 * 60 * 1000);
 		
-		if(diffDays >= APP_PREFERENCES_DAYS_UPDATE) {
-			editor.putLong(APP_PREFERENCES_UPDATE_DATETIME, newDate.getTime());
+		if(diffDays >= MainActivity.APP_PREFERENCES_DAYS_UPDATE) {
+			editor.putLong(MainActivity.APP_PREFERENCES_UPDATE_DATETIME, newDate.getTime());
 			editor.commit();
 			ApiHelper.dbUpdate(getBaseContext(), updDate);
 		}
