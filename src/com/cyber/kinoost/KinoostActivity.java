@@ -1,15 +1,16 @@
 package com.cyber.kinoost;
 
-
+import java.util.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
+import com.cyber.kinoost.db.DatabaseHelper;
+import com.cyber.kinoost.db.models.*;
 import com.cyber.kinoost.adapters.ListAdapter;
 import com.cyber.kinoost.api.ApiHelper;
-import com.cyber.kinoost.db.DatabaseHelper;
-import com.cyber.kinoost.db.repositories.*;
+import com.cyber.kinoost.db.repositories.FilmMusicRepository;
+import com.cyber.kinoost.db.repositories.UserRepository;
 import com.cyber.kinoost.img.ImageLoader;
 import com.cyber.kinoost.views.MenuView;
 
@@ -23,11 +24,20 @@ import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
-import android.widget.*;
+import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
-import com.cyber.kinoost.db.models.*;
+import android.widget.FrameLayout;
+import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.Toast;
+import android.widget.ToggleButton;
 
 public class KinoostActivity  extends Activity {
+	
+	public static final String APP_PREFERENCES = "com.cyber.kinoost";
+	public static final String APP_PREFERENCES_UPDATE_DATETIME = "com.cyber.kinoost.update.datetime";
+	public static final String APP_PREFERENCES_UPDATE_DATE = "com.cyber.kinoost.update.date";
+	public static final long APP_PREFERENCES_DAYS_UPDATE = 1;
 	
 	ArrayList<Tuple<Film, Film>> films = new ArrayList<Tuple<Film, Film>>();
     ListAdapter la;
@@ -39,7 +49,7 @@ public class KinoostActivity  extends Activity {
 	SharedPreferences prefs;
 	SharedPreferences.Editor editor;
 	ImageLoader imageLoader;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -71,23 +81,27 @@ public class KinoostActivity  extends Activity {
 	    // настраиваем список
 	    ListView lvMain = (ListView) findViewById(R.id.listView1);
 	    lvMain.setAdapter(la);
-	    
-	    prefs = getSharedPreferences(MainActivity.APP_PREFERENCES, Context.MODE_PRIVATE);
-		editor = prefs.edit();
 	  }
 
 	  // генерируем данные для адаптера
 	  void fillData() {
 		FilmMusicRepository filmMusicRepo = new FilmMusicRepository(this);
-		
 		try {
-			List<Tuple<Film, Film>> films = filmMusicRepo.findTuplesFilmByName("", 0, 20);
-			Log.d("filmMusicRepo.findTuplesFilmByName",
-					films.toString());
+			films = filmMusicRepo.findTuplesFilmByName("", 0, 10);
+            Log.d("SIZE", Integer.toString(films.size()));
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	  }
+
+	  // выводим информацию
+	  public void showResult(View v) {
+	    String result = "Товары в корзине:";
+	    for (Tuple<Film, Film> t : la.getFilms()) {
+	      result += "\n" + t.getFst().getName()
+	    		  + "\n" + t.getSnd().getName();
+	    }
 	  }
 
 	@Override
@@ -102,13 +116,13 @@ public class KinoostActivity  extends Activity {
 		super.onStart();
 		
 		// check data update on start
-		Date storedDate = new Date(prefs.getLong(MainActivity.APP_PREFERENCES_UPDATE_DATETIME, 0));
+		Date storedDate = new Date(prefs.getLong(APP_PREFERENCES_UPDATE_DATETIME, 0));
 		Date newDate = new Date();
-		Date updDate = new Date(prefs.getLong(MainActivity.APP_PREFERENCES_UPDATE_DATE, 0));
+		Date updDate = new Date(prefs.getLong(APP_PREFERENCES_UPDATE_DATE, 0));
 		long diffDays = (newDate.getTime() - storedDate.getTime()) / (24 * 60 * 60 * 1000);
 		
-		if(diffDays >= MainActivity.APP_PREFERENCES_DAYS_UPDATE) {
-			editor.putLong(MainActivity.APP_PREFERENCES_UPDATE_DATETIME, newDate.getTime());
+		if(diffDays >= APP_PREFERENCES_DAYS_UPDATE) {
+			editor.putLong(APP_PREFERENCES_UPDATE_DATETIME, newDate.getTime());
 			editor.commit();
 			ApiHelper.dbUpdate(getBaseContext(), updDate);
 		}

@@ -1,6 +1,7 @@
 package com.cyber.kinoost.adapters;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.cyber.kinoost.FilmActivity;
 import com.cyber.kinoost.InfoActivity;
@@ -30,9 +31,9 @@ public class ListAdapter extends BaseAdapter {
 		  ArrayList<Tuple<Film, Film>> filmTuples;
 		  ImageLoader imageLoader; 
 
-		  public ListAdapter(Context context, ArrayList<Tuple<Film, Film>> products) {
+		  public ListAdapter(Context context, ArrayList<Tuple<Film, Film>> filmTuples) {
 		    this.context = context;
-		    filmTuples = products;
+		    this.filmTuples = filmTuples;
 		    lInflater = (LayoutInflater) context
 		        .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		    imageLoader = new ImageLoader(context);
@@ -46,7 +47,7 @@ public class ListAdapter extends BaseAdapter {
 
 		  // элемент по позиции
 		  @Override
-		  public Tuple<Film, Film> getItem(int position) {
+		  public Object getItem(int position) {
 		    return filmTuples.get(position);
 		  }
 
@@ -54,6 +55,10 @@ public class ListAdapter extends BaseAdapter {
 		  @Override
 		  public long getItemId(int position) {
 		    return position;
+		  }
+		  
+		  public Tuple<Film, Film> getFilm(int position) {
+			  return (Tuple<Film, Film>) getItem(position);
 		  }
 
 		  // пункт списка
@@ -90,15 +95,19 @@ public class ListAdapter extends BaseAdapter {
 		    imgl.getLayoutParams().height = 170;
 		    imgr.getLayoutParams().width = 170;
 		    
+		    Tuple<Film, Film> item = getFilm(position);
+		    
 		    // подгрузим картинки
-		    Film fst = getItem(position).getFst();
-		    Film snd = getItem(position).getSnd();
+		    Film fst = item.getFst();
+		    Film snd = item.getSnd();
 		    
 		    if(fst != null)
 		    	imageLoader.DisplayImage(fst.getImgUrl(), imgl);
 		    
 		    if(snd != null)
 		    	imageLoader.DisplayImage(snd.getImgUrl(), imgl);
+		    
+		    Log.d("ListAdapter", item.toString());
 		    
 		    rightTable.setOnClickListener(new OnClickListener() {
 
@@ -122,4 +131,10 @@ public class ListAdapter extends BaseAdapter {
 		    
 		    	return view;
 		  	}
+		  
+		  // содержимое корзины
+		  public ArrayList<Tuple<Film, Film>> getFilms() {
+		    return filmTuples;
+		  }
+
 	}

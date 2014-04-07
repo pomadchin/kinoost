@@ -145,9 +145,9 @@ public class FilmMusicRepository {
 	    return filmList;
 	}
 	
-	public List<Tuple<Film, Film>> findTuplesFilmByName(String name, int offset, int limit) throws SQLException {
+	public ArrayList<Tuple<Film, Film>> findTuplesFilmByName(String name, int offset, int limit) throws SQLException {
 		List<Film> filmList = findFilmByName(name, offset, limit);
-		List<Tuple<Film, Film>> result = new ArrayList<Tuple<Film, Film>>();
+		ArrayList<Tuple<Film, Film>> result = new ArrayList<Tuple<Film, Film>>();
 		
 		Iterator<Film> iterator = filmList.iterator();
 		while (iterator.hasNext()) {
