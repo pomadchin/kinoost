@@ -44,6 +44,7 @@ public class KinoostActivity  extends Activity {
 	SharedPreferences prefs;
 	SharedPreferences.Editor editor;
 	ImageLoader imageLoader;
+	ListView lvMain;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -76,10 +77,10 @@ public class KinoostActivity  extends Activity {
             }
         });
 	    fillData();
-	    ListAdapter la = new ListAdapter(this, films);
+	    la = new ListAdapter(this, films);
 
 	    // настраиваем список
-	    ListView lvMain = (ListView) findViewById(R.id.listView1);
+	    lvMain = (ListView) findViewById(R.id.listView1);
 	    lvMain.setAdapter(la);
 	  }
 
@@ -127,4 +128,10 @@ public class KinoostActivity  extends Activity {
 			ApiHelper.dbUpdate(getBaseContext(), updDate);
 		}
 	}
+	
+	 @Override
+	 public void onDestroy() {
+         lvMain.setAdapter(null);
+	     super.onDestroy();
+	 }
 }
