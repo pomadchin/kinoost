@@ -3,8 +3,6 @@ package com.cyber.kinoost.adapters;
 import java.util.ArrayList;
 
 import com.cyber.kinoost.FilmActivity;
-import com.cyber.kinoost.InfoActivity;
-import com.cyber.kinoost.KinoostActivity;
 import com.cyber.kinoost.R;
 
 import android.content.Context;
@@ -20,7 +18,6 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.CheckBox;
 
 public class ListAdapter extends BaseAdapter {
 		  Context ctx;
@@ -127,7 +124,8 @@ Log.v("size", Integer.toString(position));
 
 		  // обработчик для чекбоксов
 		  OnCheckedChangeListener myCheckChangList = new OnCheckedChangeListener() {
-		    public void onCheckedChanged(CompoundButton buttonView,
+		    @Override
+			public void onCheckedChanged(CompoundButton buttonView,
 		        boolean isChecked) {
 		      // меняем данные товара (в корзине или нет)
 		      getFilm((Integer) buttonView.getTag()).box = isChecked;

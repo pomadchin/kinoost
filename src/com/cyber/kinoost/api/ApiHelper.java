@@ -19,7 +19,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
 
-import com.cyber.kinoost.api.models.JsonUpdate;
 import com.cyber.kinoost.api.tasks.*;
 
 public class ApiHelper {
@@ -119,7 +118,7 @@ public class ApiHelper {
     }
  
     public static boolean isConnected(Context updateContext){
-        ConnectivityManager connMgr = (ConnectivityManager) updateContext.getSystemService(Activity.CONNECTIVITY_SERVICE);
+        ConnectivityManager connMgr = (ConnectivityManager) updateContext.getSystemService(Context.CONNECTIVITY_SERVICE);
             NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
             if (networkInfo != null && networkInfo.isConnected()) 
                 return true;

@@ -7,16 +7,11 @@ import java.util.List;
 
 import com.cyber.kinoost.adapters.Film;
 import com.cyber.kinoost.adapters.ListAdapter;
-import com.cyber.kinoost.db.models.User;
 import com.cyber.kinoost.db.repositories.FilmMusicRepository;
-import com.cyber.kinoost.db.repositories.UserRepository;
 import com.cyber.kinoost.views.MenuView;
 
-import android.annotation.SuppressLint;
-import android.app.ActionBar.LayoutParams;
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -25,7 +20,6 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 import android.widget.ToggleButton;
 
 public class KinoostActivity  extends Activity {
@@ -51,11 +45,11 @@ public class KinoostActivity  extends Activity {
 @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                if(buttonView.isChecked()){
-            	   FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(listContainer.getWidth(), FrameLayout.LayoutParams.WRAP_CONTENT);   
+            	   FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(listContainer.getWidth(), android.view.ViewGroup.LayoutParams.WRAP_CONTENT);   
             	   lp.setMargins(menuContainer.getWidth(), 0, 0, 0);
             	   listContainer.setLayoutParams(lp);
                }else{
-            	   FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
+            	   FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(android.view.ViewGroup.LayoutParams.WRAP_CONTENT, android.view.ViewGroup.LayoutParams.WRAP_CONTENT);
             	   lp.setMargins(0, 0, 0, 0);
             	   listContainer.setLayoutParams(lp);
                }
