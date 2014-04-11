@@ -18,7 +18,7 @@
    	    <ToggleButton
    	        android:id="@+id/main_button"
    	        android:layout_width="30dp"
-   	        android:layout_height="30dp"
+   	        android:layout_height="25dp"
    	        android:layout_alignParentLeft="true"
    	        android:layout_alignParentTop="true"
             android:textOff=""
@@ -27,8 +27,8 @@
 
    	    <Button
    	        android:id="@+id/button_home"
-   	        android:layout_width="30dp"
-   	        android:layout_height="30dp"
+   	        android:layout_width="25dp"
+   	        android:layout_height="25dp"
    	        android:layout_alignParentRight="true"
    	        android:layout_alignParentTop="true"
    	        android:background="@drawable/home_button"/>

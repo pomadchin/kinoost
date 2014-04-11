@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.cyber.kinoost.FilmActivity;
-import com.cyber.kinoost.InfoActivity;
-import com.cyber.kinoost.KinoostActivity;
 import com.cyber.kinoost.R;
 import com.cyber.kinoost.img.ImageLoader;
 
@@ -22,8 +20,10 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.CheckBox;
+
+
 import com.cyber.kinoost.db.models.*;
+
 
 public class ListAdapter extends BaseAdapter {
 		  Context context;
@@ -109,6 +109,15 @@ public class ListAdapter extends BaseAdapter {
 		    
 		    Log.d("ListAdapter", item.toString());
 		    
+		    leftTable.setOnClickListener(new OnClickListener() {
+
+		    	@Override 
+		    	public void onClick(View arg0) {
+		    		Intent intent = new Intent();
+		    		intent.setClass(context, FilmActivity.class);
+		    		context.startActivity(intent);
+		    	}} );
+		    
 		    rightTable.setOnClickListener(new OnClickListener() {
 
 		    	@Override 
@@ -127,7 +136,7 @@ public class ListAdapter extends BaseAdapter {
 		    		tr.setText(fst.getName());
 		    
 		    	if(snd != null)
-		    		tr.setText(snd.getName());
+		    		tl.setText(snd.getName());
 		    
 		    	return view;
 		  	}
@@ -138,3 +147,4 @@ public class ListAdapter extends BaseAdapter {
 		  }
 
 	}
+
