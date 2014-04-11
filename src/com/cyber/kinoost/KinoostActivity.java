@@ -20,7 +20,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
-import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.FrameLayout;
@@ -59,19 +58,20 @@ public class KinoostActivity  extends Activity {
 		
 		toogleButton.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 
-@Override
-    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                if(buttonView.isChecked()){
             	   FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(listContainer.getWidth(), android.view.ViewGroup.LayoutParams.WRAP_CONTENT);   
             	   lp.setMargins(menuContainer.getWidth(), 0, 0, 0);
             	   listContainer.setLayoutParams(lp);
-               }else{
+               } else {
             	   FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(android.view.ViewGroup.LayoutParams.WRAP_CONTENT, android.view.ViewGroup.LayoutParams.WRAP_CONTENT);
             	   lp.setMargins(0, 0, 0, 0);
             	   listContainer.setLayoutParams(lp);
                }
             }
         });
+		
 	    fillData();
 	    la = new ListAdapter(this, films);
 
@@ -90,15 +90,6 @@ public class KinoostActivity  extends Activity {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	  }
-
-	  // выводим информацию
-	  public void showResult(View v) {
-	    String result = "Товары в корзине:";
-	    for (Tuple<Film, Film> t : la.getFilms()) {
-	      result += "\n" + t.getFst().getName()
-	    		  + "\n" + t.getSnd().getName();
-	    }
 	  }
 
 	@Override

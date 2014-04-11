@@ -110,41 +110,33 @@ public class ListAdapter extends BaseAdapter {
 		    Log.d("ListAdapter", item.toString());
 		    
 		    leftTable.setOnClickListener(new OnClickListener() {
-
 		    	@Override 
 		    	public void onClick(View arg0) {
 		    		Intent intent = new Intent();
 		    		intent.setClass(context, FilmActivity.class);
 		    		context.startActivity(intent);
-		    	}} );
+		    	}
+		    });
 		    
 		    rightTable.setOnClickListener(new OnClickListener() {
-
 		    	@Override 
 		    	public void onClick(View arg0) {
 		    		Intent intent = new Intent();
 		    		intent.setClass(context, FilmActivity.class);
 		    		context.startActivity(intent);
-		    	}} );
+		    	}
+		    });
 		    
-		    	TextView tr = (TextView) view.findViewById(R.id.text_name_r);
-		    	TextView tl = (TextView) view.findViewById(R.id.text_name_l);
-		    
-		    	Log.v("size", Integer.toString(position));
+		    TextView tr = (TextView) view.findViewById(R.id.text_name_r);
+		    TextView tl = (TextView) view.findViewById(R.id.text_name_l);
 		    	
-		    	if(fst != null)
-		    		tr.setText(fst.getName());
+		    if(fst != null)
+		    	tr.setText(fst.getName());
 		    
-		    	if(snd != null)
-		    		tl.setText(snd.getName());
+		    if(snd != null)
+		    	tl.setText(snd.getName());
 		    
-		    	return view;
-		  	}
-		  
-		  // содержимое корзины
-		  public ArrayList<Tuple<Film, Film>> getFilms() {
-		    return filmTuples;
+		    return view;
 		  }
-
 	}
 
