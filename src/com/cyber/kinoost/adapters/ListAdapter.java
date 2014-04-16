@@ -98,8 +98,8 @@ public class ListAdapter extends BaseAdapter {
 		    Tuple<Film, Film> item = getFilm(position);
 		    
 		    // подгрузим картинки
-		    Film fst = item.getFst();
-		    Film snd = item.getSnd();
+		    final Film fst = item.getFst();
+		    final Film snd = item.getSnd();
 		    
 		    if(fst != null)
 		    	imageLoader.DisplayImage(fst.getImgUrl(), imgl);
@@ -114,6 +114,11 @@ public class ListAdapter extends BaseAdapter {
 		    	public void onClick(View arg0) {
 		    		Intent intent = new Intent();
 		    		intent.setClass(context, FilmActivity.class);
+		    		intent.putExtra("img", fst.getImgUrl());
+		    		intent.putExtra("film", fst);
+		    		Log.v("OLOLO", fst.getImgUrl());
+		    		intent.putExtra("name", fst.getName());
+		    		Log.v("OLOLO", fst.getName());
 		    		context.startActivity(intent);
 		    	}
 		    });
@@ -123,6 +128,11 @@ public class ListAdapter extends BaseAdapter {
 		    	public void onClick(View arg0) {
 		    		Intent intent = new Intent();
 		    		intent.setClass(context, FilmActivity.class);
+		    		intent.putExtra("img", snd.getImgUrl());
+		    		intent.putExtra("film", snd);
+		    		Log.v("OLOLO", snd.getImgUrl());
+		    		intent.putExtra("name", snd.getName());
+		    		Log.v("OLOLO1", fst.getName());
 		    		context.startActivity(intent);
 		    	}
 		    });
