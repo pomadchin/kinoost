@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.apache.http.HttpResponse;
@@ -28,7 +27,7 @@ public class ApiHelper {
 	public static void dbUpdate(Context updateContext, Date date) {
 		if(isConnected(updateContext)) {
 			new HttpAsyncTaskUpdate(updateContext)
-			    .execute(update, new SimpleDateFormat("yyyy-MM-dd").format(date));
+			    .execute(update, Long.toString(date.getTime()));
 		}
 		else Log.d("dbUpdate", "connection failed");
 	}

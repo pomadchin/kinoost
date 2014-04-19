@@ -21,7 +21,6 @@ import android.widget.TextView;
 
 import com.cyber.kinoost.db.models.*;
 
-
 public class ListAdapter extends BaseAdapter {
 		  Activity context;
 		  LayoutInflater lInflater;
@@ -164,5 +163,5 @@ public class ListAdapter extends BaseAdapter {
 		    
 		    return view;
 		  }
-	}
 
+	}
