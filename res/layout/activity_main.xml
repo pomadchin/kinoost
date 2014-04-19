@@ -2,10 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="#ffffff"
     tools:context=".MainActivity" >
   	
   	<RelativeLayout android:id="@+id/toolbar_container"
@@ -13,6 +10,11 @@
    	    android:layout_height="wrap_content"
    	    android:layout_alignParentLeft="true"
    	    android:layout_alignParentRight="true"
+   	    android:background="@drawable/panel"
+	    android:paddingLeft="10dp"
+	    android:paddingRight="10dp"
+	    android:paddingTop="10dp"
+	    android:paddingBottom="10dp"
         android:layout_alignParentTop="true" >
 
    	    <ToggleButton
@@ -57,11 +59,13 @@
 	    </RelativeLayout>
 
    	 	<RelativeLayout android:id="@+id/list_container"
+   	 	    android:paddingTop="10dp"
     	    android:layout_width="wrap_content"
     	    android:layout_height="wrap_content"
     	    android:layout_alignParentBottom="true"
     	    android:layout_toRightOf="@+id/menu_container"
     	    android:layout_alignParentTop="true"
+    	    android:background="#ffffff"
     	    android:layerType="software" >
 
    	 	    <ListView
@@ -72,7 +76,7 @@
          	   android:layout_alignParentTop="true"
          	   android:divider="@null"
 			   android:dividerHeight="0dp"
-			   android:background="#dddddd">
+			   android:background="#ffffff">
  	       </ListView>
    	 	    
 

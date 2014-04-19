@@ -1,8 +1,6 @@
 package com.cyber.kinoost.adapters;
 
 import java.util.ArrayList;
-import java.util.List;
-
 import com.cyber.kinoost.FilmActivity;
 import com.cyber.kinoost.R;
 import com.cyber.kinoost.img.ImageLoader;
@@ -10,38 +8,33 @@ import com.cyber.kinoost.img.ImageLoader;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Point;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.Display;
-import android.view.WindowManager;
 import android.widget.BaseAdapter;
-import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 
 import com.cyber.kinoost.db.models.*;
 
 
 public class ListAdapter extends BaseAdapter {
-		  Context context;
+		  Activity context;
 		  LayoutInflater lInflater;
 		  ArrayList<Tuple<Film, Film>> filmTuples;
 		  ImageLoader imageLoader; 
 
-		  public ListAdapter(Context context, ArrayList<Tuple<Film, Film>> filmTuples) {
+		  public ListAdapter(Activity context, ArrayList<Tuple<Film, Film>> filmTuples) {
 		    this.context = context;
 		    this.filmTuples = filmTuples;
 		    lInflater = (LayoutInflater) context
 		        .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		    imageLoader = new ImageLoader(context);
+		    Display display = context.getWindowManager().getDefaultDisplay();
 		  }
 
 		  // кол-во элементов
@@ -91,32 +84,33 @@ public class ListAdapter extends BaseAdapter {
 
 		    RelativeLayout rightTable = (RelativeLayout) view.findViewById(R.id.table_r);
 		    RelativeLayout leftTable = (RelativeLayout) view.findViewById(R.id.table_l);
-		    
-		    Display display =  ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
-		    Point size = new Point();
-		    display.getSize(size);
-//		    DisplayMetrics metrics = new DisplayMetrics();
-//	        WindowManager windowManager = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
-//		    DisplayMetrics metrics = new DisplayMetrics();
-//		    getWindowManager().getDefaultDisplay().getMetrics(metrics);
-		    
-		    
-		    
-		    
-		    
-		    rightTable.getLayoutParams().height = display.getWidth()/2 - 20;
-		    rightTable.getLayoutParams().width = display.getWidth()/2 - 20;
-		    leftTable.getLayoutParams().height = display.getWidth()/2 - 20;
-		    leftTable.getLayoutParams().width= display.getWidth()/2 - 20;
-		    		    
+
+		    Display display = context.getWindowManager().getDefaultDisplay();
+		    int width = display.getWidth(); //да, я знаю что устарело, но так удобнее
+			int height = display.getHeight(); 
+////		    Display display = getWindowManager().getDefaultDisplay(); 
+////		    Display display =  ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
+////		    Point size = new Point();
+////		    display.getSize(size);
+//////		    DisplayMetrics metrics = new DisplayMetrics();
+//       // WindowManager windowManager = (WindowManager) Activity.getContext().getSystemService(Activity.WINDOW_SERVICE);
+////		    DisplayMetrics metrics = new DisplayMetrics();
+////		    getWindowManager().getDefaultDisplay().getMetrics(metrics);
+//		    
+//		    
+//		    
+//		    
+//		    
+
+		    rightTable.getLayoutParams().height = Math.round(width/2) - 30;
+		    rightTable.getLayoutParams().width = Math.round(width/2) - 30;
+		    leftTable.getLayoutParams().height = Math.round(width/2) - 30;
+		    leftTable.getLayoutParams().width= Math.round(width/2) - 30;
+
 		    ImageView imgl = (ImageView) view.findViewById(R.id.image_l);
 		    ImageView imgr = (ImageView) view.findViewById(R.id.image_r);
 
-		    imgr.getLayoutParams().height = 170;
-		    imgl.getLayoutParams().width = 170;
-		    imgl.getLayoutParams().height = 170;
-		    imgr.getLayoutParams().width = 170;
-		    
+
 		    Tuple<Film, Film> item = getFilm(position);
 		    
 		    // подгрузим картинки

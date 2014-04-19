@@ -5,15 +5,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.cyber.kinoost.db.models.Film;
-import com.cyber.kinoost.db.models.FilmMusic;
 import com.cyber.kinoost.db.models.Music;
 import com.cyber.kinoost.db.repositories.FilmMusicRepository;
-import com.cyber.kinoost.db.repositories.FilmRepository;
 import com.cyber.kinoost.img.ImageLoader;
 import com.cyber.kinoost.views.MenuView;
 
 import android.app.Activity;
-import android.graphics.Point;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Display;
@@ -22,10 +19,8 @@ import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
-import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
@@ -93,6 +88,7 @@ public class FilmActivity extends Activity{
 		RelativeLayout.LayoutParams lpi = new RelativeLayout.LayoutParams(imgw, imgw);
 	 	imgContainer.setLayoutParams(lpi);
 	 	
+	   
 		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(width, imgw);
 		headContainer.setLayoutParams(lp);
 	 	

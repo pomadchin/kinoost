@@ -24,19 +24,23 @@ public class LazyAdapter extends BaseAdapter {
         imageLoader = new ImageLoader(activity.getApplicationContext());
     }
 
-    public int getCount() {
+    @Override
+	public int getCount() {
         return data.length;
     }
 
-    public Object getItem(int position) {
+    @Override
+	public Object getItem(int position) {
         return position;
     }
 
-    public long getItemId(int position) {
+    @Override
+	public long getItemId(int position) {
         return position;
     }
     
-    public View getView(int position, View convertView, ViewGroup parent) {
+    @Override
+	public View getView(int position, View convertView, ViewGroup parent) {
         View vi = convertView;
         if(convertView == null)
             vi = inflater.inflate(R.layout.item, null);
