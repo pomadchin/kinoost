@@ -2,14 +2,21 @@ package com.cyber.kinoost.db.models;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 @DatabaseTable(tableName = "music_rating")
 public class MusicRating {
 	
 	public final static String USER_ID_FIELD_NAME = "user_id";
 	public final static String MUSIC_ID_FIELD_NAME = "music_id";
+	public final static String DATE_TIME = "date_time";
 	
 	@DatabaseField(generatedId = true)
 	int id;
@@ -17,7 +24,7 @@ public class MusicRating {
 	private User user;
 	@DatabaseField(foreign = true, columnName = MUSIC_ID_FIELD_NAME)
 	private Music music;
-	@DatabaseField
+	@DatabaseField(columnName = DATE_TIME, dataType = DataType.DATE)
 	Date date;
 	@DatabaseField(index = true)
 	int value;
@@ -67,6 +74,14 @@ public class MusicRating {
 
 	public int getId() {
 		return id;
+	}
+	
+	public void setUserJackson(JsonNode jsonNode) throws JsonProcessingException {
+		user = new ObjectMapper().treeToValue(jsonNode, User.class);
+	}
+	
+	public void setMusicJackson(JsonNode jsonNode) throws JsonProcessingException {
+		music = new ObjectMapper().treeToValue(jsonNode, Music.class);
 	}
 
 	@Override

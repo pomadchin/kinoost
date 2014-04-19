@@ -1,6 +1,7 @@
 package com.cyber.kinoost.db.repositories;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.Callable;
 
@@ -21,6 +22,7 @@ public class FilmMusicRepository {
 	
 	protected RuntimeExceptionDao<Film, Integer> filmDao = null;
 	protected RuntimeExceptionDao<Music, Integer> musicDao = null;
+	protected RuntimeExceptionDao<Performer, Integer> performerDao = null;
 	protected RuntimeExceptionDao<FilmMusic, Integer> filmMusicDao = null;
 	
 	protected PerformerRepository performerRepo = null;
@@ -34,6 +36,7 @@ public class FilmMusicRepository {
 		filmDao = dbHelper.getFilmRuntimeExceptionDao();
 		filmMusicDao = dbHelper.getFilmMusicRuntimeExceptionDao();
 		musicDao = dbHelper.getMusicRuntimeExceptionDao();
+		performerDao = dbHelper.getPerformerRuntimeExceptionDao();
 		performerRepo = new PerformerRepository(context);
 	}
 	
@@ -62,6 +65,21 @@ public class FilmMusicRepository {
 	    });
 	}
 	
+	public void createFilmMusicListCascade(final List<FilmMusic> filmMusic) {
+        filmMusicDao.callBatchTasks(new Callable<Void>() {
+	        @Override
+	        public Void call() throws Exception {
+	            for (FilmMusic fm : filmMusic) {
+	            	filmDao.create(fm.getFilm());
+	            	performerDao.create(fm.getMusic().getPerformer());
+	            	musicDao.create(fm.getMusic());
+	                filmMusicDao.create(fm);
+	            }
+	            return null;
+	        }
+	    });
+	}
+	
 	public void editFilmMusic(FilmMusic filmMusic) {
 		filmMusicDao.createOrUpdate(filmMusic);
 	}
@@ -78,12 +96,42 @@ public class FilmMusicRepository {
 	    });
 	}
 	
+	public void editFilmMusicListCascade(final List<FilmMusic> filmMusic) {
+        filmMusicDao.callBatchTasks(new Callable<Void>() {
+	        @Override
+	        public Void call() throws Exception {
+	            for (FilmMusic fm : filmMusic) {
+	            	filmDao.createOrUpdate(fm.getFilm());
+	            	performerDao.createOrUpdate(fm.getMusic().getPerformer());
+	            	musicDao.createOrUpdate(fm.getMusic());
+	                filmMusicDao.createOrUpdate(fm);
+	            }
+	            return null;
+	        }
+	    });
+	}
+	
 	public void deleteFilmMusic(FilmMusic filmMusic) {
 		filmMusicDao.delete(filmMusic);
 	}
 	
 	public void deleteFilmMusicList(List<FilmMusic> filmMusic) {
 		filmMusicDao.delete(filmMusic);
+	}
+	
+	public void deleteFilmMusicListCascade(final List<FilmMusic> filmMusic) {
+        filmMusicDao.callBatchTasks(new Callable<Void>() {
+	        @Override
+	        public Void call() throws Exception {
+	            for (FilmMusic fm : filmMusic) {
+	                filmMusicDao.delete(fm);
+	                musicDao.delete(fm.getMusic());
+	                performerDao.delete(fm.getMusic().getPerformer());
+	                filmDao.delete(fm.getFilm());
+	            }
+	            return null;
+	        }
+	    });
 	}
 	
 	public List<Film> findFilmByName(String name, int offset, int limit) throws SQLException {
@@ -95,6 +143,24 @@ public class FilmMusicRepository {
 	    filmList = filmDao.query(queryBuilder.prepare());
 
 	    return filmList;
+	}
+	
+	public ArrayList<Tuple<Film, Film>> findTuplesFilmByName(String name, int offset, int limit) throws SQLException {
+		List<Film> filmList = findFilmByName(name, offset, limit);
+		ArrayList<Tuple<Film, Film>> result = new ArrayList<Tuple<Film, Film>>();
+		
+		Iterator<Film> iterator = filmList.iterator();
+		while (iterator.hasNext()) {
+			Film fst = iterator.next();
+			Film snd = null;
+			
+			if(iterator.hasNext())
+				snd = iterator.next();
+			
+			result.add(new Tuple<Film, Film>(fst, snd));
+		}
+		
+		return result;
 	}
 	
 	public List<Music> findMusicByName(String name, int offset, int limit) throws SQLException {

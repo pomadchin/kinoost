@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.apache.http.HttpResponse;
@@ -22,13 +23,12 @@ import com.cyber.kinoost.api.tasks.*;
 
 public class ApiHelper {
 	
-	public static String update = "http://hmkcode.appspot.com/rest/controller/get.json";
+	public static String update = "http://kinoserver-cybern223.rhcloud.com/kinoserver/mobile/update/";
 	
 	public static void dbUpdate(Context updateContext, Date date) {
-		// form json!
-		
 		if(isConnected(updateContext)) {
-			new HttpAsyncTaskUpdate(updateContext).execute(update);
+			new HttpAsyncTaskUpdate(updateContext)
+			    .execute(update, new SimpleDateFormat("yyyy-MM-dd").format(date));
 		}
 		else Log.d("dbUpdate", "connection failed");
 	}

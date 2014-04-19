@@ -1,9 +1,11 @@
 package com.cyber.kinoost.adapters;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.cyber.kinoost.FilmActivity;
 import com.cyber.kinoost.R;
+import com.cyber.kinoost.img.ImageLoader;
 
 import android.app.Activity;
 import android.content.Context;
@@ -24,34 +26,44 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-public class ListAdapter extends BaseAdapter {
-		  Context ctx;
-		  LayoutInflater lInflater;
-		  ArrayList<Film> objects;
 
-		  public ListAdapter(Context context, ArrayList<Film> products) {
-		    ctx = context;
-		    objects = products;
-		    lInflater = (LayoutInflater) ctx
+import com.cyber.kinoost.db.models.*;
+
+
+public class ListAdapter extends BaseAdapter {
+		  Context context;
+		  LayoutInflater lInflater;
+		  ArrayList<Tuple<Film, Film>> filmTuples;
+		  ImageLoader imageLoader; 
+
+		  public ListAdapter(Context context, ArrayList<Tuple<Film, Film>> filmTuples) {
+		    this.context = context;
+		    this.filmTuples = filmTuples;
+		    lInflater = (LayoutInflater) context
 		        .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		    imageLoader = new ImageLoader(context);
 		  }
 
 		  // кол-во элементов
 		  @Override
 		  public int getCount() {
-		    return objects.size();
+		    return filmTuples.size();
 		  }
 
 		  // элемент по позиции
 		  @Override
 		  public Object getItem(int position) {
-		    return objects.get(position);
+		    return filmTuples.get(position);
 		  }
 
 		  // id по позиции
 		  @Override
 		  public long getItemId(int position) {
 		    return position;
+		  }
+		  
+		  public Tuple<Film, Film> getFilm(int position) {
+			  return (Tuple<Film, Film>) getItem(position);
 		  }
 
 		  // пункт списка
@@ -62,8 +74,6 @@ public class ListAdapter extends BaseAdapter {
 		    if (view == null) {
 		      view = lInflater.inflate(R.layout.item, parent, false);
 		    }
-
-		    Film p = getFilm(position);
 
 		    // заполняем View в пункте списка данными из товаров: наименование, цена
 		    // и картинка
@@ -107,53 +117,58 @@ public class ListAdapter extends BaseAdapter {
 		    imgl.getLayoutParams().height = 170;
 		    imgr.getLayoutParams().width = 170;
 		    
+		    Tuple<Film, Film> item = getFilm(position);
+		    
+		    // подгрузим картинки
+		    final Film fst = item.getFst();
+		    final Film snd = item.getSnd();
+		    
+		    if(fst != null)
+		    	imageLoader.DisplayImage(fst.getImgUrl(), imgl);
+		    
+		    if(snd != null)
+		    	imageLoader.DisplayImage(snd.getImgUrl(), imgr);
+		    
+		    Log.d("ListAdapter", item.toString());
+		    
+		    leftTable.setOnClickListener(new OnClickListener() {
+		    	@Override 
+		    	public void onClick(View arg0) {
+		    		Intent intent = new Intent();
+		    		intent.setClass(context, FilmActivity.class);
+		    		intent.putExtra("img", fst.getImgUrl());
+		    		intent.putExtra("film", fst);
+		    		Log.v("OLOLO", fst.getImgUrl());
+		    		intent.putExtra("name", fst.getName());
+		    		Log.v("OLOLO", fst.getName());
+		    		context.startActivity(intent);
+		    	}
+		    });
+		    
 		    rightTable.setOnClickListener(new OnClickListener() {
-
-				@Override 
-				public void onClick(View arg0) {
-					Intent intent = new Intent();
-					intent.setClass(ctx, FilmActivity.class);
-					ctx.startActivity(intent);
-					
-				}} );
+		    	@Override 
+		    	public void onClick(View arg0) {
+		    		Intent intent = new Intent();
+		    		intent.setClass(context, FilmActivity.class);
+		    		intent.putExtra("img", snd.getImgUrl());
+		    		intent.putExtra("film", snd);
+		    		Log.v("OLOLO", snd.getImgUrl());
+		    		intent.putExtra("name", snd.getName());
+		    		Log.v("OLOLO1", fst.getName());
+		    		context.startActivity(intent);
+		    	}
+		    });
+		    
 		    TextView tr = (TextView) view.findViewById(R.id.text_name_r);
 		    TextView tl = (TextView) view.findViewById(R.id.text_name_l);
-Log.v("size", Integer.toString(position));
-		    tr.setText(objects.get(position).name);
-		    if(objects.size()<(position+1))
-		    tl.setText(objects.get(position+1).name);
+		    	
+		    if(fst != null)
+		    	tr.setText(fst.getName());
+		    
+		    if(snd != null)
+		    	tl.setText(snd.getName());
 		    
 		    return view;
 		  }
-
-
-		  
-		  // товар по позиции
-		  Film getFilm(int position) {
-		    return ((Film) getItem(position));
-		  }
-
-		  // содержимое корзины
-		  public ArrayList<Film> getBox() {
-		    ArrayList<Film> box = new ArrayList<Film>();
-		    for (Film p : objects) {
-		      // если в корзине
-		      if (p.box)
-		        box.add(p);
-		    }
-		    return box;
-		  }
-
-		  // обработчик для чекбоксов
-		  OnCheckedChangeListener myCheckChangList = new OnCheckedChangeListener() {
-		    @Override
-			public void onCheckedChanged(CompoundButton buttonView,
-		        boolean isChecked) {
-		      // меняем данные товара (в корзине или нет)
-		      getFilm((Integer) buttonView.getTag()).box = isChecked;
-		    }
-		  };
-		
-
 	}
 
