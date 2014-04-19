@@ -5,13 +5,18 @@ import java.util.ArrayList;
 import com.cyber.kinoost.FilmActivity;
 import com.cyber.kinoost.R;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Point;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.Display;
+import android.view.WindowManager;
 import android.widget.BaseAdapter;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
@@ -77,6 +82,23 @@ public class ListAdapter extends BaseAdapter {
 		    RelativeLayout rightTable = (RelativeLayout) view.findViewById(R.id.table_r);
 		    RelativeLayout leftTable = (RelativeLayout) view.findViewById(R.id.table_l);
 		    
+		    Display display =  ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
+		    Point size = new Point();
+		    display.getSize(size);
+//		    DisplayMetrics metrics = new DisplayMetrics();
+//	        WindowManager windowManager = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
+//		    DisplayMetrics metrics = new DisplayMetrics();
+//		    getWindowManager().getDefaultDisplay().getMetrics(metrics);
+		    
+		    
+		    
+		    
+		    
+		    rightTable.getLayoutParams().height = display.getWidth()/2 - 20;
+		    rightTable.getLayoutParams().width = display.getWidth()/2 - 20;
+		    leftTable.getLayoutParams().height = display.getWidth()/2 - 20;
+		    leftTable.getLayoutParams().width= display.getWidth()/2 - 20;
+		    		    
 		    ImageView imgl = (ImageView) view.findViewById(R.id.image_l);
 		    ImageView imgr = (ImageView) view.findViewById(R.id.image_r);
 
