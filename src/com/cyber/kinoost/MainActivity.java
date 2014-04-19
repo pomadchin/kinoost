@@ -93,12 +93,6 @@ public class MainActivity extends Activity {
 		filmList.add(new Film(2, "film2", 2, "kp_822_200x200.jpg", 2.0));
 		filmList.add(new Film(3, "film3", 3, "kp_822_200x200.jpg", 3.0));
 		filmList.add(new Film(4, "film4", 4, "kp_822_200x200.jpg", 4.0));
-		filmList.add(new Film(5, "film4", 5, "kp_822_200x200.jpg", 4.0));
-		filmList.add(new Film(6, "film4", 6, "kp_822_200x200.jpg", 4.0));
-		filmList.add(new Film(7, "film4", 7, "kp_822_200x200.jpg", 4.0));
-		filmList.add(new Film(8, "film4", 8, "kp_822_200x200.jpg", 4.0));
-		filmList.add(new Film(9, "film4", 9, "kp_822_200x200.jpg", 4.0));
-		filmList.add(new Film(10, "film4", 10, "kp_822_200x200.jpg", 4.0));
 		
 		List<Music> musicList = new ArrayList<Music>();
 		musicList.add(new Music(1, "music1", 1.0, performerList.get(0)));

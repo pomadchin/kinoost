@@ -68,20 +68,24 @@
 		<RelativeLayout android:id="@+id/head_container"
     	    android:layout_width="wrap_content"
     	    android:layout_height="wrap_content">
-   	    	 	<ImageView
-   	    	 	    android:id="@+id/image_poster"
-   	    	 	    android:layout_width="wrap_content"
-   	    	 	    android:layout_height="wrap_content"
-   	    	 	    android:layout_alignParentLeft="true"
-   	    	 	    android:layout_alignParentTop="true"
-   	    	 	    android:src="@drawable/ic_launcher" />
-
+			<RelativeLayout android:id="@+id/img_container"
+    		    android:layout_width="wrap_content"
+    	    	android:layout_height="wrap_content"
+   	    	 	    	android:layout_alignParentLeft="true"
+   	    	 	    	android:layout_alignParentTop="true"
+   	    	 	    	android:layout_toLeftOf="@+id/text_name">
+   	    	 		<ImageView
+   	    	 	    	android:id="@+id/image_poster"
+   	    	 	    	android:layout_width="fill_parent"
+   	    	 	    	android:layout_height="fill_parent"
+   	    	 	    	android:src="@drawable/ic_launcher" />
+			</RelativeLayout>
    	    	 	<TextView
    	    	 	    android:id="@+id/text_name"
    	    	 	    android:layout_width="wrap_content"
    	    	 	    android:layout_height="wrap_content"
    	    	 	    android:layout_alignParentTop="true"
-   	    	 	    android:layout_toRightOf="@+id/image_poster"
+   	    	 	    android:layout_alignParentRight="true"
    	    	 	    android:text="KinoOst"
    	    	 	    android:textAppearance="?android:attr/textAppearanceLarge" />
 
@@ -90,7 +94,7 @@
    	    	 	    android:layout_width="wrap_content"
    	    	 	    android:layout_height="wrap_content"
    	    	 	    android:layout_below="@+id/text_name"
-   	    	 	    android:layout_toRightOf="@+id/image_poster"
+   	    	 	    android:layout_alignRight="@+id/text_name"
    	    	 	    android:text="TextView" />
 
    	    	 	<TextView
@@ -98,7 +102,7 @@
    	    	 	    android:layout_width="wrap_content"
    	    	 	    android:layout_height="wrap_content"
    	    	 	    android:layout_below="@+id/text_year"
-   	    	 	    android:layout_toRightOf="@+id/image_poster"
+   	    	 	    android:layout_alignRight="@+id/text_name"
    	    	 	    android:text="TextView" />
 
    	    	 	<Button
@@ -106,7 +110,7 @@
    	    	 	    android:layout_width="17dp"
    	    	 	    android:layout_height="17dp"
    	    	 	    android:layout_alignTop="@+id/text_mark"
-   	    	 	    android:layout_toRightOf="@+id/text_mark"
+   	    	 	    android:layout_alignRight="@+id/text_name"
    	    	 	    android:text="" />
 
     	</RelativeLayout>
@@ -123,8 +127,7 @@
 		    android:layout_alignParentBottom="true"
 		    android:layout_alignParentLeft="true"
 		    android:layout_alignParentRight="true"
-		    android:layout_alignParentTop="true"
-		    android:visibility="invisible" >
+		    android:layout_alignParentTop="true" >
 
 		</ListView>
     	</RelativeLayout>
