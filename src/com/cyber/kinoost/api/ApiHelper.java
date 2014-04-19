@@ -29,7 +29,7 @@ public class ApiHelper {
 	public static void dbUpdate(Context updateContext, Date date) {
 		if(isConnected(updateContext)) {
 			new HttpAsyncTaskUpdate(updateContext)
-			    .execute(update, new SimpleDateFormat("yyyy-MM-dd").format(date));
+			    .execute(update, Long.toString(date.getTime()));
 		}
 		else Log.d("dbUpdate", "connection failed");
 	}
