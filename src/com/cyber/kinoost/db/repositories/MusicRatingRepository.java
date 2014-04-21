@@ -33,10 +33,14 @@ public class MusicRatingRepository {
 	}
 	
 	public void createMusicRating(MusicRating musicRating) {
+		if(musicRating == null) return;
+		
 		musicRatingDao.create(musicRating);
 	}
 	
 	public void createMusicRatingList(final List<MusicRating> musicRating) {
+		if(musicRating == null) return;
+		
         musicRatingDao.callBatchTasks(new Callable<Void>() {
 	        @Override
 	        public Void call() throws Exception {
@@ -49,10 +53,14 @@ public class MusicRatingRepository {
 	}
 	
 	public void editMusicRating(MusicRating musicRating) {
+		if(musicRating == null) return;
+		
 		musicRatingDao.createOrUpdate(musicRating);
 	}
 	
 	public void editMusicRatingList(final List<MusicRating> musicRating) {
+		if(musicRating == null) return;
+		
         musicRatingDao.callBatchTasks(new Callable<Void>() {
 	        @Override
 	        public Void call() throws Exception {
@@ -65,10 +73,14 @@ public class MusicRatingRepository {
 	}
 	
 	public void deleteMusicRating(MusicRating musicRating) {
+		if(musicRating == null) return;
+		
 		musicRatingDao.delete(musicRating);
 	}
 	
 	public void deleteMusicRatingList(List<MusicRating> musicRating) {
+		if(musicRating == null) return;
+		
 		musicRatingDao.delete(musicRating);
 	}
 	

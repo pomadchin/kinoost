@@ -71,9 +71,8 @@ public class HttpAsyncTaskUpdate extends AsyncTask<String, Void, String> {
 			Log.d("HttpAsyncTask.onPostExecute", listUpdate.toString());
 			Date updDate = new Date();
 			
-			for (JsonUpdate jsonUpdate: listUpdate) {
+			for (JsonUpdate jsonUpdate: listUpdate)
 				updDate = jsonUpdate.persist(getContext());
-			}
 			
 			editor.putLong(APP_PREFERENCES_UPDATE_DATE, updDate.getTime());
 			editor.commit();
