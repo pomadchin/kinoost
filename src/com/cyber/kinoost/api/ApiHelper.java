@@ -153,7 +153,7 @@ public class ApiHelper {
 				return music.getFileName();
 		}
 
-		getSong(api, music.getFileName(), music, context);
+		getSong(api, music.getName(), music, context);
 
 		MusicRepository musicRepository = new MusicRepository(context);
 		List<Music> dbMusic;
@@ -201,7 +201,12 @@ public class ApiHelper {
 			
 			@Override
 		    protected void onPostExecute(String result) {
-				String fileName = downloadFile(result, request);
+				Log.d("##########", result);
+				
+				String fileName = downloadFile(context, result, request);
+				
+				Log.d("#######----", fileName);
+				
 				MusicRepository musicRepository = new MusicRepository(context);
 				music.setFileName(fileName);
 				
@@ -211,7 +216,7 @@ public class ApiHelper {
 		}.execute(request);
 	}
 
-	private String downloadFile(String url, final String name) {
+	private String downloadFile(final Context context, String url, final String name) {
 
 		new AsyncTask<String, Integer, File>() {
 			private Exception m_error = null;
@@ -236,7 +241,7 @@ public class ApiHelper {
 					urlConnection.setDoOutput(true);
 					urlConnection.connect();
 
-					file = new File(Environment.getDownloadCacheDirectory(),
+					file = new File(context.getCacheDir(),
 							name + ".mp3");
 					file.createNewFile();
 					fos = new FileOutputStream(file);
@@ -275,7 +280,7 @@ public class ApiHelper {
 			}
 		}.execute(url);
 
-		return Environment.getDownloadCacheDirectory().toString() + "/" + name
+		return context.getCacheDir().toString() + "/" + name
 				+ ".mp3";
 	}
 }
