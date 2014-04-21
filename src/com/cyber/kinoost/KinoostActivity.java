@@ -75,12 +75,10 @@ public class KinoostActivity  extends Activity {
 	    fillData();
 	    la = new ListAdapter(this, films);
 
-	    // настраиваем список
 	    lvMain = (ListView) findViewById(R.id.listView1);
 	    lvMain.setAdapter(la);
 	  }
 
-	  // генерируем данные для адаптера
 	  void fillData() {
 		FilmMusicRepository filmMusicRepo = new FilmMusicRepository(this);
 		try {
