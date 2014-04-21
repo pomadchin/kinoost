@@ -54,7 +54,10 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:cropToPadding="true"
-            android:padding="50dp"
+            android:paddingBottom="50dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="10dp"
             android:scaleType="centerInside"
             android:src="@drawable/breakingbad" />
 
@@ -78,7 +81,10 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:cropToPadding="true"
-            android:padding="50dp"
+        	android:paddingBottom="50dp"
+            android:paddingLeft="10dp"
+            android:paddingTop="10dp"
+            android:paddingRight="10dp"
             android:scaleType="centerInside"
             android:src="@drawable/breakingbad" />
 
