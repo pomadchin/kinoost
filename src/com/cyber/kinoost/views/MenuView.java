@@ -93,6 +93,7 @@ public class MenuView extends RelativeLayout {
 				ctx.startActivity(intent);
 			}
 		});
+		
 		TextView main = (TextView) this.findViewById(R.id.menu_text_main);
 		main.setOnClickListener(new OnClickListener() {
 
@@ -100,6 +101,17 @@ public class MenuView extends RelativeLayout {
 			public void onClick(View arg0) {
 				Intent intent = new Intent();
 				intent.setClass(ctx, KinoostActivity.class);
+				ctx.startActivity(intent);
+			}
+		});
+		
+		TextView login = (TextView) this.findViewById(R.id.menu_text_login);
+		login.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				Intent intent = new Intent();
+				intent.setClass(ctx, LoginActivity.class);
 				ctx.startActivity(intent);
 			}
 		});

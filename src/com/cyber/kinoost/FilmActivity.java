@@ -1,9 +1,16 @@
 package com.cyber.kinoost;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONException;
+
+import com.cyber.kinoost.api.Account;
+import com.cyber.kinoost.api.ApiHelper;
+import com.cyber.kinoost.api.vk.sources.Api;
+import com.cyber.kinoost.api.vk.sources.KException;
 import com.cyber.kinoost.db.models.Film;
 import com.cyber.kinoost.db.models.Music;
 import com.cyber.kinoost.db.repositories.FilmMusicRepository;
@@ -12,6 +19,7 @@ import com.cyber.kinoost.views.KPlayer;
 import com.cyber.kinoost.views.MenuView;
 
 import android.app.Activity;
+import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -129,6 +137,10 @@ public class FilmActivity extends Activity {
 					R.layout.list_item, names);
 
 			final KPlayer kPlayer = new KPlayer(this);
+			final Account account = new Account(this);
+			final ApiHelper apiHelper = new ApiHelper();
+			final Api api = new Api(account);
+			final Context context = this;
 
 			lvMain.setOnItemClickListener(new OnItemClickListener() {
 
@@ -137,8 +149,25 @@ public class FilmActivity extends Activity {
 					if (music != null) {
 						Uri url = Uri.parse("android.resource://"
 								+ getPackageName() + "/" + R.raw.doa);
-
+						
 						kPlayer.play(url);
+						
+						/*try {
+							String fileName = apiHelper.getSoungMusic(context, api, music.get(arg2));
+							Log.d("########", music.get(arg2).getName());
+							
+							//kPlayer.play(fileName);
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (JSONException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (KException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}*/
+						
 					}
 				}
 			});
