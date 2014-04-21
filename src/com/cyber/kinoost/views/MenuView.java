@@ -1,14 +1,6 @@
 package com.cyber.kinoost.views;
 
-import com.cyber.kinoost.ChosenActivity;
-import com.cyber.kinoost.KinoostActivity;
-import com.cyber.kinoost.PActivity;
-import com.cyber.kinoost.R;
-import com.cyber.kinoost.RateActivity;
-import com.cyber.kinoost.SavedActivity;
-import com.cyber.kinoost.SearchActivity;
-import com.cyber.kinoost.SettingsActivity;
-import com.cyber.kinoost.TopActivity;
+import com.cyber.kinoost.*;
 
 import android.content.Context;
 import android.content.Intent;
@@ -30,9 +22,8 @@ public class MenuView extends RelativeLayout {
 			@Override
 			public void onClick(View arg0) {
 				Intent intent = new Intent();
-				intent.setClass(ctx, PActivity.class);
+				intent.setClass(ctx, InfoActivity.class);
 				ctx.startActivity(intent);
-
 			}
 		});
 
@@ -44,7 +35,6 @@ public class MenuView extends RelativeLayout {
 				Intent intent = new Intent();
 				intent.setClass(ctx, RateActivity.class);
 				ctx.startActivity(intent);
-
 			}
 		});
 
@@ -56,7 +46,6 @@ public class MenuView extends RelativeLayout {
 				Intent intent = new Intent();
 				intent.setClass(ctx, SavedActivity.class);
 				ctx.startActivity(intent);
-
 			}
 		});
 
@@ -68,7 +57,6 @@ public class MenuView extends RelativeLayout {
 				Intent intent = new Intent();
 				intent.setClass(ctx, SearchActivity.class);
 				ctx.startActivity(intent);
-
 			}
 		});
 
@@ -81,7 +69,6 @@ public class MenuView extends RelativeLayout {
 				Intent intent = new Intent();
 				intent.setClass(ctx, SettingsActivity.class);
 				ctx.startActivity(intent);
-
 			}
 		});
 
@@ -93,7 +80,6 @@ public class MenuView extends RelativeLayout {
 				Intent intent = new Intent();
 				intent.setClass(ctx, TopActivity.class);
 				ctx.startActivity(intent);
-
 			}
 		});
 
@@ -105,7 +91,6 @@ public class MenuView extends RelativeLayout {
 				Intent intent = new Intent();
 				intent.setClass(ctx, ChosenActivity.class);
 				ctx.startActivity(intent);
-
 			}
 		});
 		TextView main = (TextView) this.findViewById(R.id.menu_text_main);
@@ -116,9 +101,7 @@ public class MenuView extends RelativeLayout {
 				Intent intent = new Intent();
 				intent.setClass(ctx, KinoostActivity.class);
 				ctx.startActivity(intent);
-
 			}
 		});
 	}
-
 }

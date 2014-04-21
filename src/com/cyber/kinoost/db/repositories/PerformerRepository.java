@@ -32,10 +32,14 @@ public class PerformerRepository {
 	}
 	
 	public void createPerformer(Performer performer) {
+		if(performer == null) return;
+		
 		performerDao.create(performer);
 	}
 	
 	public void createPerformerList(final List<Performer> performers) {
+		if(performers == null) return;
+		
         performerDao.callBatchTasks(new Callable<Void>() {
 	        @Override
 	        public Void call() throws Exception {
@@ -48,10 +52,14 @@ public class PerformerRepository {
 	}
 	
 	public void editPerformer(Performer performer) {
+		if(performer == null) return;
+		
 		performerDao.createOrUpdate(performer);
 	}
 	
 	public void editPerformerList(final List<Performer> performers) {
+		if(performers == null) return;
+		
         performerDao.callBatchTasks(new Callable<Void>() {
 	        @Override
 	        public Void call() throws Exception {
@@ -64,10 +72,14 @@ public class PerformerRepository {
 	}
 	
 	public void deletePerformer(Performer performer) {
+		if(performer == null) return;
+		
 		performerDao.delete(performer);
 	}
 	
 	public void deletePerformerList(List<Performer> performers) {
+		if(performers == null) return;
+		
 		performerDao.delete(performers);
 	}
 	

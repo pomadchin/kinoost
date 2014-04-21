@@ -20,126 +20,116 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true"
-                android:background="#aaaaaa"
-                android:text="Главная" />
+                android:background="@drawable/menu_bg"
+                android:gravity="bottom|left"
+                android:paddingLeft="40dp"
+                android:text="Главная"
+                android:textColor="#ffffff"
+                android:textSize="25sp" />
 
-    <Button
-        android:id="@+id/menu_text_main"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:background="@drawable/menu_bg"
-        android:gravity="bottom|left"
-        android:paddingLeft="40dp"
-        android:text="Главная"
-        android:textColor="#ffffff"
-        android:textSize="25sp" />
+            <Button
+                android:id="@+id/menu_text_top"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/text_main"
+                android:layout_below="@+id/menu_text_main"
+                android:background="@drawable/menu_bg"
+                android:gravity="bottom|left"
+                android:paddingLeft="40dp"
+                android:text="Топ"
+                android:textColor="#ffffff"
+                android:textSize="25sp" />
 
-    <Button
-        android:gravity="bottom|left"
-        android:id="@+id/menu_text_top"
-        android:paddingLeft="40dp"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/text_main"
-        android:layout_below="@+id/menu_text_main"
-     	android:background="@drawable/menu_bg"
-     	android:textColor="#ffffff" 
-     	android:textSize="25sp"
-        android:text="Топ" />
+            <Button
+                android:id="@+id/menu_text_chosen"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/textView1"
+                android:layout_below="@+id/menu_text_top"
+                android:background="@drawable/menu_bg"
+                android:gravity="bottom|left"
+                android:paddingLeft="40dp"
+                android:text="Избранное"
+                android:textColor="#ffffff"
+                android:textSize="25sp" />
 
-    <Button
-        android:gravity="bottom|left"
-        android:id="@+id/menu_text_chosen"
-        android:paddingLeft="40dp"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textView1"
-        android:layout_below="@+id/menu_text_top"
-      	android:background="@drawable/menu_bg"
-     	android:textColor="#ffffff" 
-     	android:textSize="25sp"
-        android:text="Избранное" />
+            <Button
+                android:id="@+id/menu_text_saved"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/textView2"
+                android:layout_below="@+id/menu_text_chosen"
+                android:background="@drawable/menu_bg"
+                android:gravity="bottom|left"
+                android:paddingLeft="40dp"
+                android:text="Сохраненное"
+                android:textColor="#ffffff"
+                android:textSize="25sp" />
 
-    <Button
-        android:gravity="bottom|left"
-        android:id="@+id/menu_text_saved"
-        android:paddingLeft="40dp"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textView2"
-        android:layout_below="@+id/menu_text_chosen"
-      	android:background="@drawable/menu_bg"
-     	android:textColor="#ffffff" 
-     	android:textSize="25sp"
-        android:text="Сохраненное" />
+            <Button
+                android:id="@+id/menu_text_rating"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/textView3"
+                android:layout_below="@+id/menu_text_saved"
+                android:background="@drawable/menu_bg"
+                android:gravity="bottom|left"
+                android:paddingLeft="40dp"
+                android:text="Рейтинг"
+                android:textColor="#ffffff"
+                android:textSize="25sp" />
 
-    <Button
-        android:gravity="bottom|left"
-        android:id="@+id/menu_text_rating"
-        android:paddingLeft="40dp"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textView3"
-        android:layout_below="@+id/menu_text_saved"
-     	android:background="@drawable/menu_bg"
-     	android:textColor="#ffffff" 
-     	android:textSize="25sp"
-        android:text="Рейтинг" />
+            <Button
+                android:id="@+id/menu_text_info"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignRight="@+id/textView4"
+                android:layout_below="@+id/menu_text_rating"
+                android:background="@drawable/menu_bg"
+                android:gravity="bottom|left"
+                android:paddingLeft="40dp"
+                android:text="Информация"
+                android:textColor="#ffffff"
+                android:textSize="25sp" />
 
-    <Button
-        android:gravity="bottom|left"
-        android:id="@+id/menu_text_info"
-        android:paddingLeft="40dp"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/textView4"
-        android:layout_below="@+id/menu_text_rating"
-   		android:background="@drawable/menu_bg"
-     	android:textColor="#ffffff" 
-     	android:textSize="25sp"
-        android:text="Информация" />
+            <Button
+                android:id="@+id/menu_text_play"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/textView5"
+                android:layout_below="@+id/menu_text_info"
+                android:background="@drawable/menu_bg"
+                android:gravity="bottom|left"
+                android:paddingLeft="40dp"
+                android:text="Play market"
+                android:textColor="#ffffff"
+                android:textSize="25sp" />
 
-    <Button
-        android:gravity="bottom|left"
-        android:id="@+id/menu_text_play"
-        android:paddingLeft="40dp"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textView5"
-        android:layout_below="@+id/menu_text_info"
- 		android:background="@drawable/menu_bg"
-     	android:textColor="#ffffff" 
-     	android:textSize="25sp"
-        android:text="Play market" />
+            <Button
+                android:id="@+id/menu_text_settings"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/textView6"
+                android:layout_below="@+id/menu_text_play"
+                android:background="@drawable/menu_bg"
+                android:gravity="bottom|left"
+                android:paddingLeft="40dp"
+                android:text="Настройки"
+                android:textColor="#ffffff"
+                android:textSize="25sp" />
 
-    <Button
-        android:gravity="bottom|left"
-        android:id="@+id/menu_text_settings"
-        android:paddingLeft="40dp"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textView6"
-        android:layout_below="@+id/menu_text_play"
-      	android:background="@drawable/menu_bg"
-     	android:textColor="#ffffff" 
-     	android:textSize="25sp"
-        android:text="Настройки" />
-    <Button
-        android:gravity="bottom|left"
-        android:id="@+id/menu_text_find"
-        android:paddingLeft="40dp"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textView7"
-        android:layout_below="@+id/menu_text_settings"
- 		android:background="#74706f"
-     	android:textColor="#ffffff" 
-     	android:textSize="25sp"
-        android:text="Поиск" />
-    
-
+            <Button
+                android:id="@+id/menu_text_find"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/textView7"
+                android:layout_below="@+id/menu_text_settings"
+                android:background="#74706f"
+                android:gravity="bottom|left"
+                android:paddingLeft="40dp"
+                android:text="Поиск"
+                android:textColor="#ffffff"
+                android:textSize="25sp" />
         </RelativeLayout>
     </ScrollView>
 

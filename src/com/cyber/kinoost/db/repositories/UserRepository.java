@@ -38,10 +38,14 @@ public class UserRepository {
 	}
 	
 	public void createUser(User user) {
+		if(user == null) return;
+		
 		userDao.create(user);
 	}
 	
 	public void createUserList(final List<User> users) {
+		if(users == null) return;
+		
         userDao.callBatchTasks(new Callable<Void>() {
 	        @Override
 	        public Void call() throws Exception {
@@ -54,10 +58,14 @@ public class UserRepository {
 	}
 	
 	public void editUser(User user) {
+		if(user == null) return;
+		
 		userDao.createOrUpdate(user);
 	}
 	
 	public void editUserList(final List<User> users) {
+		if(users == null) return;
+		
         userDao.callBatchTasks(new Callable<Void>() {
 	        @Override
 	        public Void call() throws Exception {
@@ -70,10 +78,14 @@ public class UserRepository {
 	}
 	
 	public void deleteUser(User user) {
+		if(user == null) return;
+		
 		userDao.delete(user);
 	}
 	
 	public void deleteUserList(List<User> users) {
+		if(users == null) return;
+		
 		userDao.delete(users);
 	}
 }

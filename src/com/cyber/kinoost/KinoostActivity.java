@@ -27,11 +27,11 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.ToggleButton;
 
-public class KinoostActivity  extends Activity {
-	
+public class KinoostActivity extends Activity {
+
 	ArrayList<Tuple<Film, Film>> films = new ArrayList<Tuple<Film, Film>>();
-    ListAdapter la;
-	
+	ListAdapter la;
+
 	MenuView menu;
 	RelativeLayout menuContainer;
 	RelativeLayout listContainer;
@@ -51,46 +51,50 @@ public class KinoostActivity  extends Activity {
 		listContainer = (RelativeLayout) findViewById(R.id.list_container);
 		menuContainer.addView(menu);
 		ToggleButton toogleButton = (ToggleButton) findViewById(R.id.main_button);
-		
+
 		// init preferences && editor
-		prefs = getSharedPreferences(MainActivity.APP_PREFERENCES, Context.MODE_PRIVATE);
+		prefs = getSharedPreferences(MainActivity.APP_PREFERENCES,
+				Context.MODE_PRIVATE);
 		editor = prefs.edit();
-		
+
 		toogleButton.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 
 			@Override
-			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-               if(buttonView.isChecked()){
-            	   FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(listContainer.getWidth(), android.view.ViewGroup.LayoutParams.WRAP_CONTENT);   
-            	   lp.setMargins(menuContainer.getWidth(), 0, 0, 0);
-            	   listContainer.setLayoutParams(lp);
-               } else {
-            	   FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(android.view.ViewGroup.LayoutParams.WRAP_CONTENT, android.view.ViewGroup.LayoutParams.WRAP_CONTENT);
-            	   lp.setMargins(0, 0, 0, 0);
-            	   listContainer.setLayoutParams(lp);
-               }
-            }
-        });
-		
-	    fillData();
-	    la = new ListAdapter(this, films);
+			public void onCheckedChanged(CompoundButton buttonView,
+					boolean isChecked) {
+				if (buttonView.isChecked()) {
+					FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(
+							listContainer.getWidth(),
+							android.view.ViewGroup.LayoutParams.WRAP_CONTENT);
+					lp.setMargins(menuContainer.getWidth(), 0, 0, 0);
+					listContainer.setLayoutParams(lp);
+				} else {
+					FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(
+							android.view.ViewGroup.LayoutParams.WRAP_CONTENT,
+							android.view.ViewGroup.LayoutParams.WRAP_CONTENT);
+					lp.setMargins(0, 0, 0, 0);
+					listContainer.setLayoutParams(lp);
+				}
+			}
+		});
 
-	    // настраиваем список
-	    lvMain = (ListView) findViewById(R.id.listView1);
-	    lvMain.setAdapter(la);
-	  }
+		fillData();
+		la = new ListAdapter(this, films);
 
-	  // генерируем данные для адаптера
-	  void fillData() {
+		lvMain = (ListView) findViewById(R.id.listView1);
+		lvMain.setAdapter(la);
+	}
+
+	void fillData() {
 		FilmMusicRepository filmMusicRepo = new FilmMusicRepository(this);
 		try {
 			films = filmMusicRepo.findTuplesFilmByName("", 0, 10);
-            Log.d("SIZE", Integer.toString(films.size()));
+			Log.d("SIZE", Integer.toString(films.size()));
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	  }
+	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -98,27 +102,31 @@ public class KinoostActivity  extends Activity {
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
-	
+
 	@Override
 	protected void onStart() {
 		super.onStart();
-		
+
 		// check data update on start
-		Date storedDate = new Date(prefs.getLong(MainActivity.APP_PREFERENCES_UPDATE_DATETIME, 0));
+		Date storedDate = new Date(prefs.getLong(
+				MainActivity.APP_PREFERENCES_UPDATE_DATETIME, 0));
 		Date newDate = new Date();
-		Date updDate = new Date(prefs.getLong(MainActivity.APP_PREFERENCES_UPDATE_DATE, 0));
-		long diffDays = (newDate.getTime() - storedDate.getTime()) / (24 * 60 * 60 * 1000);
-		
-		if(diffDays >= MainActivity.APP_PREFERENCES_DAYS_UPDATE) {
-			editor.putLong(MainActivity.APP_PREFERENCES_UPDATE_DATETIME, newDate.getTime());
+		Date updDate = new Date(prefs.getLong(
+				MainActivity.APP_PREFERENCES_UPDATE_DATE, 0));
+		long diffDays = (newDate.getTime() - storedDate.getTime())
+				/ (24 * 60 * 60 * 1000);
+
+		if (diffDays >= MainActivity.APP_PREFERENCES_DAYS_UPDATE) {
+			editor.putLong(MainActivity.APP_PREFERENCES_UPDATE_DATETIME,
+					newDate.getTime());
 			editor.commit();
 			ApiHelper.dbUpdate(getBaseContext(), updDate);
 		}
 	}
-	
-	 @Override
-	 public void onDestroy() {
-         lvMain.setAdapter(null);
-	     super.onDestroy();
-	 }
+
+	@Override
+	public void onDestroy() {
+		lvMain.setAdapter(null);
+		super.onDestroy();
+	}
 }

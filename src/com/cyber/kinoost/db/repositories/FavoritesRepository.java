@@ -32,10 +32,14 @@ public class FavoritesRepository {
 	}
 	
 	public void createFavorites(Favorites favorites) {
+		if(favorites == null) return;
+		
 		favoritesDao.create(favorites);
 	}
 	
 	public void createFavoritesList(final List<Favorites> favorites) {
+		if(favorites == null) return;
+		
         favoritesDao.callBatchTasks(new Callable<Void>() {
 	        @Override
 	        public Void call() throws Exception {
@@ -48,10 +52,14 @@ public class FavoritesRepository {
 	}
 	
 	public void editFavorites(Favorites favorites) {
+		if(favorites == null) return;
+		
 		favoritesDao.createOrUpdate(favorites);
 	}
 	
 	public void editFavoritesList(final List<Favorites> favorites) {
+		if(favorites == null) return;
+		
         favoritesDao.callBatchTasks(new Callable<Void>() {
 	        @Override
 	        public Void call() throws Exception {
@@ -64,10 +72,14 @@ public class FavoritesRepository {
 	}
 	
 	public void deleteFavorites(Favorites favorites) {
+		if(favorites == null) return;
+		
 		favoritesDao.delete(favorites);
 	}
 	
 	public void deleteFavoritesList(List<Favorites> favorites) {
+		if(favorites == null) return;
+		
 		favoritesDao.delete(favorites);
 	}
 	

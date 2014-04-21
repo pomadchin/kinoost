@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
+@SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown = true)
 @DatabaseTable(tableName = "film")
 public class Film implements Serializable{

@@ -4,87 +4,84 @@
     android:layout_height="match_parent"
     android:background="#ffffff"
     tools:context=".MainActivity" >
-  	
-  	<RelativeLayout android:id="@+id/toolbar_container"
-   	    android:layout_width="wrap_content"
-   	    android:layout_height="wrap_content"
-   	    android:layout_alignParentLeft="true"
-   	    android:layout_alignParentRight="true"
-   	    android:background="@drawable/panel"
-	    android:paddingLeft="10dp"
-	    android:paddingRight="10dp"
-	    android:paddingTop="10dp"
-	    android:paddingBottom="10dp"
-        android:layout_alignParentTop="true" >
 
-   	    <ToggleButton
-   	        android:id="@+id/main_button"
-   	        android:layout_width="30dp"
-   	        android:layout_height="25dp"
-   	        android:layout_alignParentLeft="true"
-   	        android:layout_alignParentTop="true"
+    <RelativeLayout
+        android:id="@+id/toolbar_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/panel"
+        android:paddingBottom="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="10dp" >
+
+        <ToggleButton
+            android:id="@+id/main_button"
+            android:layout_width="30dp"
+            android:layout_height="25dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:background="@drawable/menu_button"
             android:textOff=""
-            android:textOn=""
-   	        android:background="@drawable/menu_button"/>
+            android:textOn="" />
 
-   	    <Button
-   	        android:id="@+id/button_home"
-   	        android:layout_width="25dp"
-   	        android:layout_height="25dp"
-   	        android:layout_alignParentRight="true"
-   	        android:layout_alignParentTop="true"
-   	        android:background="@drawable/home_button"/>
+        <Button
+            android:id="@+id/button_home"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:background="@drawable/home_button" />
+    </RelativeLayout>
 
-
-    
-   	</RelativeLayout>
-    <RelativeLayout 
+    <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-   	    android:layout_alignParentLeft="true"
-   	    android:layout_alignParentRight="true"
-        android:layout_below="@+id/toolbar_container">
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/toolbar_container" >
+
         <FrameLayout
-             android:layout_width="fill_parent"
-             android:layout_height="fill_parent">
-        <RelativeLayout android:id="@+id/menu_container"
-    	    android:layout_width="wrap_content"
-    	    android:layout_height="wrap_content"
-    	    android:layout_alignParentBottom="true"
-    	    android:layout_alignParentLeft="true"
-    	    android:layout_alignParentTop="true" 
-            android:layout_weight="1">
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" >
 
-	    </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/menu_container"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_weight="1" >
+            </RelativeLayout>
 
-   	 	<RelativeLayout android:id="@+id/list_container"
-   	 	    android:paddingTop="10dp"
-    	    android:layout_width="wrap_content"
-    	    android:layout_height="wrap_content"
-    	    android:layout_alignParentBottom="true"
-    	    android:layout_toRightOf="@+id/menu_container"
-    	    android:layout_alignParentTop="true"
-    	    android:background="#ffffff"
-    	    android:layerType="software" >
+            <RelativeLayout
+                android:id="@+id/list_container"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentTop="true"
+                android:layout_toRightOf="@+id/menu_container"
+                android:background="#ffffff"
+                android:layerType="software"
+                android:paddingTop="10dp" >
 
-   	 	    <ListView
-	           android:id="@+id/listView1"
-    	       android:layout_width="wrap_content"
-       		   android:layout_height="wrap_content"
- 		       android:layout_alignParentLeft="true"
-         	   android:layout_alignParentTop="true"
-         	   android:divider="@null"
-			   android:dividerHeight="0dp"
-			   android:background="#ffffff">
- 	       </ListView>
-   	 	    
-
-    	</RelativeLayout>
-    
-    </FrameLayout>
-    
+                <ListView
+                    android:id="@+id/listView1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
+                    android:background="#ffffff"
+                    android:divider="@null"
+                    android:dividerHeight="0dp" >
+                </ListView>
+            </RelativeLayout>
+        </FrameLayout>
     </RelativeLayout>
 
- 
 </RelativeLayout>

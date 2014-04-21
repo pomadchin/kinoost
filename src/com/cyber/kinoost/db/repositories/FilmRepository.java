@@ -22,6 +22,8 @@ public class FilmRepository extends FilmMusicRepository {
 	}
 	
 	public void createFilmList(final List<Film> films) {
+		if(films == null) return;
+		
         filmDao.callBatchTasks(new Callable<Void>() {
 	        @Override
 	        public Void call() throws Exception {
@@ -34,10 +36,14 @@ public class FilmRepository extends FilmMusicRepository {
 	}
 	
 	public void editFilm(Film film) {
+		if(film == null) return;
+		
 		filmDao.createOrUpdate(film);
 	}
 	
 	public void editFilmList(final List<Film> films) {
+		if(films == null) return;
+		
         filmDao.callBatchTasks(new Callable<Void>() {
 	        @Override
 	        public Void call() throws Exception {
@@ -50,10 +56,14 @@ public class FilmRepository extends FilmMusicRepository {
 	}
 	
 	public void deleteFilm(Film film) {
+		if(film == null) return;
+		
 		filmDao.delete(film);
 	}
 	
 	public void deleteFilmList(List<Film> films) {
+		if(films == null) return;
+		
 		filmDao.delete(films);
 	}
 }

@@ -52,13 +52,9 @@ public class HttpAsyncTaskUpdate extends AsyncTask<String, Void, String> {
     protected void onPostExecute(String result) {
         Log.d("onPostExecute", result);
         
-        FavoritesRepository favoritesRepo = new FavoritesRepository(getContext());
 		FilmRepository filmRepo = new FilmRepository(getContext());
 		MusicRepository musicRepo = new MusicRepository(getContext());
-		FilmMusicRepository filmMusicRepo = new FilmMusicRepository(getContext());
-		MusicRatingRepository musicRatingRepo = new MusicRatingRepository(getContext());
 		PerformerRepository performerRepo = new PerformerRepository(getContext());
-		UserRepository userRepo = new UserRepository(getContext());
       
         JsonFactory f = new JsonFactory();
         ObjectMapper mapper = new ObjectMapper();
@@ -71,9 +67,8 @@ public class HttpAsyncTaskUpdate extends AsyncTask<String, Void, String> {
 			Log.d("HttpAsyncTask.onPostExecute", listUpdate.toString());
 			Date updDate = new Date();
 			
-			for (JsonUpdate jsonUpdate: listUpdate) {
+			for (JsonUpdate jsonUpdate: listUpdate)
 				updDate = jsonUpdate.persist(getContext());
-			}
 			
 			editor.putLong(APP_PREFERENCES_UPDATE_DATE, updDate.getTime());
 			editor.commit();

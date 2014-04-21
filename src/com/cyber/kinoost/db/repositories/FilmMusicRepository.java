@@ -50,10 +50,14 @@ public class FilmMusicRepository {
 	}
 	
 	public void createFilmMusic(FilmMusic filmMusic) {
+		if(filmMusic == null) return;
+		
 		filmMusicDao.create(filmMusic);
 	}
 	
 	public void createFilmMusicList(final List<FilmMusic> filmMusic) {
+		if(filmMusic == null) return;
+		
         filmMusicDao.callBatchTasks(new Callable<Void>() {
 	        @Override
 	        public Void call() throws Exception {
@@ -66,6 +70,8 @@ public class FilmMusicRepository {
 	}
 	
 	public void createFilmMusicListCascade(final List<FilmMusic> filmMusic) {
+		if(filmMusic == null) return;
+		
         filmMusicDao.callBatchTasks(new Callable<Void>() {
 	        @Override
 	        public Void call() throws Exception {
@@ -81,10 +87,14 @@ public class FilmMusicRepository {
 	}
 	
 	public void editFilmMusic(FilmMusic filmMusic) {
+		if(filmMusic == null) return;
+		
 		filmMusicDao.createOrUpdate(filmMusic);
 	}
 	
 	public void editFilmMusicList(final List<FilmMusic> filmMusic) {
+		if(filmMusic == null) return;
+		
         filmMusicDao.callBatchTasks(new Callable<Void>() {
 	        @Override
 	        public Void call() throws Exception {
@@ -97,6 +107,8 @@ public class FilmMusicRepository {
 	}
 	
 	public void editFilmMusicListCascade(final List<FilmMusic> filmMusic) {
+		if(filmMusic == null) return;
+		
         filmMusicDao.callBatchTasks(new Callable<Void>() {
 	        @Override
 	        public Void call() throws Exception {
@@ -112,14 +124,20 @@ public class FilmMusicRepository {
 	}
 	
 	public void deleteFilmMusic(FilmMusic filmMusic) {
+		if(filmMusic == null) return;
+		
 		filmMusicDao.delete(filmMusic);
 	}
 	
 	public void deleteFilmMusicList(List<FilmMusic> filmMusic) {
+		if(filmMusic == null) return;
+		
 		filmMusicDao.delete(filmMusic);
 	}
 	
 	public void deleteFilmMusicListCascade(final List<FilmMusic> filmMusic) {
+		if(filmMusic == null) return;
+		
         filmMusicDao.callBatchTasks(new Callable<Void>() {
 	        @Override
 	        public Void call() throws Exception {
