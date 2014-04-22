@@ -16,6 +16,7 @@ public class User {
 	String name;
 	
 	public User() {
+		this.id = 0;
 	}
 	
 	public User(int id, String name) {

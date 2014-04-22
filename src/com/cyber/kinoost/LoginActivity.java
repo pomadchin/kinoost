@@ -2,6 +2,8 @@ package com.cyber.kinoost;
 
 import com.cyber.kinoost.api.vk.sources.Auth;
 import com.cyber.kinoost.api.*;
+import com.cyber.kinoost.db.repositories.UserRepository;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
@@ -26,6 +28,10 @@ public class LoginActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		UserRepository userRepo = new UserRepository(this);
+		if(userRepo.getUser().getId() == 0) this.finish();
+		
 		setContentView(R.layout.login);
 		
 		context = this;

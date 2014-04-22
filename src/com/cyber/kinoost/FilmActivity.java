@@ -20,7 +20,6 @@ import com.cyber.kinoost.views.MenuView;
 
 import android.app.Activity;
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Display;
@@ -147,27 +146,17 @@ public class FilmActivity extends Activity {
 				@Override
 				public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 					if (music != null) {
-						Uri url = Uri.parse("android.resource://"
-								+ getPackageName() + "/" + R.raw.doa);
-						
-						kPlayer.play(url);
-						
-						/*try {
+						try {
 							String fileName = apiHelper.getSoungMusic(context, api, music.get(arg2));
-							Log.d("########", music.get(arg2).getName());
 							
-							//kPlayer.play(fileName);
+							kPlayer.play(fileName);
 						} catch (IOException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						} catch (JSONException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						} catch (KException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
-						}*/
-						
+						}
 					}
 				}
 			});
@@ -175,7 +164,7 @@ public class FilmActivity extends Activity {
 			lvMain.setAdapter(adapter);
 
 		} catch (SQLException e) {
-			musicNameList.add("No tracks available.");
+			musicNameList.add("У этого фильма нет саундтреков.");
 			e.printStackTrace();
 		}
 	}
