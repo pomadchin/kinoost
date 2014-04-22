@@ -27,7 +27,6 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
-import android.os.Environment;
 import android.util.Log;
 
 import com.cyber.kinoost.api.tasks.*;
@@ -42,7 +41,7 @@ public class ApiHelper {
 	public static String update = "http://kinoserver-cybern223.rhcloud.com/kinoserver/mobile/update/";
 
 	public static void dbUpdate(Context updateContext, Date date) {
-		
+
 		if (isConnected(updateContext)) {
 			new HttpAsyncTaskUpdate(updateContext).execute(update,
 					Long.toString(date.getTime()));
@@ -144,7 +143,7 @@ public class ApiHelper {
 		else
 			return false;
 	}
-	
+
 	// getSong via vk api
 	public String getSoungMusic(Context context, Api api, Music music)
 			throws IOException, JSONException, KException {
@@ -170,40 +169,42 @@ public class ApiHelper {
 
 		return "";
 	}
-	
-	public void getSong(final Api api, final String request, final Music music, final Context context) throws IOException,
-			JSONException, KException {
-		
+
+	public void getSong(final Api api, final String request, final Music music,
+			final Context context) throws IOException, JSONException,
+			KException {
+
 		final ProgressDialog progressDialog = new ProgressDialog(context);
-		
+
 		new AsyncTask<String, Integer, String>() {
-			
+
 			@Override
-			   protected void onPreExecute() {
-			    progressDialog.setMessage("Скачивание саундтрека...");
-			    progressDialog.setCancelable(true);
-			    progressDialog.setMax(100);
-			    progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-			    progressDialog.show();
-			   }
+			protected void onPreExecute() {
+				progressDialog.setMessage("Скачивание саундтрека...");
+				progressDialog.setCancelable(true);
+				progressDialog.setMax(100);
+				progressDialog
+						.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+				progressDialog.show();
+			}
 
 			@Override
 			protected String doInBackground(String... params) {
 				try {
-					ArrayList<Audio> songsList = api.searchAudio(params[0], "2", "0",
-							(long) 1, (long) 0, null, null);
-					
+					ArrayList<Audio> songsList = api.searchAudio(params[0],
+							"2", "0", (long) 1, (long) 0, null, null);
+
 					String fileName = "";
-					
-					fileName = downloadFile(context, songsList.get(0).url, request);
-					
-					Log.d("#######----", fileName);
-					
-					MusicRepository musicRepository = new MusicRepository(context);
+
+					fileName = downloadFile(context, songsList.get(0).url,
+							request);
+
+					MusicRepository musicRepository = new MusicRepository(
+							context);
 					music.setFileName(fileName);
-					
+
 					musicRepository.editMusic(music);
-					
+
 					return songsList.get(0).url;
 				} catch (IOException e) {
 					e.printStackTrace();
@@ -212,11 +213,11 @@ public class ApiHelper {
 				} catch (KException e) {
 					e.printStackTrace();
 				}
-				
+
 				return "";
-				
+
 			}
-			
+
 			private String downloadFile(Context context, String uri, String name) {
 
 				URL url;
@@ -224,7 +225,7 @@ public class ApiHelper {
 				InputStream inputStream;
 				byte[] buffer;
 				int downloadedSize;
-			    int totalSize;
+				int totalSize;
 				int bufferLength;
 
 				File file = null;
@@ -243,45 +244,45 @@ public class ApiHelper {
 					fos = new FileOutputStream(file);
 
 					inputStream = urlConnection.getInputStream();
-				     
-				     totalSize = urlConnection.getContentLength();
-				     downloadedSize = 0;
-				     
-				     buffer = new byte[8192];
-				     bufferLength = 0;
 
-				     while ((bufferLength = inputStream.read(buffer)) > 0) {
-				         fos.write(buffer, 0, bufferLength);
-				         downloadedSize += bufferLength;
-				         publishProgress(downloadedSize, totalSize);
-				     }
-				     
-				     
-				     fos.close();
-				     inputStream.close();
+					totalSize = urlConnection.getContentLength();
+					downloadedSize = 0;
 
-					return context.getCacheDir().toString() + "/" + name + ".mp3";
+					buffer = new byte[8192];
+					bufferLength = 0;
+
+					while ((bufferLength = inputStream.read(buffer)) > 0) {
+						fos.write(buffer, 0, bufferLength);
+						downloadedSize += bufferLength;
+						publishProgress(downloadedSize, totalSize);
+					}
+
+					fos.close();
+					inputStream.close();
+
+					return context.getCacheDir().toString() + "/" + name
+							+ ".mp3";
 				} catch (MalformedURLException e) {
 					e.printStackTrace();
-					
+
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
 
 				return null;
-				
+
 			}
-			
+
 			protected void onProgressUpdate(Integer... values) {
-				progressDialog.setProgress((int) ((values[0] / (float) values[1]) * 100));
+				progressDialog
+						.setProgress((int) ((values[0] / (float) values[1]) * 100));
 			};
-			
+
 			@Override
-		    protected void onPostExecute(String result) {
+			protected void onPostExecute(String result) {
 				progressDialog.hide();
 			}
 
-			
 		}.execute(request);
 	}
 

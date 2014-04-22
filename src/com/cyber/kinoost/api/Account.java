@@ -1,5 +1,8 @@
 package com.cyber.kinoost.api;
 
+import com.cyber.kinoost.db.models.User;
+import com.cyber.kinoost.db.repositories.UserRepository;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -30,8 +33,15 @@ public class Account {
 		editor.putString("access_token", access_token);
 		editor.putLong("user_id", user_id);
 		editor.commit();
+		
+		UserRepository userRepo = new UserRepository(context);
+		User user = userRepo.getUser();
+		user.setId((int) user_id);
+		user.setToken(access_token);
+		userRepo.editUser(user);
+		
 	}
-
+	
 	public void restore() {
 		if(context == null) return;
 		
@@ -39,6 +49,19 @@ public class Account {
 				.getDefaultSharedPreferences(context);
 		access_token = prefs.getString("access_token", null);
 		user_id = prefs.getLong("user_id", 0);
+		
+		if(access_token == null || user_id == 0) {
+			UserRepository userRepo = new UserRepository(context);
+			User user = userRepo.getUser();
+			access_token = user.getToken();
+			user_id = (long) user.getId();
+			
+			Editor editor = prefs.edit();
+			editor.putString("access_token", access_token);
+			editor.putLong("user_id", user_id);
+			editor.commit();
+		}
+		
 	}
 	
 	public String getAccessToken() {

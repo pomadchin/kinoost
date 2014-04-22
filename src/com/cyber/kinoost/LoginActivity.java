@@ -23,14 +23,15 @@ public class LoginActivity extends Activity {
 	WebView webview;
 	Account account;
 	Context context;
+	UserRepository userRepo;
 
 	@SuppressLint("SetJavaScriptEnabled")
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		UserRepository userRepo = new UserRepository(this);
-		if(userRepo.getUser().getId() == 0) this.finish();
+		userRepo = new UserRepository(this);
+		if(userRepo.getUser().getId() != 0) finish();
 		
 		setContentView(R.layout.login);
 		

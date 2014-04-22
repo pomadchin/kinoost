@@ -1,5 +1,6 @@
 package com.cyber.kinoost.db.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
@@ -14,6 +15,8 @@ public class User {
 	int id;
 	@DatabaseField
 	String name;
+	@JsonIgnore
+	String token;
 	
 	public User() {
 		this.id = 0;
@@ -39,6 +42,14 @@ public class User {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
 	}
 
 	@Override
