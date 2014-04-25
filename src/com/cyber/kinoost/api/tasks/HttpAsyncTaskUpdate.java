@@ -45,7 +45,7 @@ public class HttpAsyncTaskUpdate extends AsyncTask<String, Void, String> {
     @Override
     protected String doInBackground(String... params) {
     	ApiHelper.POST(params[0], jsonCreate());
-        return ApiHelper.GET(params[0]/* + params[1]*/);
+        return ApiHelper.GET(params[0] + params[1]);
     }
     // onPostExecute displays the results of the AsyncTask.
     @Override
