@@ -94,8 +94,7 @@ public class FilmActivity extends Activity {
 		Display display = getWindowManager().getDefaultDisplay();
 		@SuppressWarnings("deprecation")
 		int width = display.getWidth();
-		@SuppressWarnings("deprecation")
-		int height = display.getHeight();
+		//int height = display.getHeight();
 
 		int imgw = (int) Math.round(0.6 * width);
 		Log.v("ingWIDTH", Integer.toString(imgw));
@@ -124,16 +123,19 @@ public class FilmActivity extends Activity {
 			final List<Music> music = filmMusicRepo.lookupMusicForFilm(film);
 
 			if (music != null) {
-				for (Music m : music)
-					musicNameList.add(m.getName());
+				for (Music m : music) {
+					if(m.getPerformer().getName() != null)
+						musicNameList.add(m.getPerformer().getName() + " - " + m.getName());
+					else
+						musicNameList.add(m.getName());
+				}
 
 				names = musicNameList.toArray(names);
 			}
 
 			ListView lvMain = (ListView) findViewById(R.id.list_osts);
 
-			ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-					R.layout.list_item, names);
+			ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.list_item, names);
 
 			final KPlayer kPlayer = new KPlayer(this);
 			final Account account = new Account(this);
@@ -147,9 +149,7 @@ public class FilmActivity extends Activity {
 				public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 					if (music != null) {
 						try {
-							String fileName = apiHelper.getSoungMusic(context, api, music.get(arg2));
-							
-							kPlayer.play(fileName);
+							apiHelper.getSoungMusic(context, api, music.get(arg2), kPlayer);
 						} catch (IOException e) {
 							e.printStackTrace();
 						} catch (JSONException e) {

@@ -35,6 +35,7 @@ import com.cyber.kinoost.api.vk.sources.Audio;
 import com.cyber.kinoost.api.vk.sources.KException;
 import com.cyber.kinoost.db.models.Music;
 import com.cyber.kinoost.db.repositories.MusicRepository;
+import com.cyber.kinoost.views.KPlayer;
 
 public class ApiHelper {
 
@@ -145,23 +146,25 @@ public class ApiHelper {
 	}
 
 	// getSong via vk api
-	public String getSoungMusic(Context context, Api api, Music music)
+	public String getSoungMusic(Context context, Api api, Music music, KPlayer kPlayer)
 			throws IOException, JSONException, KException {
 		if (music.getFileName() != null) {
 			File fileMusic = new File(music.getFileName());
-			if (fileMusic.exists())
+			if (fileMusic.exists()) {
+				kPlayer.play(music.getFileName());
 				return music.getFileName();
+			}
 		}
 
-		getSong(api, music.getName(), music, context);
+		getSong(api, music.getName(), music, context, kPlayer);
 
 		MusicRepository musicRepository = new MusicRepository(context);
-		List<Music> dbMusic;
 		try {
-			dbMusic = musicRepository.findMusicById(music.getId(), 0, 0);
+			
+			Music dbMusic = musicRepository.findMusicById(music.getId());
 
-			if (dbMusic.size() > 0)
-				return dbMusic.get(0).getName();
+			if (dbMusic != null)
+				return dbMusic.getName();
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -171,7 +174,7 @@ public class ApiHelper {
 	}
 
 	public void getSong(final Api api, final String request, final Music music,
-			final Context context) throws IOException, JSONException,
+			final Context context, final KPlayer kPlayer) throws IOException, JSONException,
 			KException {
 
 		final ProgressDialog progressDialog = new ProgressDialog(context);
@@ -183,29 +186,25 @@ public class ApiHelper {
 				progressDialog.setMessage("Скачивание саундтрека...");
 				progressDialog.setCancelable(true);
 				progressDialog.setMax(100);
-				progressDialog
-						.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+				progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
 				progressDialog.show();
 			}
 
 			@Override
 			protected String doInBackground(String... params) {
 				try {
-					ArrayList<Audio> songsList = api.searchAudio(params[0],
-							"2", "0", (long) 1, (long) 0, null, null);
+					ArrayList<Audio> songsList = api.searchAudio(params[0], "2", "0", (long) 1, (long) 0, null, null);
 
 					String fileName = "";
 
-					fileName = downloadFile(context, songsList.get(0).url,
-							request);
+					fileName = downloadFile(context, songsList.get(0).url, request, kPlayer);
 
-					MusicRepository musicRepository = new MusicRepository(
-							context);
+					MusicRepository musicRepository = new MusicRepository(context);
 					music.setFileName(fileName);
 
 					musicRepository.editMusic(music);
 
-					return songsList.get(0).url;
+					return fileName;
 				} catch (IOException e) {
 					e.printStackTrace();
 				} catch (JSONException e) {
@@ -218,7 +217,7 @@ public class ApiHelper {
 
 			}
 
-			private String downloadFile(Context context, String uri, String name) {
+			private String downloadFile(Context context, String uri, String name, KPlayer kPlayer) {
 
 				URL url;
 				HttpURLConnection urlConnection;
@@ -274,13 +273,13 @@ public class ApiHelper {
 			}
 
 			protected void onProgressUpdate(Integer... values) {
-				progressDialog
-						.setProgress((int) ((values[0] / (float) values[1]) * 100));
+				progressDialog.setProgress((int) ((values[0] / (float) values[1]) * 100));
 			};
 
 			@Override
 			protected void onPostExecute(String result) {
 				progressDialog.hide();
+				kPlayer.play(result);
 			}
 
 		}.execute(request);

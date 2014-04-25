@@ -192,15 +192,16 @@ public class FilmMusicRepository {
 	    return musicList;
 	}
 	
-	public List<Music> findMusicById(int id, int offset, int limit) throws SQLException {
+	public Music findMusicById(int id) throws SQLException {
+		Music result = null;
+		
 	    List<Music> musicList = new ArrayList<Music>();
 	    QueryBuilder<Music, Integer> queryBuilder = musicDao.queryBuilder();
-	    if(offset > 0) queryBuilder.offset(Long.valueOf(offset));
-	    if(limit > 0) queryBuilder.limit(Long.valueOf(limit));
 	    queryBuilder.where().eq(Music.ID_FIELD_NAME, id);
 	    musicList = musicDao.query(queryBuilder.prepare());
+	    if(musicList.size() > 0) result = musicList.get(0);
 
-	    return musicList;
+	    return result;
 	}
 	
 	public List<Music> findMusicByPerformer(String name, int offset, int limit) throws SQLException {
