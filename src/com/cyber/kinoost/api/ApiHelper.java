@@ -2,15 +2,9 @@ package com.cyber.kinoost.api;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Date;
 
 import org.apache.http.HttpResponse;
@@ -19,21 +13,15 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.json.JSONException;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.AsyncTask;
 import android.util.Log;
 
 import com.cyber.kinoost.api.tasks.*;
 import com.cyber.kinoost.api.vk.sources.Api;
-import com.cyber.kinoost.api.vk.sources.Audio;
-import com.cyber.kinoost.api.vk.sources.KException;
 import com.cyber.kinoost.db.models.Music;
-import com.cyber.kinoost.db.repositories.MusicRepository;
 import com.cyber.kinoost.views.KPlayer;
 
 public class ApiHelper {
@@ -145,143 +133,22 @@ public class ApiHelper {
 	}
 
 	// getSong via vk api
-	public String getSoungMusic(Context context, Api api, Music music, KPlayer kPlayer)
-			throws IOException, JSONException, KException {
+	public void getSoungMusic(Context context, Api api, Music music, KPlayer kPlayer) {
 		if (music.getFileName() != null) {
 			File fileMusic = new File(music.getFileName());
 			if (fileMusic.exists()) {
 				kPlayer.play(music.getFileName());
-				return music.getFileName();
+				return;
 			}
 		}
 
 		getSong(api, music.getName(), music, context, kPlayer);
-
-		MusicRepository musicRepository = new MusicRepository(context);
-		try {
-			
-			Music dbMusic = musicRepository.findMusicById(music.getId());
-
-			if (dbMusic != null)
-				return dbMusic.getName();
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-
-		return "";
 	}
 
 	public void getSong(final Api api, final String request, final Music music,
-			final Context context, final KPlayer kPlayer) throws IOException, JSONException,
-			KException {
-
-		final ProgressDialog progressDialog = new ProgressDialog(context);
-
-		new AsyncTask<String, Integer, String>() {
-
-			@Override
-			protected void onPreExecute() {
-				progressDialog.setMessage("Скачивание саундтрека...");
-				progressDialog.setCancelable(true);
-				progressDialog.setMax(100);
-				progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-				progressDialog.show();
-			}
-
-			@Override
-			protected String doInBackground(String... params) {
-				try {
-					ArrayList<Audio> songsList = api.searchAudio(params[0], "2", "0", (long) 1, (long) 0, null, null);
-
-					String fileName = "";
-
-					fileName = downloadFile(context, songsList.get(0).url, request, kPlayer);
-
-					MusicRepository musicRepository = new MusicRepository(context);
-					music.setFileName(fileName);
-
-					musicRepository.editMusic(music);
-
-					return fileName;
-				} catch (IOException e) {
-					e.printStackTrace();
-				} catch (JSONException e) {
-					e.printStackTrace();
-				} catch (KException e) {
-					e.printStackTrace();
-				}
-
-				return "";
-
-			}
-
-			private String downloadFile(Context context, String uri, String name, KPlayer kPlayer) {
-
-				URL url;
-				HttpURLConnection urlConnection;
-				InputStream inputStream;
-				byte[] buffer;
-				int downloadedSize;
-				int totalSize;
-				int bufferLength;
-
-				File file = null;
-				FileOutputStream fos = null;
-
-				try {
-					url = new URL(uri);
-					urlConnection = (HttpURLConnection) url.openConnection();
-
-					urlConnection.setRequestMethod("GET");
-					urlConnection.setDoInput(true);
-					urlConnection.connect();
-
-					file = new File(context.getCacheDir(), name + ".mp3");
-					file.createNewFile();
-					fos = new FileOutputStream(file);
-
-					inputStream = urlConnection.getInputStream();
-
-					totalSize = urlConnection.getContentLength();
-					downloadedSize = 0;
-
-					buffer = new byte[8192];
-					bufferLength = 0;
-
-					while ((bufferLength = inputStream.read(buffer)) > 0) {
-						fos.write(buffer, 0, bufferLength);
-						downloadedSize += bufferLength;
-						publishProgress(downloadedSize, totalSize);
-					}
-
-					fos.close();
-					inputStream.close();
-
-					return context.getCacheDir().toString() + "/" + name
-							+ ".mp3";
-				} catch (MalformedURLException e) {
-					e.printStackTrace();
-
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-
-				return null;
-
-			}
-
-			protected void onProgressUpdate(Integer... values) {
-				progressDialog.setProgress((int) ((values[0] / (float) values[1]) * 100));
-			};
-
-			@Override
-			protected void onPostExecute(String result) {
-				progressDialog.hide();
-				kPlayer.play(result);
-			}
-
-		}.execute(request);
+			final Context context, final KPlayer kPlayer) {
+		
+		new HttpAsyncTaskVkSong(api, request, music, context, kPlayer).execute(request);
 	}
 
 }

@@ -38,23 +38,19 @@ public class HttpAsyncTaskUpdate extends AsyncTask<String, Void, String> {
 		editor = prefs.edit();
 	}
 	
-	private Context getContext() {
-		return this.context;
-	}
-	
     @Override
     protected String doInBackground(String... params) {
     	ApiHelper.POST(params[0], jsonCreate());
-        return ApiHelper.GET(params[0] + params[1]);
+        return ApiHelper.GET(params[0] /*+ params[1]*/);
     }
     // onPostExecute displays the results of the AsyncTask.
     @Override
     protected void onPostExecute(String result) {
         Log.d("onPostExecute", result);
         
-		FilmRepository filmRepo = new FilmRepository(getContext());
-		MusicRepository musicRepo = new MusicRepository(getContext());
-		PerformerRepository performerRepo = new PerformerRepository(getContext());
+		FilmRepository filmRepo = new FilmRepository(context);
+		MusicRepository musicRepo = new MusicRepository(context);
+		PerformerRepository performerRepo = new PerformerRepository(context);
       
         JsonFactory f = new JsonFactory();
         ObjectMapper mapper = new ObjectMapper();
@@ -68,7 +64,7 @@ public class HttpAsyncTaskUpdate extends AsyncTask<String, Void, String> {
 			Date updDate = new Date();
 			
 			for (JsonUpdate jsonUpdate: listUpdate)
-				updDate = jsonUpdate.persist(getContext());
+				updDate = jsonUpdate.persist(context);
 			
 			editor.putLong(APP_PREFERENCES_UPDATE_DATE, updDate.getTime());
 			editor.commit();
@@ -102,8 +98,8 @@ public class HttpAsyncTaskUpdate extends AsyncTask<String, Void, String> {
     
     private String jsonCreate(){
 		JsonSend json = new JsonSend();
-		FavoritesRepository favoritesRepo = new FavoritesRepository(getContext());
-		MusicRatingRepository musicRatingRepo = new MusicRatingRepository(getContext());
+		FavoritesRepository favoritesRepo = new FavoritesRepository(context);
+		MusicRatingRepository musicRatingRepo = new MusicRatingRepository(context);
 	    Date updDate = new Date(prefs.getLong(APP_PREFERENCES_UPDATE_DATE, 0));
 	    String result = "";
 		try{
