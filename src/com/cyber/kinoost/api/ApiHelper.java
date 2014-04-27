@@ -136,7 +136,7 @@ public class ApiHelper {
 	}
 
 	// getSong via vk api
-	public void getSoungMusic(Context context, Api api, Music music, KPlayer kPlayer) {
+	public void getSongMusic(Context context, Api api, Music music, KPlayer kPlayer) {
 		if (music.getFileName() != null) {
 			File fileMusic = new File(music.getFileName());
 			if (fileMusic.exists()) {

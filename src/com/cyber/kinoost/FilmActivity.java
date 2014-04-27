@@ -148,7 +148,7 @@ public class FilmActivity extends Activity {
 				@Override
 				public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 					if (music != null)
-						apiHelper.getSoungMusic(context, api, music.get(arg2), kPlayer);
+						apiHelper.getSongMusic(context, api, music.get(arg2), kPlayer);
 				}
 			});
 
