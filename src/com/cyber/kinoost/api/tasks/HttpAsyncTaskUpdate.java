@@ -97,7 +97,7 @@ public class HttpAsyncTaskUpdate extends AsyncTask<String, Void, String> {
    }
     
     private String jsonCreate(){
-		JsonSend json = new JsonSend();
+		UserData json = new UserData();
 		FavoritesRepository favoritesRepo = new FavoritesRepository(context);
 		MusicRatingRepository musicRatingRepo = new MusicRatingRepository(context);
 	    Date updDate = new Date(prefs.getLong(APP_PREFERENCES_UPDATE_DATE, 0));

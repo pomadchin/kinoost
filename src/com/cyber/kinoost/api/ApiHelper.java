@@ -26,12 +26,10 @@ import com.cyber.kinoost.views.KPlayer;
 
 public class ApiHelper {
 
-	public static String update = "http://kinoserver-cybern223.rhcloud.com/kinoserver/mobile/update/";
-
 	public static void dbUpdate(Context updateContext, Date date) {
 
 		if (isConnected(updateContext)) {
-			new HttpAsyncTaskUpdate(updateContext).execute(update,
+			new HttpAsyncTaskUpdate(updateContext).execute(Constants.UPDATE_PATH,
 					Long.toString(date.getTime()));
 		} else
 			Log.d("dbUpdate", "connection failed");
@@ -40,6 +38,11 @@ public class ApiHelper {
 	public static void userEdit(Context updateContext, Date date) {
 		// TODO ~ works like edit and create
 	}
+	
+	public static void register(String json) {
+		POST(Constants.REG_PATH, json);		
+	}
+
 
 	public static String GET(String url) {
 		InputStream inputStream = null;
