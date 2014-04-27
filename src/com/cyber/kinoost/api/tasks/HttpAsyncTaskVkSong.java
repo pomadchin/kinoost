@@ -43,26 +43,6 @@ public class HttpAsyncTaskVkSong extends AsyncTask<String, Integer, String> {
 		this.kPlayer = kPlayer;
 		this.progressDialog = new ProgressDialog(context);
 	}
-	
-	public Context getContext() {
-		return this.context;
-	}
-
-	public Api getApi() {
-		return api;
-	}
-
-	public String getRequest() {
-		return request;
-	}
-
-	public Music getMusic() {
-		return music;
-	}
-
-	public KPlayer getkPlayer() {
-		return kPlayer;
-	}
 
 	@Override
 	protected void onPreExecute() {

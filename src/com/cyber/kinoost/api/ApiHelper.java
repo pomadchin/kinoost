@@ -145,9 +145,7 @@ public class ApiHelper {
 		getSong(api, music.getName(), music, context, kPlayer);
 	}
 
-	public void getSong(final Api api, final String request, final Music music,
-			final Context context, final KPlayer kPlayer) {
-		
+	public void getSong(Api api, String request, Music music, Context context, KPlayer kPlayer) {
 		new HttpAsyncTaskVkSong(api, request, music, context, kPlayer).execute(request);
 	}
 
