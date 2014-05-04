@@ -38,10 +38,10 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		Intent intent = new Intent();
-		intent.setClass(this, KinoostActivity.class);
+		intent.setClass(this, KinoostActivity2.class);
 		this.startActivity(intent);
 		finish();		
-		setContentView(R.layout.activity_main);
+		//setContentView(R.layout.activity_main);
 		
 		// init preferences && editor
 		prefs = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
