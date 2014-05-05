@@ -2,18 +2,23 @@ package com.cyber.kinoost.adapters;
 
 import java.util.List;
 
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.Context;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.cyber.kinoost.KinoostActivity;
 import com.cyber.kinoost.R;
 import com.cyber.kinoost.db.models.Film;
+import com.cyber.kinoost.fragments.FilmFragment;
 import com.cyber.kinoost.img.ImageLoader;
 
 public class GridViewAdapter extends BaseAdapter {
@@ -67,22 +72,30 @@ public class GridViewAdapter extends BaseAdapter {
     	holder.name.setText(film.getName()); 
     	//holder.image.setImageResource(R.drawable.sample_2);
     	imageLoader.DisplayImage(film.getImgUrl(), holder.image);
-    	
-//    	Button button = (Button) row.findViewById(R.layout.row_grid);
-//    	button.setOnClickListener(new OnClickListener() {
-//
-//             @Override
-//             public void onClick(View v) {
-//                 startFilmFragment(position);
-//             }
-//         });
-    	
-    	//imageLoader.DisplayImage(film.getImgUrl(), holder.image);
-    	return row;
 
+    	LinearLayout filmLayout = (LinearLayout) row;
+    	filmLayout.setOnClickListener(new OnClickListener() {
+
+             @Override
+             public void onClick(View v) {
+                 startFilmFragment(position);
+             }
+         });
+    	
+    	return row;
     }
     
     private void startFilmFragment(int position) {
+    	KinoostActivity activity = (KinoostActivity) mContext;
+		Fragment newFragment = new FilmFragment(); 
+		Bundle bundle = new Bundle();
+		bundle.putSerializable("film", films.get(position));
+		newFragment.setArguments(bundle);
+		
+        FragmentManager fragmentManager = activity.getFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.content_frame, newFragment).commit();
+//      transaction.addToBackStack(null);
+
     	
     }
 
