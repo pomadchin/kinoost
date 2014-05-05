@@ -27,23 +27,25 @@ public class MainFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
+
+    	// 		TEST DATA    	
     	
-    	Film film1 = new Film();
-    	film1.setName("Die Hard 1");
+//    	Film film1 = new Film();
+//    	film1.setName("Die Hard 1");
+//    	
+//    	Film film2 = new Film();
+//    	film2.setName("Die Hard 2");
+//    	
+//    	Film film3 = new Film();
+//    	film3.setName("Die Hard 3");
+//    	
+//    	List<Film> films = new LinkedList<Film>();
+//    	films.add(film1);
+//    	films.add(film2);
+//    	films.add(film3);
     	
-    	Film film2 = new Film();
-    	film2.setName("Die Hard 2");
-    	
-    	Film film3 = new Film();
-    	film3.setName("Die Hard 3");
-    	
-    	List<Film> films = new LinkedList<Film>();
-    	films.add(film1);
-    	films.add(film2);
-    	films.add(film3);
-    	
-    	View myFragmentView = inflater.inflate(R.layout.fragment_planet, container, false);
-        //List<Film> films = getFilms();
+    	View myFragmentView = inflater.inflate(R.layout.fragment_grid, container, false);
+        List<Film> films = getFilms();
     	
     	GridView gridview = (GridView) myFragmentView.findViewById(R.id.gridview);
         gridview.setAdapter(new ImageAdapter(getActivity().getBaseContext(), films));

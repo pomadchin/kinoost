@@ -1,15 +1,17 @@
 	package com.cyber.kinoost;
 
+import java.util.Date;
 import java.util.Locale;
 
+import com.cyber.kinoost.api.ApiHelper;
 import com.cyber.kinoost.fragments.MainFragment;
-import com.cyber.kinoost.fragments.PlanetFragment;
-
 import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -37,12 +39,18 @@ public class KinoostActivity2 extends FragmentActivity {
     private CharSequence mDrawerTitle;
     private CharSequence mTitle;
     private String[] menuTitles;
+    
+    private SharedPreferences prefs;
+    private SharedPreferences.Editor editor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
         
+        prefs = getSharedPreferences(MainActivity.APP_PREFERENCES,
+				Context.MODE_PRIVATE);
+        editor = prefs.edit();        
 
         mTitle = mDrawerTitle = getTitle();
         menuTitles = getResources().getStringArray(R.array.menu_items);
@@ -85,6 +93,27 @@ public class KinoostActivity2 extends FragmentActivity {
             selectItem(0);
         }
     }
+    
+	@Override
+	protected void onStart() {
+		super.onStart();
+
+		// check data update on start
+		Date storedDate = new Date(prefs.getLong(
+				MainActivity.APP_PREFERENCES_UPDATE_DATETIME, 0));
+		Date newDate = new Date();
+		Date updDate = new Date(prefs.getLong(
+				MainActivity.APP_PREFERENCES_UPDATE_DATE, 0));
+		long diffDays = (newDate.getTime() - storedDate.getTime())
+				/ (24 * 60 * 60 * 1000);
+
+		if (diffDays >= MainActivity.APP_PREFERENCES_DAYS_UPDATE) {
+			editor.putLong(MainActivity.APP_PREFERENCES_UPDATE_DATETIME,
+					newDate.getTime());
+			editor.commit();
+			ApiHelper.dbUpdate(getBaseContext(), updDate);
+		}
+	}
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -128,8 +157,6 @@ public class KinoostActivity2 extends FragmentActivity {
     	
         fragment = new MainFragment();
         Bundle args = new Bundle();
-        args.putInt(PlanetFragment.ARG_PLANET_NUMBER, position);
-        fragment.setArguments(args);
 
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
