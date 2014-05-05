@@ -1,6 +1,5 @@
 package com.cyber.kinoost;
 
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -17,7 +16,6 @@ import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.Menu;
 
-import com.cyber.kinoost.db.DatabaseAssetsHelper;
 import com.cyber.kinoost.db.DatabaseHelper;
 import com.cyber.kinoost.db.models.*;
 import com.cyber.kinoost.api.*;
@@ -32,7 +30,6 @@ public class MainActivity extends Activity {
 	public static final long APP_PREFERENCES_DAYS_UPDATE = 1;
 	
 	DatabaseHelper dbHelper;
-	DatabaseAssetsHelper dbaHelper;
 	SharedPreferences prefs;
 	SharedPreferences.Editor editor;
 	ImageLoader imageLoader;
