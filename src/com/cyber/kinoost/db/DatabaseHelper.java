@@ -223,7 +223,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 		InputStream mInput = context.getResources().openRawResource(R.raw.kinoost);
 		String outFileName = DATABASE_PATH + DATABASE_NAME;
 		OutputStream mOutput = new FileOutputStream(outFileName);
-		byte[] mBuffer = new byte[1024];
+		byte[] mBuffer = new byte[10240];
 		int mLength;
 		while ((mLength = mInput.read(mBuffer)) > 0)
 			mOutput.write(mBuffer, 0, mLength);

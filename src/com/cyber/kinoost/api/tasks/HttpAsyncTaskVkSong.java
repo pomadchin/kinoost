@@ -110,7 +110,7 @@ public class HttpAsyncTaskVkSong extends AsyncTask<String, Integer, String> {
 			totalSize = urlConnection.getContentLength();
 			downloadedSize = 0;
 
-			buffer = new byte[8192];
+			buffer = new byte[10240];
 			bufferLength = 0;
 
 			while ((bufferLength = inputStream.read(buffer)) > 0) {
