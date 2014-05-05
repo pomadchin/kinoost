@@ -1,22 +1,8 @@
 package com.cyber.kinoost;
 
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.json.JSONException;
-
-import com.cyber.kinoost.api.Account;
-import com.cyber.kinoost.api.ApiHelper;
-import com.cyber.kinoost.api.vk.sources.Api;
-import com.cyber.kinoost.api.vk.sources.KException;
-import com.cyber.kinoost.db.models.Film;
-import com.cyber.kinoost.db.models.Music;
-import com.cyber.kinoost.db.repositories.FilmMusicRepository;
-import com.cyber.kinoost.img.ImageLoader;
-import com.cyber.kinoost.views.KPlayer;
-import com.cyber.kinoost.views.MenuView;
 
 import android.app.Activity;
 import android.content.Context;
@@ -29,16 +15,24 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.ToggleButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
+
+import com.cyber.kinoost.api.Account;
+import com.cyber.kinoost.api.ApiHelper;
+import com.cyber.kinoost.api.vk.sources.Api;
+import com.cyber.kinoost.db.models.Film;
+import com.cyber.kinoost.db.models.Music;
+import com.cyber.kinoost.db.repositories.FilmMusicRepository;
+import com.cyber.kinoost.img.ImageLoader;
+import com.cyber.kinoost.views.KPlayer;
 
 public class FilmActivity extends Activity {
-	MenuView menu;
 	RelativeLayout menuContainer;
 	RelativeLayout listContainer;
 	RelativeLayout imgContainer;
@@ -58,13 +52,10 @@ public class FilmActivity extends Activity {
 		name = film.getName();
 		year = Integer.toString(film.getYear());
 		rating = Double.toString(film.getRating());
-		menu = new MenuView(this);
-		Log.v(Integer.toString(menu.getChildCount()), "asd");
 		menuContainer = (RelativeLayout) findViewById(R.id.menu_container);
 		listContainer = (RelativeLayout) findViewById(R.id.list_container);
 		imgContainer = (RelativeLayout) findViewById(R.id.img_container);
 		headContainer = (RelativeLayout) findViewById(R.id.head_container);
-		menuContainer.addView(menu);
 		ImageLoader imageLoader = new ImageLoader(this);
 		ImageView imgView = (ImageView) this.findViewById(R.id.image_poster);
 		TextView nameView = (TextView) this.findViewById(R.id.text_name);

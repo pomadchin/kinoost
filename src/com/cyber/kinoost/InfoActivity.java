@@ -1,7 +1,5 @@
 package com.cyber.kinoost;
 
-import com.cyber.kinoost.views.MenuView;
-
 import android.app.Activity;
 import android.os.Bundle;
 import android.text.Html;
@@ -16,7 +14,6 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 
 public class InfoActivity extends Activity {
 
-	MenuView menu;
 	RelativeLayout menuContainer;
 	RelativeLayout listContainer;
 
@@ -46,11 +43,8 @@ public class InfoActivity extends Activity {
 						+ "<br>Федоров Дмитрий</br>"
 						+ "<br>Евменков Андрей</br>"));
 
-		menu = new MenuView(this);
-		Log.v(Integer.toString(menu.getChildCount()), "asd");
 		menuContainer = (RelativeLayout) findViewById(R.id.menu_container);
 		listContainer = (RelativeLayout) findViewById(R.id.list_container);
-		menuContainer.addView(menu);
 		ToggleButton toogleButton = (ToggleButton) findViewById(R.id.main_button);
 		toogleButton.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 

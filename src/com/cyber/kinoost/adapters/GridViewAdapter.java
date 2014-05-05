@@ -2,12 +2,13 @@ package com.cyber.kinoost.adapters;
 
 import java.util.List;
 
-import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -15,7 +16,7 @@ import com.cyber.kinoost.R;
 import com.cyber.kinoost.db.models.Film;
 import com.cyber.kinoost.img.ImageLoader;
 
-public class ImageAdapter extends BaseAdapter {
+public class GridViewAdapter extends BaseAdapter {
     
 	private Context mContext;
     
@@ -23,7 +24,7 @@ public class ImageAdapter extends BaseAdapter {
     
 	private ImageLoader imageLoader;
 
-    public ImageAdapter(Context c, List<Film> films) {
+    public GridViewAdapter(Context c, List<Film> films) {
         mContext = c;
         this.films = films;
         this.imageLoader = new ImageLoader(c);
@@ -40,22 +41,6 @@ public class ImageAdapter extends BaseAdapter {
     public long getItemId(int position) {
         return position;
     }
-
-    // create a new ImageView for each item referenced by the Adapter
-//    public View getView(int position, View convertView, ViewGroup parent) {
-//        ImageView imageView;
-//        if (convertView == null) {  // if it's not recycled, initialize some attributes
-//            imageView = new ImageView(mContext);
-//            imageView.setLayoutParams(new GridView.LayoutParams(650, 650));
-//            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-//            imageView.setPadding(8, 8, 8, 8);
-//        } else {
-//            imageView = (ImageView) convertView;
-//        }
-//
-//        imageView.setImageResource(mThumbIds[position]);
-//        return imageView;
-//    }
     
     public static class ViewHolder
 	{
@@ -63,7 +48,7 @@ public class ImageAdapter extends BaseAdapter {
 		public TextView name;
 	}
     
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
     	View row = convertView; 
     	ViewHolder holder = null;
     	
@@ -80,10 +65,25 @@ public class ImageAdapter extends BaseAdapter {
     	} 
     	Film film = films.get(position); 
     	holder.name.setText(film.getName()); 
-    	holder.image.setImageResource(R.drawable.sample_2);
+    	//holder.image.setImageResource(R.drawable.sample_2);
+    	imageLoader.DisplayImage(film.getImgUrl(), holder.image);
+    	
+//    	Button button = (Button) row.findViewById(R.layout.row_grid);
+//    	button.setOnClickListener(new OnClickListener() {
+//
+//             @Override
+//             public void onClick(View v) {
+//                 startFilmFragment(position);
+//             }
+//         });
+    	
     	//imageLoader.DisplayImage(film.getImgUrl(), holder.image);
     	return row;
 
+    }
+    
+    private void startFilmFragment(int position) {
+    	
     }
 
 }

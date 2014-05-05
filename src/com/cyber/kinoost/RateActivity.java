@@ -1,6 +1,5 @@
 package com.cyber.kinoost;
 
-import com.cyber.kinoost.views.MenuView;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -14,7 +13,6 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 
 public class RateActivity extends Activity {
 
-	MenuView menu;
 	RelativeLayout menuContainer;
 	RelativeLayout listContainer;
 
@@ -22,11 +20,8 @@ public class RateActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.film);
-		menu = new MenuView(this);
-		Log.v(Integer.toString(menu.getChildCount()), "asd");
 		menuContainer = (RelativeLayout) findViewById(R.id.menu_container);
 		listContainer = (RelativeLayout) findViewById(R.id.list_container);
-		menuContainer.addView(menu);
 		ToggleButton toogleButton = (ToggleButton) findViewById(R.id.main_button);
 		toogleButton.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 

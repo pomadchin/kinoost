@@ -38,7 +38,7 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		Intent intent = new Intent();
-		intent.setClass(this, KinoostActivity2.class);
+		intent.setClass(this, KinoostActivity.class);
 		this.startActivity(intent);
 		finish();		
 		//setContentView(R.layout.activity_main);

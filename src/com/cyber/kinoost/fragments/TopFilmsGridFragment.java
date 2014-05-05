@@ -13,13 +13,13 @@ import android.view.ViewGroup;
 import android.widget.GridView;
 
 import com.cyber.kinoost.R;
-import com.cyber.kinoost.adapters.ImageAdapter;
+import com.cyber.kinoost.adapters.GridViewAdapter;
 import com.cyber.kinoost.db.models.Film;
 import com.cyber.kinoost.db.repositories.FilmMusicRepository;
 
-public class MainFragment extends Fragment {
+public class TopFilmsGridFragment extends Fragment {
     
-    public MainFragment() {
+    public TopFilmsGridFragment() {
         // Empty constructor required for fragment subclasses
     }
   
@@ -30,13 +30,13 @@ public class MainFragment extends Fragment {
     	// 		TEST DATA    	
     	
     	Film film1 = new Film();
-    	film1.setName("Die Hard 1");
+    	film1.setName("Top film 1");
     	
     	Film film2 = new Film();
-    	film2.setName("Die Hard 2");
+    	film2.setName("Top film 2");
     	
     	Film film3 = new Film();
-    	film3.setName("Die Hard 3");
+    	film3.setName("Top film 3");
     	
     	List<Film> films = new LinkedList<Film>();
     	films.add(film1);
@@ -47,12 +47,13 @@ public class MainFragment extends Fragment {
         //List<Film> films = getFilms();
     	
     	GridView gridview = (GridView) myFragmentView.findViewById(R.id.gridview);
-        gridview.setAdapter(new ImageAdapter(getActivity().getBaseContext(), films));    	
+        gridview.setAdapter(new GridViewAdapter(getActivity().getBaseContext(), films));    	
         
         return myFragmentView;
     }
     
-    private List<Film> getFilms() {
+    //FIXME: change method to return top films
+    private List<Film> getTopFilms() {
     	FilmMusicRepository filmMusicRepo = new FilmMusicRepository(getActivity().getBaseContext());
     	List<Film> films = null;
     	try {
