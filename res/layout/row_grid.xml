@@ -14,7 +14,6 @@
         android:src="@drawable/home" 
         android:background="#555"
         android:layout_gravity="center">
-        
     </ImageView>
 
     <TextView
@@ -25,7 +24,6 @@
         android:textSize="25sp" 
         android:textColor="#F16005"
         android:layout_gravity="center">
-      
     </TextView>
 
 </LinearLayout>

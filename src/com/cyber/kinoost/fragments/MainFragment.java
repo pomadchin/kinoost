@@ -18,7 +18,6 @@ import com.cyber.kinoost.db.models.Film;
 import com.cyber.kinoost.db.repositories.FilmMusicRepository;
 
 public class MainFragment extends Fragment {
-    public static final String ARG_PLANET_NUMBER = "planet_number";
     
     public MainFragment() {
         // Empty constructor required for fragment subclasses
@@ -30,37 +29,25 @@ public class MainFragment extends Fragment {
 
     	// 		TEST DATA    	
     	
-//    	Film film1 = new Film();
-//    	film1.setName("Die Hard 1");
-//    	
-//    	Film film2 = new Film();
-//    	film2.setName("Die Hard 2");
-//    	
-//    	Film film3 = new Film();
-//    	film3.setName("Die Hard 3");
-//    	
-//    	List<Film> films = new LinkedList<Film>();
-//    	films.add(film1);
-//    	films.add(film2);
-//    	films.add(film3);
+    	Film film1 = new Film();
+    	film1.setName("Die Hard 1");
+    	
+    	Film film2 = new Film();
+    	film2.setName("Die Hard 2");
+    	
+    	Film film3 = new Film();
+    	film3.setName("Die Hard 3");
+    	
+    	List<Film> films = new LinkedList<Film>();
+    	films.add(film1);
+    	films.add(film2);
+    	films.add(film3);
     	
     	View myFragmentView = inflater.inflate(R.layout.fragment_grid, container, false);
-        List<Film> films = getFilms();
+        //List<Film> films = getFilms();
     	
     	GridView gridview = (GridView) myFragmentView.findViewById(R.id.gridview);
-        gridview.setAdapter(new ImageAdapter(getActivity().getBaseContext(), films));
-    	
-
-//        String planet = getResources().getStringArray(R.array.menu_items)[i];
-//        getActivity().setTitle(planet);
-//        
-//        fillData();
-//
-//        ListAdapter listAdapter = new ListAdapter(this, films);
-//
-//		ListView listView = (ListView) findViewById(R.id.movieList);
-//		listView.setAdapter(listAdapter);
-//        
+        gridview.setAdapter(new ImageAdapter(getActivity().getBaseContext(), films));    	
         
         return myFragmentView;
     }
@@ -77,16 +64,6 @@ public class MainFragment extends Fragment {
 		}
     	return films;
     	
-    }
-    
-//    void fillData() {
-//		FilmMusicRepository filmMusicRepo = new FilmMusicRepository(this);
-//		try {
-//			films = filmMusicRepo.findTuplesFilmByName("", 0, 10);
-//			Log.d("SIZE", Integer.toString(films.size()));
-//		} catch (SQLException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//	}
+    } 
+
 }
