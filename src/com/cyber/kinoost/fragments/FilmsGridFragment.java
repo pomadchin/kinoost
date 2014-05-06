@@ -47,7 +47,7 @@ public class FilmsGridFragment extends Fragment {
         List<Film> films = getFilms();
     	
     	GridView gridview = (GridView) myFragmentView.findViewById(R.id.gridview);
-        gridview.setAdapter(new GridViewAdapter(getActivity(), films));    	
+        gridview.setAdapter(new GridViewAdapter(getActivity(), films));
         
         return myFragmentView;
     }
