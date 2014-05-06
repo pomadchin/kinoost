@@ -17,16 +17,17 @@ public class KPlayer {
 	public KPlayer(Context context) {
 		this.context = context;
 	}
-	
+
 	public void play(String url) {
-		if(url == null) return;
-		
+		if (url == null)
+			return;
+
 		if (mediaPlayer != null && mediaPlayer.isPlaying()) {
 			mediaPlayer.stop();
 			mediaPlayer.release();
 			mediaPlayer = null;
 		} else {
-			
+
 			this.mediaPlayer = new MediaPlayer();
 			mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
 
@@ -49,14 +50,15 @@ public class KPlayer {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
+
 			mediaPlayer.start();
-		}		
+		}
 	}
 
 	public void play(Uri url) {
-		if(url == null) return;
-		
+		if (url == null)
+			return;
+
 		if (mediaPlayer != null && mediaPlayer.isPlaying()) {
 			mediaPlayer.stop();
 			mediaPlayer.release();

@@ -1,0 +1,76 @@
+package com.cyber.kinoost.fragments;
+
+import java.sql.SQLException;
+import java.util.List;
+
+import android.app.Fragment;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+import com.cyber.kinoost.R;
+import com.cyber.kinoost.adapters.ListViewAdapter;
+import com.cyber.kinoost.db.models.Film;
+import com.cyber.kinoost.db.models.Music;
+import com.cyber.kinoost.db.repositories.FilmMusicRepository;
+
+public class OstFragment extends Fragment {
+
+	RelativeLayout menuContainer;
+	RelativeLayout listContainer;
+	RelativeLayout imgContainer;
+	RelativeLayout headContainer;
+	String name = "";
+	String img = "";
+	String year = "";
+	String rating = "";
+	Film film = null;
+
+	public OstFragment() {
+		// Empty constructor required for fragment subclasses
+	}
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		film = (Film) getArguments().getSerializable("film");
+	}
+
+	public static class ViewHolder {
+		public ImageView image;
+		public TextView name;
+	}
+
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		img = film.getImgUrl();
+		name = film.getName();
+		year = Integer.toString(film.getYear());
+		rating = Double.toString(film.getRating());
+
+		View myFragmentView = inflater.inflate(R.layout.soundlist, container,
+				false);
+
+		FilmMusicRepository filmMusicRepo = new FilmMusicRepository(
+				getActivity());
+		List<Music> music = null;
+		try {
+			music = filmMusicRepo.lookupMusicForFilm(film);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		ListView list = (ListView) myFragmentView.findViewById(R.id.soundlist);
+		list.setAdapter(new ListViewAdapter(getActivity(), film, music));
+		return myFragmentView;
+
+	}
+
+}
