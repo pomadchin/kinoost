@@ -3,14 +3,13 @@ package com.cyber.kinoost;
 import android.app.Activity;
 import android.os.Bundle;
 import android.text.Html;
-import android.util.Log;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.ToggleButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 
 public class InfoActivity extends Activity {
 

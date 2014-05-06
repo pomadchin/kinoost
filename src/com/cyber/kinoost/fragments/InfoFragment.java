@@ -8,9 +8,9 @@ import android.view.ViewGroup;
 
 import com.cyber.kinoost.R;
 
-public class AppInfoFragment extends Fragment {
+public class InfoFragment extends Fragment {
 
-	public AppInfoFragment() {
+	public InfoFragment() {
 		// Empty constructor required for fragment subclasses
 	}
 

@@ -17,9 +17,9 @@ import com.cyber.kinoost.adapters.GridViewAdapter;
 import com.cyber.kinoost.db.models.Film;
 import com.cyber.kinoost.db.repositories.FilmMusicRepository;
 
-public class FilmsGridFragment extends Fragment {
+public class TopFilmsFragment extends Fragment {
     
-    public FilmsGridFragment() {
+    public TopFilmsFragment() {
         // Empty constructor required for fragment subclasses
     }
   
@@ -28,31 +28,32 @@ public class FilmsGridFragment extends Fragment {
             Bundle savedInstanceState) {
 
     	// 		TEST DATA    	
-//    	
-//    	Film film1 = new Film();
-//    	film1.setName("Die Hard 1");
-//    	
-//    	Film film2 = new Film();
-//    	film2.setName("Die Hard 2");
-//    	
-//    	Film film3 = new Film();
-//    	film3.setName("Die Hard 3");
-//    	
-//    	List<Film> films = new LinkedList<Film>();
-//    	films.add(film1);
-//    	films.add(film2);
-//    	films.add(film3);
-//    	
+    	
+    	Film film1 = new Film();
+    	film1.setName("Top film 1");
+    	
+    	Film film2 = new Film();
+    	film2.setName("Top film 2");
+    	
+    	Film film3 = new Film();
+    	film3.setName("Top film 3");
+    	
+    	List<Film> films = new LinkedList<Film>();
+    	films.add(film1);
+    	films.add(film2);
+    	films.add(film3);
+    	
     	View myFragmentView = inflater.inflate(R.layout.fragment_grid, container, false);
-        List<Film> films = getFilms();
+        //List<Film> films = getFilms();
     	
     	GridView gridview = (GridView) myFragmentView.findViewById(R.id.gridview);
-        gridview.setAdapter(new GridViewAdapter(getActivity(), films));
+        gridview.setAdapter(new GridViewAdapter(getActivity().getBaseContext(), films));    	
         
         return myFragmentView;
     }
     
-    private List<Film> getFilms() {
+    //FIXME: change method to return top films
+    private List<Film> getTopFilms() {
     	FilmMusicRepository filmMusicRepo = new FilmMusicRepository(getActivity().getBaseContext());
     	List<Film> films = null;
     	try {

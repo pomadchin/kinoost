@@ -22,9 +22,9 @@ import android.widget.ListView;
 
 import com.cyber.kinoost.api.ApiHelper;
 import com.cyber.kinoost.db.DatabaseHelper;
-import com.cyber.kinoost.fragments.AppInfoFragment;
-import com.cyber.kinoost.fragments.FilmsGridFragment;
-import com.cyber.kinoost.fragments.TopFilmsGridFragment;
+import com.cyber.kinoost.fragments.InfoFragment;
+import com.cyber.kinoost.fragments.FilmsFragment;
+import com.cyber.kinoost.fragments.TopFilmsFragment;
 
 public class KinoostActivity extends FragmentActivity {
 
@@ -48,7 +48,7 @@ public class KinoostActivity extends FragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main2);
+        setContentView(R.layout.activity_main);
         
         //From MainActivity
         prefs = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
@@ -156,13 +156,13 @@ public class KinoostActivity extends FragmentActivity {
     private void selectItem(int position) {
     	Fragment fragment;
     	switch(position) {
-    		case 0: fragment = new FilmsGridFragment();  
+    		case 0: fragment = new FilmsFragment();  
     				break;
-    		case 1: fragment = new TopFilmsGridFragment();  
+    		case 1: fragment = new TopFilmsFragment();  
 					break;
-    		case 5: fragment = new AppInfoFragment();
+    		case 5: fragment = new InfoFragment();
     				break;
-    		default: fragment = new FilmsGridFragment();
+    		default: fragment = new FilmsFragment();
     				break;
     	}
 
