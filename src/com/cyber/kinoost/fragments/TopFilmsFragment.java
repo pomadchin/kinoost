@@ -1,7 +1,6 @@
 package com.cyber.kinoost.fragments;
 
 import java.sql.SQLException;
-import java.util.LinkedList;
 import java.util.List;
 
 import android.app.Fragment;
@@ -26,29 +25,10 @@ public class TopFilmsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-
-    	// 		TEST DATA    	
-    	
-    	Film film1 = new Film();
-    	film1.setName("Top film 1");
-    	
-    	Film film2 = new Film();
-    	film2.setName("Top film 2");
-    	
-    	Film film3 = new Film();
-    	film3.setName("Top film 3");
-    	
-    	List<Film> films = new LinkedList<Film>();
-    	films.add(film1);
-    	films.add(film2);
-    	films.add(film3);
-    	
     	View myFragmentView = inflater.inflate(R.layout.fragment_grid, container, false);
-        //List<Film> films = getFilms();
-    	
+        List<Film> films = getTopFilms();
     	GridView gridview = (GridView) myFragmentView.findViewById(R.id.gridview);
         gridview.setAdapter(new GridViewAdapter(getActivity().getBaseContext(), films));    	
-        
         return myFragmentView;
     }
     
