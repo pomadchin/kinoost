@@ -1,132 +1,217 @@
 package com.cyber.kinoost;
 
 import java.util.Date;
-import java.sql.SQLException;
-import java.util.ArrayList;
 
-import com.cyber.kinoost.db.DatabaseHelper;
-import com.cyber.kinoost.db.models.*;
-import com.cyber.kinoost.adapters.ListAdapter;
-
-import com.cyber.kinoost.api.ApiHelper;
-import com.cyber.kinoost.db.repositories.*;
-import com.cyber.kinoost.img.ImageLoader;
-
-import com.cyber.kinoost.views.MenuView;
-
-import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.view.Menu;
-import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
-import android.widget.FrameLayout;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
-import android.widget.ToggleButton;
 
-public class KinoostActivity extends Activity {
+import com.cyber.kinoost.api.ApiHelper;
+import com.cyber.kinoost.db.DatabaseHelper;
+import com.cyber.kinoost.fragments.InfoFragment;
+import com.cyber.kinoost.fragments.FilmsFragment;
+import com.cyber.kinoost.fragments.TopFilmsFragment;
 
-	ArrayList<Tuple<Film, Film>> films = new ArrayList<Tuple<Film, Film>>();
-	ListAdapter la;
+public class KinoostActivity extends FragmentActivity {
 
-	MenuView menu;
-	RelativeLayout menuContainer;
-	RelativeLayout listContainer;
+	private DrawerLayout mDrawerLayout;
+    private ListView mDrawerList;
+    private ActionBarDrawerToggle mDrawerToggle;
+
+    private CharSequence mDrawerTitle;
+    private CharSequence mTitle;
+    private String[] menuTitles;
+    
+    public static final String APP_PREFERENCES = "com.cyber.kinoost";
+	public static final String APP_PREFERENCES_UPDATE_DATETIME = "com.cyber.kinoost.update.datetime";
+	public static final String APP_PREFERENCES_UPDATE_DATE = "com.cyber.kinoost.update.date";
+	public static final long APP_PREFERENCES_DAYS_UPDATE = 1;
+	
 	DatabaseHelper dbHelper;
 	SharedPreferences prefs;
 	SharedPreferences.Editor editor;
-	ImageLoader imageLoader;
-	ListView lvMain;
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
-		menu = new MenuView(this);
-		Log.v(Integer.toString(menu.getChildCount()), "asd");
-		menuContainer = (RelativeLayout) findViewById(R.id.menu_container);
-		listContainer = (RelativeLayout) findViewById(R.id.list_container);
-		menuContainer.addView(menu);
-		ToggleButton toogleButton = (ToggleButton) findViewById(R.id.main_button);
-
-		// init preferences && editor
-		prefs = getSharedPreferences(MainActivity.APP_PREFERENCES,
-				Context.MODE_PRIVATE);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        
+        //From MainActivity
+        prefs = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
 		editor = prefs.edit();
+        
 
-		toogleButton.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+        mTitle = mDrawerTitle = getTitle();
+        menuTitles = getResources().getStringArray(R.array.menu_items);
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawerList = (ListView) findViewById(R.id.left_drawer);
 
-			@Override
-			public void onCheckedChanged(CompoundButton buttonView,
-					boolean isChecked) {
-				if (buttonView.isChecked()) {
-					FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(
-							listContainer.getWidth(),
-							android.view.ViewGroup.LayoutParams.WRAP_CONTENT);
-					lp.setMargins(menuContainer.getWidth(), 0, 0, 0);
-					listContainer.setLayoutParams(lp);
-				} else {
-					FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(
-							android.view.ViewGroup.LayoutParams.WRAP_CONTENT,
-							android.view.ViewGroup.LayoutParams.WRAP_CONTENT);
-					lp.setMargins(0, 0, 0, 0);
-					listContainer.setLayoutParams(lp);
-				}
-			}
-		});
+        // set a custom shadow that overlays the main content when the drawer opens
+        mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
+        // set up the drawer's list view with items and click listener
+        mDrawerList.setAdapter(new ArrayAdapter<String>(this,
+                R.layout.drawer_list_item, menuTitles));
+        mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
-		fillData();
-		la = new ListAdapter(this, films);
+        // enable ActionBar app icon to behave as action to toggle nav drawer
+        getActionBar().setDisplayHomeAsUpEnabled(true);
+        getActionBar().setHomeButtonEnabled(true);
 
-		lvMain = (ListView) findViewById(R.id.listView1);
-		lvMain.setAdapter(la);
-	}
+        // ActionBarDrawerToggle ties together the the proper interactions
+        // between the sliding drawer and the action bar app icon
+        mDrawerToggle = new ActionBarDrawerToggle(
+                this,                  /* host Activity */
+                mDrawerLayout,         /* DrawerLayout object */
+                R.drawable.ic_drawer,  /* nav drawer image to replace 'Up' caret */
+                R.string.drawer_open,  /* "open drawer" description for accessibility */
+                R.string.drawer_close  /* "close drawer" description for accessibility */
+                ) {
+            public void onDrawerClosed(View view) {
+                getActionBar().setTitle(mTitle);
+                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+            }
 
-	void fillData() {
-		FilmMusicRepository filmMusicRepo = new FilmMusicRepository(this);
-		try {
-			films = filmMusicRepo.findTuplesFilmByName("", 0, 10);
-			Log.d("SIZE", Integer.toString(films.size()));
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+            public void onDrawerOpened(View drawerView) {
+                getActionBar().setTitle(mDrawerTitle);
+                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+            }
+        };
+        mDrawerLayout.setDrawerListener(mDrawerToggle);
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
-		return true;
-	}
-
-	@Override
+        if (savedInstanceState == null) {
+            selectItem(0);
+        }
+    }
+    
+    @Override
 	protected void onStart() {
 		super.onStart();
 
 		// check data update on start
 		Date storedDate = new Date(prefs.getLong(
-				MainActivity.APP_PREFERENCES_UPDATE_DATETIME, 0));
+				APP_PREFERENCES_UPDATE_DATETIME, 0));
 		Date newDate = new Date();
 		Date updDate = new Date(prefs.getLong(
-				MainActivity.APP_PREFERENCES_UPDATE_DATE, 0));
+				APP_PREFERENCES_UPDATE_DATE, 0));
 		long diffDays = (newDate.getTime() - storedDate.getTime())
-				/ (24 * 60 * 60 * 1000);
+				/ (24 * 60 * 60 * 10);
 
-		if (diffDays >= MainActivity.APP_PREFERENCES_DAYS_UPDATE) {
-			editor.putLong(MainActivity.APP_PREFERENCES_UPDATE_DATETIME,
+		if (diffDays >= APP_PREFERENCES_DAYS_UPDATE) {
+			editor.putLong(APP_PREFERENCES_UPDATE_DATETIME,
 					newDate.getTime());
 			editor.commit();
 			ApiHelper.dbUpdate(getBaseContext(), updDate);
 		}
 	}
 
-	@Override
-	public void onDestroy() {
-		lvMain.setAdapter(null);
-		super.onDestroy();
-	}
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    /* Called whenever we call invalidateOptionsMenu() */
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        // If the nav drawer is open, hide action items related to the content view
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+         // The action bar home/up action should open or close the drawer.
+         // ActionBarDrawerToggle will take care of this.
+        if (mDrawerToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+        
+        return super.onOptionsItemSelected(item);
+      
+    }
+
+    /* The click listener for ListView in the navigation drawer */
+    private class DrawerItemClickListener implements ListView.OnItemClickListener {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            selectItem(position);
+        }
+    }
+
+    private void selectItem(int position) {
+    	Fragment fragment;
+    	switch(position) {
+    		case 0: fragment = new FilmsFragment();  
+    				break;
+    		case 1: fragment = new TopFilmsFragment();  
+					break;
+    		case 5: fragment = new InfoFragment();
+    				break;
+    		default: fragment = new FilmsFragment();
+    				break;
+    	}
+
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();        
+        transaction.replace(R.id.content_frame, fragment);
+        transaction.commit();
+
+
+        // update selected item and title, then close the drawer
+        mDrawerList.setItemChecked(position, true);
+        setTitle(menuTitles[position]);
+        mDrawerLayout.closeDrawer(mDrawerList);
+    }
+
+    @Override
+    public void setTitle(CharSequence title) {
+        mTitle = title;
+        getActionBar().setTitle(mTitle);
+    }
+
+    /**
+     * When using the ActionBarDrawerToggle, you must call it during
+     * onPostCreate() and onConfigurationChanged()...
+     */
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        // Sync the toggle state after onRestoreInstanceState has occurred.
+        mDrawerToggle.syncState();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        // Pass any configuration change to the drawer toggles
+        mDrawerToggle.onConfigurationChanged(newConfig);
+    }
+    
+
+	  @Override
+	  public void onBackPressed() {
+	      if (getFragmentManager().getBackStackEntryCount() == 0) {
+	          this.finish();
+	      } else {
+	          getFragmentManager().popBackStack();
+	      }
+	  }
+  
 }
