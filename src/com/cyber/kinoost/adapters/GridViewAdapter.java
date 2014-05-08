@@ -71,11 +71,11 @@ public class GridViewAdapter extends BaseAdapter {
     	} 
     	Film film = films.get(position); 
     	holder.name.setText(film.getName()); 
+    	holder.name.setSelected(true
+    			);
     	//holder.image.setImageResource(R.drawable.sample_2);
     	imageLoader.DisplayImage(film.getImgUrl(), holder.image);
-
-    	LinearLayout filmLayout = (LinearLayout) row;
-    	filmLayout.setOnClickListener(new OnClickListener() {
+    	holder.image.setOnClickListener(new OnClickListener() {
 
              @Override
              public void onClick(View v) {
