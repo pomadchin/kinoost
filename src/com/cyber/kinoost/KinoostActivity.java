@@ -4,6 +4,7 @@ import java.util.Date;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -166,11 +167,11 @@ public class KinoostActivity extends FragmentActivity {
     				break;
     	}
 
-    	Bundle args = new Bundle();
-        fragment.setArguments(args);
-
         FragmentManager fragmentManager = getFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();        
+        transaction.replace(R.id.content_frame, fragment);
+        transaction.commit();
+
 
         // update selected item and title, then close the drawer
         mDrawerList.setItemChecked(position, true);
@@ -202,9 +203,15 @@ public class KinoostActivity extends FragmentActivity {
         // Pass any configuration change to the drawer toggles
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
+    
 
-    /**
-     * Fragment that appears in the "content_frame", shows a planet
-     */
+	  @Override
+	  public void onBackPressed() {
+	      if (getFragmentManager().getBackStackEntryCount() == 0) {
+	          this.finish();
+	      } else {
+	          getFragmentManager().popBackStack();
+	      }
+	  }
   
 }

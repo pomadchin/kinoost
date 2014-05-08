@@ -4,6 +4,7 @@ import java.util.List;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -93,10 +94,11 @@ public class GridViewAdapter extends BaseAdapter {
 		newFragment.setArguments(bundle);
 		
         FragmentManager fragmentManager = activity.getFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.content_frame, newFragment).commit();
-//      transaction.addToBackStack(null);
-
-    	
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.content_frame, newFragment);
+        transaction.addToBackStack("ost fragment");
+        transaction.commit();
+       
     }
 
 }

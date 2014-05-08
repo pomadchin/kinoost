@@ -3,11 +3,14 @@ package com.cyber.kinoost.adapters;
 import java.util.List;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -29,6 +32,14 @@ public class ListViewAdapter extends BaseAdapter {
 	private Film film;
     
 	private ImageLoader imageLoader;
+	
+	final KPlayer kPlayer = new KPlayer(mContext);
+	
+	final Account account = new Account(mContext);
+	
+	final ApiHelper apiHelper = new ApiHelper();
+	
+	final Api api = new Api(account);
 
     public ListViewAdapter(Context c, Film film, List<Music> sounds) {
         mContext = c;
@@ -38,7 +49,7 @@ public class ListViewAdapter extends BaseAdapter {
     }
 
     public int getCount() {
-        return music.size();
+        return music.size() + 1;
     }
 
     public Object getItem(int position) {
@@ -59,7 +70,7 @@ public class ListViewAdapter extends BaseAdapter {
 		if(position == 0)
 			return getImageView(convertView, parent);
 		else
-			return getTextView(position, convertView, parent);
+			return getTextView(position-1, convertView, parent);
 	}
 	
 	public View getImageView(View convertView, ViewGroup parent) {
@@ -89,25 +100,19 @@ public class ListViewAdapter extends BaseAdapter {
 			row = inflater.inflate(R.layout.row_list, parent, false);
 			musicHolder = (TextView) row
 					.findViewById(R.id.film_name);
-			musicHolder.setText(music.get(position - 1).getName());
+			musicHolder.setText(music.get(position).getName());
 			row.setTag(musicHolder);
+			FrameLayout musicRow = (FrameLayout) row;
+			musicRow.setOnClickListener(new OnClickListener() {
+	             @Override
+	             public void onClick(View v) {
+	            	 Log.i("ListAdapter", music.get(position).getName());
+	            	 apiHelper.getSongMusic(mContext, api, music.get(position), kPlayer);
+	             }
+	         });
 		} else
 			musicHolder = (TextView) row.getTag();
-		
 		musicHolder.setText(music.get(position).getName());
-		
-		final KPlayer kPlayer = new KPlayer(mContext);
-		final Account account = new Account(mContext);
-		final ApiHelper apiHelper = new ApiHelper();
-		final Api api = new Api(account);
-		
-    	musicHolder.setOnClickListener(new OnClickListener() {
-             @Override
-             public void onClick(View v) {
-            	 apiHelper.getSongMusic(mContext, api, music.get(position), kPlayer);
-             }
-         });
-
     	return row;
 	}
 
