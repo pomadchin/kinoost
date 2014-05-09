@@ -3,7 +3,6 @@ package com.cyber.kinoost.fragments;
 import java.sql.SQLException;
 import java.util.List;
 
-import android.app.ActionBar;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -56,7 +55,7 @@ public class FilmsFragment extends Fragment {
     	FilmMusicRepository filmMusicRepo = new FilmMusicRepository(getActivity().getBaseContext());
     	List<Film> films = null;
     	try {
-			films = filmMusicRepo.findFilmByName("", 0, 10);
+			films = filmMusicRepo.findFilmByName("", 0, 30);
 			Log.d("SIZE", Integer.toString(films.size()));
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
