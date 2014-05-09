@@ -2,16 +2,21 @@ package com.cyber.kinoost;
 
 import java.util.Date;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
+import android.app.ActionBar;
+import android.app.ActionBar.Tab;
+import android.app.ActionBar.TabListener;
+import android.app.SearchManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -20,18 +25,23 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.SearchView;
 
+import com.cyber.kinoost.adapters.TabsPagerAdapter;
 import com.cyber.kinoost.api.ApiHelper;
 import com.cyber.kinoost.db.DatabaseHelper;
-import com.cyber.kinoost.fragments.InfoFragment;
 import com.cyber.kinoost.fragments.FilmsFragment;
-import com.cyber.kinoost.fragments.TopFilmsFragment;
+import com.cyber.kinoost.fragments.InfoFragment;
+import com.cyber.kinoost.fragments.OstFragment;
+import com.cyber.kinoost.fragments.TopRatedFragment;
 
-public class KinoostActivity extends FragmentActivity {
+
+public class KinoostActivity extends FragmentActivity implements TabListener {
 
 	private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
+    private ActionBar actionBar;
 
     private CharSequence mDrawerTitle;
     private CharSequence mTitle;
@@ -42,6 +52,8 @@ public class KinoostActivity extends FragmentActivity {
 	public static final String APP_PREFERENCES_UPDATE_DATE = "com.cyber.kinoost.update.date";
 	public static final long APP_PREFERENCES_DAYS_UPDATE = 1;
 	
+	private String[] tabs = { "ФИЛЬМЫ", "САУНДТРЕКИ", "ТОП 10" };
+	
 	DatabaseHelper dbHelper;
 	SharedPreferences prefs;
 	SharedPreferences.Editor editor;
@@ -50,12 +62,10 @@ public class KinoostActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        
-        //From MainActivity
         prefs = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
 		editor = prefs.edit();
-        
-
+		
+		actionBar = getActionBar();
         mTitle = mDrawerTitle = getTitle();
         menuTitles = getResources().getStringArray(R.array.menu_items);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -69,8 +79,14 @@ public class KinoostActivity extends FragmentActivity {
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
         // enable ActionBar app icon to behave as action to toggle nav drawer
-        getActionBar().setDisplayHomeAsUpEnabled(true);
-        getActionBar().setHomeButtonEnabled(true);
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setHomeButtonEnabled(true);
+        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+  
+        for (String tab_name : tabs) {
+            actionBar.addTab(actionBar.newTab().setText(tab_name)
+                    .setTabListener(this));
+        }
 
         // ActionBarDrawerToggle ties together the the proper interactions
         // between the sliding drawer and the action bar app icon
@@ -109,7 +125,7 @@ public class KinoostActivity extends FragmentActivity {
 		Date updDate = new Date(prefs.getLong(
 				APP_PREFERENCES_UPDATE_DATE, 0));
 		long diffDays = (newDate.getTime() - storedDate.getTime())
-				/ (24 * 60 * 60 * 10);
+				/ (24 * 60 * 60 * 100);
 
 		if (diffDays >= APP_PREFERENCES_DAYS_UPDATE) {
 			editor.putLong(APP_PREFERENCES_UPDATE_DATETIME,
@@ -124,14 +140,23 @@ public class KinoostActivity extends FragmentActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main, menu);
+        
+        
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView = (SearchView) menu.findItem(R.id.action_search)
+                .getActionView();
+        searchView.setSearchableInfo(searchManager
+                .getSearchableInfo(getComponentName()));
+        
+        
         return super.onCreateOptionsMenu(menu);
     }
 
     /* Called whenever we call invalidateOptionsMenu() */
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        // If the nav drawer is open, hide action items related to the content view
-        return super.onPrepareOptionsMenu(menu);
+        // If the nav drawer is open, hide action items related to the content view      
+    	return super.onPrepareOptionsMenu(menu);
     }
 
     @Override
@@ -153,29 +178,42 @@ public class KinoostActivity extends FragmentActivity {
             selectItem(position);
         }
     }
+    
+//    <string-array name="menu_items">
+	//    <item>Главная</item>
+	//    <item>Избранное</item>
+	//    <item>Сохраненное</item>
+	//    <item>Рейтинг</item>
+	//    <item>Информация</item>
+	//    <item>Настройки</item>
+//	</string-array>
 
     private void selectItem(int position) {
     	Fragment fragment;
     	switch(position) {
     		case 0: fragment = new FilmsFragment();  
+    				if(actionBar.getNavigationMode() != ActionBar.NAVIGATION_MODE_TABS)
+    					actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);				
     				break;
-    		case 1: fragment = new TopFilmsFragment();  
+    		case 1: fragment = new OstFragment();
 					break;
-    		case 5: fragment = new InfoFragment();
+    		case 2: fragment = new TopRatedFragment();
+					break;
+    		case 4: fragment = new InfoFragment();
+    				actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
     				break;
     		default: fragment = new FilmsFragment();
     				break;
     	}
 
-        FragmentManager fragmentManager = getFragmentManager();
+        FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();        
         transaction.replace(R.id.content_frame, fragment);
         transaction.commit();
-
-
-        // update selected item and title, then close the drawer
+        
         mDrawerList.setItemChecked(position, true);
-        setTitle(menuTitles[position]);
+        if(position != 1 && position != 2)
+        	setTitle(menuTitles[position]);
         mDrawerLayout.closeDrawer(mDrawerList);
     }
 
@@ -213,5 +251,24 @@ public class KinoostActivity extends FragmentActivity {
 	          getFragmentManager().popBackStack();
 	      }
 	  }
+
+	@Override
+	public void onTabReselected(Tab tab, android.app.FragmentTransaction ft) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onTabSelected(Tab tab, android.app.FragmentTransaction ft) {
+		//viewPager.setCurrentItem(tab.getPosition());
+		selectItem(tab.getPosition());
+		
+	}
+
+	@Override
+	public void onTabUnselected(Tab tab, android.app.FragmentTransaction ft) {
+		// TODO Auto-generated method stub
+		
+	}
   
 }

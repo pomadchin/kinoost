@@ -1,7 +1,8 @@
 package com.cyber.kinoost.fragments;
 
-import android.app.Fragment;
+import android.app.ActionBar;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,11 +16,12 @@ public class InfoFragment extends Fragment {
 	public InfoFragment() {
 		// Empty constructor required for fragment subclasses
 	}
+	
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-
+		
 		View info = inflater.inflate(R.layout.fragment_info,
 				container, false);
 		TextView tv = (TextView) info.findViewById(R.id.text_info);

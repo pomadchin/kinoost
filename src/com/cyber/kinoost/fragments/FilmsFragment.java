@@ -3,8 +3,9 @@ package com.cyber.kinoost.fragments;
 import java.sql.SQLException;
 import java.util.List;
 
-import android.app.Fragment;
+import android.app.ActionBar;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,11 +22,11 @@ public class FilmsFragment extends Fragment {
     public FilmsFragment() {
         // Empty constructor required for fragment subclasses
     }
+    
   
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-
 // 		TEST DATA    	
 //    	
 //    	Film film1 = new Film();
@@ -62,7 +63,6 @@ public class FilmsFragment extends Fragment {
 			e.printStackTrace();
 		}
     	return films;
-    	
     } 
 
 }

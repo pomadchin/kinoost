@@ -2,11 +2,11 @@ package com.cyber.kinoost.adapters;
 
 import java.util.List;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -18,7 +18,7 @@ import android.widget.TextView;
 import com.cyber.kinoost.KinoostActivity;
 import com.cyber.kinoost.R;
 import com.cyber.kinoost.db.models.Film;
-import com.cyber.kinoost.fragments.OstFragment;
+import com.cyber.kinoost.fragments.FilmOstFragment;
 import com.cyber.kinoost.img.ImageLoader;
 
 public class GridViewAdapter extends BaseAdapter {
@@ -87,12 +87,12 @@ public class GridViewAdapter extends BaseAdapter {
     
     private void startFilmFragment(int position) {
     	KinoostActivity activity = (KinoostActivity) mContext;
-		Fragment newFragment = new OstFragment(); 
+		Fragment newFragment = new FilmOstFragment(); 
 		Bundle bundle = new Bundle();
 		bundle.putSerializable("film", films.get(position));
 		newFragment.setArguments(bundle);
 		
-        FragmentManager fragmentManager = activity.getFragmentManager();
+        FragmentManager fragmentManager = activity.getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.content_frame, newFragment);
         transaction.addToBackStack("ost fragment");

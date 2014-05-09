@@ -8,16 +8,16 @@ import android.view.ViewGroup;
 
 import com.cyber.kinoost.R;
 
-public class OstFragment extends Fragment {
+public class TopRatedFragment extends Fragment {
     
-    public OstFragment() {
+    public TopRatedFragment() {
         // Empty constructor required for fragment subclasses
     }
   
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-    	View rootView = inflater.inflate(R.layout.osts, container, false);
+    	View rootView = inflater.inflate(R.layout.top_rated, container, false);
    	
         return rootView;
     }

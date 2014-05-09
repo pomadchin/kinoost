@@ -11,12 +11,12 @@ import java.util.ArrayList;
 
 import org.json.JSONException;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 
 import com.cyber.kinoost.KinoostActivity;
@@ -61,7 +61,7 @@ public class HttpAsyncTaskVkSong extends AsyncTask<String, Integer, String> {
 	private void startLoginFragment() {
 		KinoostActivity activity = (KinoostActivity) context;
 		Fragment newFragment = new LoginFragment();
-		FragmentManager fragmentManager = activity.getFragmentManager();
+		FragmentManager fragmentManager = activity.getSupportFragmentManager();
 		FragmentTransaction transaction = fragmentManager.beginTransaction();
 		transaction.replace(R.id.content_frame, newFragment);
 		transaction.commit();
