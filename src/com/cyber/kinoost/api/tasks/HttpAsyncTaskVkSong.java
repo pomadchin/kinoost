@@ -1,27 +1,32 @@
 package com.cyber.kinoost.api.tasks;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
-import android.app.ProgressDialog;
-import android.content.Context;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-
 import org.json.JSONException;
 
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.os.AsyncTask;
+import android.util.Log;
+
+import com.cyber.kinoost.KinoostActivity;
+import com.cyber.kinoost.R;
 import com.cyber.kinoost.api.vk.sources.Api;
 import com.cyber.kinoost.api.vk.sources.Audio;
 import com.cyber.kinoost.api.vk.sources.KException;
-
-import android.os.AsyncTask;
-import com.cyber.kinoost.db.models.*;
-import com.cyber.kinoost.db.repositories.*;
+import com.cyber.kinoost.db.models.Music;
+import com.cyber.kinoost.db.repositories.MusicRepository;
+import com.cyber.kinoost.fragments.LoginFragment;
 import com.cyber.kinoost.views.KPlayer;
 
 public class HttpAsyncTaskVkSong extends AsyncTask<String, Integer, String> {
@@ -52,6 +57,16 @@ public class HttpAsyncTaskVkSong extends AsyncTask<String, Integer, String> {
 		progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
 		progressDialog.show();
 	}
+	
+	private void startLoginFragment() {
+		KinoostActivity activity = (KinoostActivity) context;
+		Fragment newFragment = new LoginFragment();
+		FragmentManager fragmentManager = activity.getFragmentManager();
+		FragmentTransaction transaction = fragmentManager.beginTransaction();
+		transaction.replace(R.id.content_frame, newFragment);
+		transaction.commit();
+
+	}
 
 	@Override
 	protected String doInBackground(String... params) {
@@ -73,7 +88,12 @@ public class HttpAsyncTaskVkSong extends AsyncTask<String, Integer, String> {
 		} catch (JSONException e) {
 			e.printStackTrace();
 		} catch (KException e) {
-			e.printStackTrace();
+			Log.i(this.getClass().getName(),e.getMessage());
+			if(e.getMessage().contains("authorization failed")) {
+				startLoginFragment();
+			}
+			
+			//e.printStackTrace();
 		}
 
 		return "";

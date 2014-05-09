@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -35,11 +34,9 @@ public class ListViewAdapter extends BaseAdapter {
 	
 	final KPlayer kPlayer = new KPlayer(mContext);
 	
-	final Account account = new Account(mContext);
-	
 	final ApiHelper apiHelper = new ApiHelper();
 	
-	final Api api = new Api(account);
+
 
     public ListViewAdapter(Context c, Film film, List<Music> sounds) {
         mContext = c;
@@ -106,8 +103,11 @@ public class ListViewAdapter extends BaseAdapter {
 			musicRow.setOnClickListener(new OnClickListener() {
 	             @Override
 	             public void onClick(View v) {
-	            	 Log.i("ListAdapter", music.get(position).getName());
-	            	 apiHelper.getSongMusic(mContext, api, music.get(position), kPlayer);
+					Log.i("ListAdapter", music.get(position).getName());
+					Account account = new Account(mContext);
+					Api api = new Api(account);
+					apiHelper.getSongMusic(mContext, api, music.get(position), kPlayer);
+
 	             }
 	         });
 		} else
