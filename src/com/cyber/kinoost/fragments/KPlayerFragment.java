@@ -182,13 +182,13 @@ public class KPlayerFragment extends Fragment implements OnCompletionListener,
 			public void onClick(View arg0) {
 				if (isRepeat) {
 					isRepeat = false;
-					Toast.makeText(getActivity(), "Повтор включен",
+					Toast.makeText(getActivity(), "Повтор выключен",
 							Toast.LENGTH_SHORT).show();
 					btnRepeat.setImageResource(R.drawable.btn_repeat);
 				} else {
 					// make repeat to true
 					isRepeat = true;
-					Toast.makeText(getActivity(), "Повтор выключен",
+					Toast.makeText(getActivity(), "Повтор включен",
 							Toast.LENGTH_SHORT).show();
 					// make shuffle to false
 					isShuffle = false;
