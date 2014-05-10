@@ -166,8 +166,8 @@ public class ApiHelper {
 		Bundle bundle = new Bundle();
 		bundle.putSerializable(MUSIC_CLASS_NAME, music);
 		newFragment.setArguments(bundle);
-		
-        FragmentManager fragmentManager = activity.getSupportFragmentManager();
+
+		FragmentManager fragmentManager = activity.getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.content_frame, newFragment);
         transaction.addToBackStack("player fragment");

@@ -62,12 +62,19 @@ public class KPlayerFragment extends Fragment implements OnCompletionListener,
 	public KPlayerFragment() {
 		// Empty constructor required for fragment subclasses
 	}
+	
+	@Override
+	public void onDestroyView() {
+		super.onDestroyView();
+		getActivity().getActionBar().show();
+			
+	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 
-		// TODO: remove this line
+		getActivity().getActionBar().hide();
 		getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		myFragmentView = inflater.inflate(R.layout.player, container, false);
 
