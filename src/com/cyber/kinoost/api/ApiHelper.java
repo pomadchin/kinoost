@@ -17,14 +17,22 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 
+import com.cyber.kinoost.KinoostActivity;
+import com.cyber.kinoost.R;
 import com.cyber.kinoost.api.tasks.*;
 import com.cyber.kinoost.api.vk.sources.Api;
 import com.cyber.kinoost.db.models.Music;
-import com.cyber.kinoost.views.KPlayer;
+import com.cyber.kinoost.fragments.KPlayerFragment;
 
 public class ApiHelper {
+	
+	private final String MUSIC_CLASS_NAME = "com.cyber.kinoost.db.models.Music";
 
 	public static void dbUpdate(Context updateContext, Date date) {
 
@@ -136,20 +144,34 @@ public class ApiHelper {
 	}
 
 	// getSong via vk api
-	public void getSongMusic(Context context, Api api, Music music, KPlayer kPlayer) {
+	public void getSongMusic(Context context, Api api, Music music) {
 		if (music.getFileName() != null) {
 			File fileMusic = new File(music.getFileName());
 			if (fileMusic.exists()) {
-				kPlayer.play(music.getFileName());
+				startPlayerFragment(context, music);
 				return;
 			}
 		}
 
-		getSong(api, music.getName(), music, context, kPlayer);
+		getSong(api, music.getName(), music, context);
 	}
 
-	public void getSong(Api api, String request, Music music, Context context, KPlayer kPlayer) {
-		new HttpAsyncTaskVkSong(api, request, music, context, kPlayer).execute(request);
+	public void getSong(Api api, String request, Music music, Context context) {
+		new HttpAsyncTaskVkSong(api, request, music, context, this).execute(request);
+	}
+	
+	public void startPlayerFragment(Context context, Music music) {
+		KinoostActivity activity = (KinoostActivity) context;
+		Fragment newFragment = new KPlayerFragment(); 
+		Bundle bundle = new Bundle();
+		bundle.putSerializable(MUSIC_CLASS_NAME, music);
+		newFragment.setArguments(bundle);
+		
+        FragmentManager fragmentManager = activity.getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.content_frame, newFragment);
+        transaction.addToBackStack("player fragment");
+        transaction.commit();
 	}
 
 }

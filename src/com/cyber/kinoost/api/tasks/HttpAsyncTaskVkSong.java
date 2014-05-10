@@ -21,32 +21,35 @@ import android.util.Log;
 
 import com.cyber.kinoost.KinoostActivity;
 import com.cyber.kinoost.R;
+import com.cyber.kinoost.api.ApiHelper;
 import com.cyber.kinoost.api.vk.sources.Api;
 import com.cyber.kinoost.api.vk.sources.Audio;
 import com.cyber.kinoost.api.vk.sources.KException;
 import com.cyber.kinoost.db.models.Music;
 import com.cyber.kinoost.db.repositories.MusicRepository;
-import com.cyber.kinoost.fragments.LoginFragment;
-import com.cyber.kinoost.views.KPlayer;
+import com.cyber.kinoost.fragments.*;
 
 public class HttpAsyncTaskVkSong extends AsyncTask<String, Integer, String> {
 	
+	private final String MUSIC_CLASS_NAME = "com.cyber.kinoost.db.models.Music";
 	private Context context;
 	private Api api;
 	private String request;
 	private Music music;
-	private KPlayer kPlayer;
 	private ProgressDialog progressDialog;
+	private Boolean login;
+	private ApiHelper apiHelper;
 	
 	public HttpAsyncTaskVkSong(Api api, String request, Music music,
-			Context context, KPlayer kPlayer) {
+			Context context, ApiHelper apiHelper) {
 		super();
 		this.context = context;
 		this.api = api;
 		this.request = request;
 		this.music = music;
-		this.kPlayer = kPlayer;
 		this.progressDialog = new ProgressDialog(context);
+		this.login = true;
+		this.apiHelper = apiHelper;
 	}
 
 	@Override
@@ -90,6 +93,7 @@ public class HttpAsyncTaskVkSong extends AsyncTask<String, Integer, String> {
 		} catch (KException e) {
 			Log.i(this.getClass().getName(),e.getMessage());
 			if(e.getMessage().contains("authorization failed")) {
+				login = false;
 				startLoginFragment();
 			}
 			
@@ -162,6 +166,6 @@ public class HttpAsyncTaskVkSong extends AsyncTask<String, Integer, String> {
 	@Override
 	protected void onPostExecute(String result) {
 		progressDialog.hide();
-		kPlayer.play(result);
+		if (login) apiHelper.startPlayerFragment(context, music);
 	}
 }

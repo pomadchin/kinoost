@@ -36,8 +36,6 @@ public class ListViewAdapter extends BaseAdapter {
 	
 	final ApiHelper apiHelper = new ApiHelper();
 	
-
-
     public ListViewAdapter(Context c, Film film, List<Music> sounds) {
         mContext = c;
         this.film = film;
@@ -104,9 +102,10 @@ public class ListViewAdapter extends BaseAdapter {
 	             @Override
 	             public void onClick(View v) {
 					Log.i("ListAdapter", music.get(position).getName());
+					// TODO: Fragment, not an activity
 					Account account = new Account(mContext);
 					Api api = new Api(account);
-					apiHelper.getSongMusic(mContext, api, music.get(position), kPlayer);
+					apiHelper.getSongMusic(mContext, api, music.get(position));
 
 	             }
 	         });
