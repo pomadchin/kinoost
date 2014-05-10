@@ -44,6 +44,7 @@ public class KPlayerFragment extends Fragment implements OnCompletionListener,
 	private ImageButton btnBackward;
 	private ImageButton btnRepeat;
 	private SeekBar songProgressBar;
+	private TextView songTitleLabel;
 	private TextView songCurrentDurationLabel;
 	private TextView songTotalDurationLabel;
 	// Media Player
@@ -87,6 +88,7 @@ public class KPlayerFragment extends Fragment implements OnCompletionListener,
 		btnBackward = (ImageButton) myFragmentView.findViewById(R.id.btnBackward);
 		btnRepeat = (ImageButton) myFragmentView.findViewById(R.id.btnRepeat);
 		songProgressBar = (SeekBar) myFragmentView.findViewById(R.id.songProgressBar);
+		songTitleLabel = (TextView) myFragmentView.findViewById(R.id.songTitle);
 		songCurrentDurationLabel = (TextView) myFragmentView.findViewById(R.id.songCurrentDurationLabel);
 		songTotalDurationLabel = (TextView) myFragmentView.findViewById(R.id.songTotalDurationLabel);
 
@@ -236,8 +238,7 @@ public class KPlayerFragment extends Fragment implements OnCompletionListener,
 
 				// Displaying Song title
 				String songTitle = songsList.get(songIndex).get("songTitle");
-				//songTitleLabel.setText(songTitle);
-				getActivity().setTitle(songTitle);
+				songTitleLabel.setText(songTitle);
 
 				// Changing Button Image to pause image
 				btnPlay.setImageResource(R.drawable.btn_pause);
