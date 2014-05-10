@@ -31,7 +31,6 @@ import com.cyber.kinoost.fragments.*;
 
 public class HttpAsyncTaskVkSong extends AsyncTask<String, Integer, String> {
 	
-	private final String MUSIC_CLASS_NAME = "com.cyber.kinoost.db.models.Music";
 	private Context context;
 	private Api api;
 	private String request;

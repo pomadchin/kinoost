@@ -20,7 +20,6 @@ import com.cyber.kinoost.api.vk.sources.Api;
 import com.cyber.kinoost.db.models.Film;
 import com.cyber.kinoost.db.models.Music;
 import com.cyber.kinoost.img.ImageLoader;
-import com.cyber.kinoost.views.KPlayer;
 
 public class ListViewAdapter extends BaseAdapter {
     
@@ -31,8 +30,6 @@ public class ListViewAdapter extends BaseAdapter {
 	private Film film;
     
 	private ImageLoader imageLoader;
-	
-	final KPlayer kPlayer = new KPlayer(mContext);
 	
 	final ApiHelper apiHelper = new ApiHelper();
 	
@@ -102,7 +99,6 @@ public class ListViewAdapter extends BaseAdapter {
 	             @Override
 	             public void onClick(View v) {
 					Log.i("ListAdapter", music.get(position).getName());
-					// TODO: Fragment, not an activity
 					Account account = new Account(mContext);
 					Api api = new Api(account);
 					apiHelper.getSongMusic(mContext, api, music.get(position));

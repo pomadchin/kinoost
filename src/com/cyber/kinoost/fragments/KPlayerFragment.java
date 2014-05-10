@@ -42,13 +42,8 @@ public class KPlayerFragment extends Fragment implements OnCompletionListener,
 	private ImageButton btnPlay;
 	private ImageButton btnForward;
 	private ImageButton btnBackward;
-	// private ImageButton btnNext;
-	// private ImageButton btnPrevious;
-	// private ImageButton btnPlaylist;
 	private ImageButton btnRepeat;
-	// private ImageButton btnShuffle;
 	private SeekBar songProgressBar;
-	//private TextView songTitleLabel;
 	private TextView songCurrentDurationLabel;
 	private TextView songTotalDurationLabel;
 	// Media Player
@@ -72,6 +67,7 @@ public class KPlayerFragment extends Fragment implements OnCompletionListener,
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 
+		// TODO: remove this line
 		getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		myFragmentView = inflater.inflate(R.layout.player, container, false);
 
@@ -82,13 +78,8 @@ public class KPlayerFragment extends Fragment implements OnCompletionListener,
 		btnPlay = (ImageButton) myFragmentView.findViewById(R.id.btnPlay);
 		btnForward = (ImageButton) myFragmentView.findViewById(R.id.btnForward);
 		btnBackward = (ImageButton) myFragmentView.findViewById(R.id.btnBackward);
-		// btnNext = (ImageButton) myFragmentView.findViewById(R.id.btnNext);
-		// btnPrevious = (ImageButton) myFragmentView.findViewById(R.id.btnPrevious);
-		// btnPlaylist = (ImageButton) myFragmentView.findViewById(R.id.btnPlaylist);
 		btnRepeat = (ImageButton) myFragmentView.findViewById(R.id.btnRepeat);
-		// btnShuffle = (ImageButton) myFragmentView.findViewById(R.id.btnShuffle);
 		songProgressBar = (SeekBar) myFragmentView.findViewById(R.id.songProgressBar);
-		//songTitleLabel = (TextView) myFragmentView.findViewById(R.id.songTitle);
 		songCurrentDurationLabel = (TextView) myFragmentView.findViewById(R.id.songCurrentDurationLabel);
 		songTotalDurationLabel = (TextView) myFragmentView.findViewById(R.id.songTotalDurationLabel);
 
@@ -103,8 +94,6 @@ public class KPlayerFragment extends Fragment implements OnCompletionListener,
 
 		// Getting all songs list
 		songsList = songManager.getPlayList(music);
-
-		// Log.d("songsList", songsList.toString());
 
 		// By default play first song
 		playSong(0);
@@ -178,45 +167,6 @@ public class KPlayerFragment extends Fragment implements OnCompletionListener,
 		});
 
 		/**
-		 * Next button click event Plays next song by taking currentSongIndex +
-		 * 1
-		 * */
-		/*btnNext.setOnClickListener(new View.OnClickListener() {
-		 
-			@Override
-			public void onClick(View arg0) {
-				// check if next song is there or not
-				if(currentSongIndex < (songsList.size() - 1)){
-					playSong(currentSongIndex + 1);
-					currentSongIndex = currentSongIndex + 1;
-				}else{
-					// play first song
-					playSong(0);
-					currentSongIndex = 0;
-				}
-			}
-		});*/
-
-		/**
-		 * Back button click event Plays previous song by currentSongIndex - 1
-		 * */
-		/*btnPrevious.setOnClickListener(new View.OnClickListener() {
-		
-			@Override
-			public void onClick(View arg0) {
-				if(currentSongIndex > 0){
-					playSong(currentSongIndex - 1);
-					currentSongIndex = currentSongIndex - 1;
-				}else{
-					// play last song
-					playSong(songsList.size() - 1);
-					currentSongIndex = songsList.size() - 1;
-				}
-				
-			}
-		});*/
-
-		/**
 		 * Button Click event for Repeat button Enables repeat flag to true
 		 * */
 		btnRepeat.setOnClickListener(new View.OnClickListener() {
@@ -240,42 +190,6 @@ public class KPlayerFragment extends Fragment implements OnCompletionListener,
 				}
 			}
 		});
-
-		/**
-		 * Button Click event for Shuffle button Enables shuffle flag to true
-		 * */
-		/*btnShuffle.setOnClickListener(new View.OnClickListener() {
-		
-			@Override
-			public void onClick(View arg0) {
-				if(isShuffle){
-					isShuffle = false;
-					Toast.makeText(getApplicationContext(), "Shuffle is OFF", Toast.LENGTH_SHORT).show();
-					btnShuffle.setImageResource(R.drawable.btn_shuffle);
-				}else{
-					// make repeat to true
-					isShuffle= true;
-					Toast.makeText(getApplicationContext(), "Shuffle is ON", Toast.LENGTH_SHORT).show();
-					// make shuffle to false
-					isRepeat = false;
-					btnShuffle.setImageResource(R.drawable.btn_shuffle_focused);
-					btnRepeat.setImageResource(R.drawable.btn_repeat);
-				}	
-			}
-		});*/
-
-		/**
-		 * Button Click event for Play list click event Launches list activity
-		 * which displays list of songs
-		 * */
-		/*btnPlaylist.setOnClickListener(new View.OnClickListener() {
-		
-			@Override
-			public void onClick(View arg0) {
-				Intent i = new Intent(getApplicationContext(), PlayListActivity.class);
-				startActivityForResult(i, 100);			
-			}
-		});*/
 
 		return myFragmentView;
 	}
