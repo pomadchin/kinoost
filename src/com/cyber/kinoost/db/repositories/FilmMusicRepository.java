@@ -1,7 +1,6 @@
 package com.cyber.kinoost.db.repositories;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.Callable;
 
@@ -161,24 +160,6 @@ public class FilmMusicRepository {
 	    filmList = filmDao.query(queryBuilder.prepare());
 
 	    return filmList;
-	}
-	
-	public ArrayList<Tuple<Film, Film>> findTuplesFilmByName(String name, int offset, int limit) throws SQLException {
-		List<Film> filmList = findFilmByName(name, offset, limit);
-		ArrayList<Tuple<Film, Film>> result = new ArrayList<Tuple<Film, Film>>();
-		
-		Iterator<Film> iterator = filmList.iterator();
-		while (iterator.hasNext()) {
-			Film fst = iterator.next();
-			Film snd = null;
-			
-			if(iterator.hasNext())
-				snd = iterator.next();
-			
-			result.add(new Tuple<Film, Film>(fst, snd));
-		}
-		
-		return result;
 	}
 	
 	public List<Music> findMusicByName(String name, int offset, int limit) throws SQLException {

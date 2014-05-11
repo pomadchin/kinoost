@@ -1,6 +1,7 @@
 package com.cyber.kinoost.fragments;
 
 import android.support.v4.app.Fragment;
+import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
@@ -31,6 +32,7 @@ public class LoginFragment extends Fragment {
 		// Empty constructor required for fragment subclasses
 	}
 
+	@SuppressLint("SetJavaScriptEnabled")
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -61,7 +63,8 @@ public class LoginFragment extends Fragment {
 			Log.i(TAG, "url=" + url);
 			if (url.startsWith(Auth.redirect_url)) {
 				if (!url.contains("error=")) {
-					String[] auth = Auth.parseRedirectUrl(url);				
+					String[] auth = Auth.parseRedirectUrl(url);
+					
 					account = new Account(getActivity(), auth[0], Long.parseLong(auth[1]));
 					account.save();
 				}

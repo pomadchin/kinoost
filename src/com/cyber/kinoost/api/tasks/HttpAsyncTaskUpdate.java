@@ -19,6 +19,7 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import android.os.AsyncTask;
+
 import com.cyber.kinoost.db.models.*;
 import com.cyber.kinoost.db.repositories.*;
 
@@ -79,9 +80,6 @@ public class HttpAsyncTaskUpdate extends AsyncTask<String, Void, String> {
 		try {
 			List<Film> film = filmRepo.findFilmByName("", 0, 10);
 			Log.d("kinoost-filmRepo-findFilmByName", film.toString());
-			
-			List<Tuple<Film, Film>> tfilm = filmRepo.findTuplesFilmByName("", 0, 10);
-			Log.d("kinoost-filmRepo-findFilmByName", tfilm.toString());
 
 			List<Music> music = musicRepo.findMusicByName("", 0, 10);
 			Log.d("kinoost-musicRepo-findMusicByName", music.toString());

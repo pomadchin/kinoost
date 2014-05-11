@@ -101,6 +101,7 @@ public class ListViewAdapter extends BaseAdapter {
 					Log.i("ListAdapter", music.get(position).getName());
 					Account account = new Account(mContext);
 					Api api = new Api(account);
+
 					apiHelper.getSongMusic(mContext, api, music.get(position));
 
 	             }
