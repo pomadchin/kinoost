@@ -1,6 +1,7 @@
 package com.cyber.kinoost.api.tasks;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
@@ -26,14 +27,19 @@ public class PersistUserRunnable implements Runnable {
 		if ((int) account.getUserId() <= 0)
 			return;
 		
-		ArrayList<Long> usersList = new ArrayList<Long>();
+		Collection<Long> userIdsList = new ArrayList<Long>();
 		com.cyber.kinoost.api.vk.sources.User vkUser = null;
+		ArrayList<com.cyber.kinoost.api.vk.sources.User> userList = null;
 		
 		Api api = new Api(account);
-		usersList.add(new Long(account.getUserId()));
+		
+		userIdsList.add(new Long(account.getUserId()));
 
 		try {
-			vkUser = api.getProfiles(usersList, null, null, null, null, null).get(0);
+			userList = api.getProfiles(userIdsList, null, null, null, null, null);
+			if(userList.size() > 0)
+				vkUser = userList.get(0);
+			
 			if (vkUser != null) 
 				account.setName(vkUser.last_name + " " + vkUser.first_name);
 			
