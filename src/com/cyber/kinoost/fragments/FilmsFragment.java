@@ -20,30 +20,19 @@ public class FilmsFragment extends Fragment {
     
     public FilmsFragment() {
         // Empty constructor required for fragment subclasses
-    }
-    
+    }    
   
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-// 		TEST DATA    	
-//    	
-//    	Film film1 = new Film();
-//    	film1.setName("Die Hard 1");
-//    	
-//    	Film film2 = new Film();
-//    	film2.setName("Die Hard 2");
-//    	
-//    	Film film3 = new Film();
-//    	film3.setName("Die Hard 3");
-//    	
-//    	List<Film> films = new LinkedList<Film>();
-//    	films.add(film1);
-//    	films.add(film2);
-//    	films.add(film3);
-//    	
+    	String filmName;
+    	try {
+    		filmName = (String) getArguments().getSerializable("filmName");
+    	} catch(Exception e) {
+    		filmName = "";    		
+    	}  	
     	View myFragmentView = inflater.inflate(R.layout.fragment_grid, container, false);
-        List<Film> films = getFilms();
+        List<Film> films = getFilms(filmName);
     	
     	GridView gridview = (GridView) myFragmentView.findViewById(R.id.gridview);
         gridview.setAdapter(new GridViewAdapter(getActivity(), films));
@@ -51,11 +40,11 @@ public class FilmsFragment extends Fragment {
         return myFragmentView;
     }
     
-    private List<Film> getFilms() {
+    private List<Film> getFilms(String filmName) {
     	FilmMusicRepository filmMusicRepo = new FilmMusicRepository(getActivity().getBaseContext());
     	List<Film> films = null;
     	try {
-			films = filmMusicRepo.findFilmByName("", 0, 30);
+			films = filmMusicRepo.findFilmByName(filmName, 0, 30);
 			Log.d("SIZE", Integer.toString(films.size()));
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

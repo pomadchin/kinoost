@@ -25,6 +25,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.SearchView.OnQueryTextListener;
 
 import com.cyber.kinoost.api.ApiHelper;
 import com.cyber.kinoost.db.DatabaseHelper;
@@ -33,7 +34,7 @@ import com.cyber.kinoost.fragments.InfoFragment;
 import com.cyber.kinoost.fragments.OstFragment;
 import com.cyber.kinoost.fragments.TopRatedFragment;
 
-public class KinoostActivity extends FragmentActivity implements TabListener {
+public class KinoostActivity extends FragmentActivity implements TabListener, OnQueryTextListener {
 
 	private DrawerLayout mDrawerLayout;
 	private ListView mDrawerList;
@@ -43,6 +44,7 @@ public class KinoostActivity extends FragmentActivity implements TabListener {
 	private CharSequence mDrawerTitle;
 	private CharSequence mTitle;
 	private String[] menuTitles;
+	private SearchView searchView;
 
 	public static final String APP_PREFERENCES = "com.cyber.kinoost";
 	public static final String APP_PREFERENCES_UPDATE_DATETIME = "com.cyber.kinoost.update.datetime";
@@ -112,6 +114,7 @@ public class KinoostActivity extends FragmentActivity implements TabListener {
 		if (savedInstanceState == null) {
 			selectItem(0);
 		}
+		
 	}
 
 	@Override
@@ -138,10 +141,12 @@ public class KinoostActivity extends FragmentActivity implements TabListener {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.main, menu);
 		SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-		SearchView searchView = (SearchView) menu.findItem(R.id.action_search)
+		searchView = (SearchView) menu.findItem(R.id.action_search)
 				.getActionView();
 		searchView.setSearchableInfo(searchManager
 				.getSearchableInfo(getComponentName()));
+		searchView.setOnQueryTextListener(this);
+		searchView.setQueryHint("Введите название...");
 
 		return super.onCreateOptionsMenu(menu);
 	}
@@ -208,16 +213,20 @@ public class KinoostActivity extends FragmentActivity implements TabListener {
 			fragment = new FilmsFragment();
 			break;
 		}
-
-		FragmentManager fragmentManager = getSupportFragmentManager();
-		FragmentTransaction transaction = fragmentManager.beginTransaction();
-		transaction.replace(R.id.content_frame, fragment);
-		transaction.commit();
+		
+		replaceFragment(fragment);
 
 		mDrawerList.setItemChecked(position, true);
 		if (position != 1 && position != 2)
 			setTitle(menuTitles[position]);
 		mDrawerLayout.closeDrawer(mDrawerList);
+	}
+	
+	public void replaceFragment(Fragment newFragment) {
+		FragmentManager fragmentManager = getSupportFragmentManager();
+		FragmentTransaction transaction = fragmentManager.beginTransaction();
+		transaction.replace(R.id.content_frame, newFragment);
+		transaction.commit();		
 	}
 
 	@Override
@@ -262,9 +271,12 @@ public class KinoostActivity extends FragmentActivity implements TabListener {
 
 	@Override
 	public void onTabSelected(Tab tab, android.app.FragmentTransaction ft) {
-		// viewPager.setCurrentItem(tab.getPosition());
+		int id = tab.getPosition();
+		if (searchView != null && id == 2)
+			searchView.setVisibility(View.INVISIBLE);
+		else if (searchView != null)
+			searchView.setVisibility(View.VISIBLE);
 		selectItem(tab.getPosition());
-
 	}
 
 	@Override
@@ -273,4 +285,35 @@ public class KinoostActivity extends FragmentActivity implements TabListener {
 
 	}
 
+	public void onListItemClick(ListView l, View v, int position, long id) {
+		// call detail activity for clicked entry
+	}
+
+	@Override
+	public boolean onQueryTextChange(String newText) {
+		// TODO: add suggestions
+		return false;
+	}
+
+	@Override
+	public boolean onQueryTextSubmit(String query) {
+		Fragment fragment;
+		Bundle bundle = new Bundle();
+		switch (actionBar.getSelectedTab().getPosition()) {
+		case 0:
+			fragment = new FilmsFragment();
+			bundle.putSerializable("filmName", query);
+			break;
+		case 1:
+			fragment = new OstFragment();
+			bundle.putSerializable("filmName", query);
+			break;
+		default: fragment = new FilmsFragment();
+		}
+		fragment.setArguments(bundle);
+		replaceFragment(fragment);
+		searchView.setQuery("", false);
+		return false;
+	}
+	
 }
