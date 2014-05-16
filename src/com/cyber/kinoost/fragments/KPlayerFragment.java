@@ -25,7 +25,6 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.cyber.kinoost.KinoostActivity;
 import com.cyber.kinoost.R;
 import com.cyber.kinoost.db.models.Music;
 import com.cyber.kinoost.listeners.OnSwipeTouchListener;
@@ -40,7 +39,6 @@ public class KPlayerFragment extends Fragment implements OnCompletionListener,
 	RelativeLayout imgContainer;
 	RelativeLayout headContainer;
 	View myFragmentView;
-
 	private final String MUSIC_CLASS_NAME = "com.cyber.kinoost.db.models.Music";
 	private Music music;
 	private ImageButton btnPlay;
@@ -74,23 +72,29 @@ public class KPlayerFragment extends Fragment implements OnCompletionListener,
 		getActivity().getActionBar().show();
 			
 	}
-	private void startFilmFragment() {	
+	private void startFilmFragment() {
+		Bundle bundle = new Bundle();
+		bundle.putSerializable("music", music);
 		Fragment newFragment = new FilmsFragment();
+		newFragment.setArguments(bundle);
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit);
         transaction.replace(R.id.content_frame, newFragment);
         transaction.addToBackStack("player fragment");
         transaction.commit();
-       
     }
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-
+		
 		getActivity().getActionBar().hide();
 		getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+		
+		// Get music
+		music = (Music) getArguments().getSerializable(MUSIC_CLASS_NAME);
+		
 		myFragmentView = inflater.inflate(R.layout.player, container, false);
 		myFragmentView.setOnTouchListener(new OnSwipeTouchListener(getActivity()) {
 		    @Override
@@ -98,9 +102,6 @@ public class KPlayerFragment extends Fragment implements OnCompletionListener,
 		        startFilmFragment();
 		    }
 		});
-
-		// Get music
-		music = (Music) getArguments().getSerializable(MUSIC_CLASS_NAME);
 
 		// All player buttons
 		btnPlay = (ImageButton) myFragmentView.findViewById(R.id.btnPlay);

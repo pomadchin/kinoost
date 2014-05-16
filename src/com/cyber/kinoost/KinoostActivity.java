@@ -302,11 +302,11 @@ public class KinoostActivity extends FragmentActivity implements TabListener, On
 		switch (actionBar.getSelectedTab().getPosition()) {
 		case 0:
 			fragment = new FilmsFragment();
-			bundle.putSerializable("filmName", query);
+			bundle.putString("filmName", query);
 			break;
 		case 1:
 			fragment = new OstFragment();
-			bundle.putSerializable("songName", query);
+			bundle.putString("songName", query);
 			break;
 		default: fragment = new FilmsFragment();
 		}
