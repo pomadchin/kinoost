@@ -15,6 +15,7 @@ import com.j256.ormlite.table.DatabaseTable;
 public class Music implements Serializable {
 	
 	public final static String ID_FIELD_NAME = "id";
+	public final static String NAME_FIELD_NAME = "name";
 	public final static String PERFORMER_ID_FIELD_NAME = "performer_id";
 	
 	@DatabaseField(id = true, columnName = ID_FIELD_NAME)

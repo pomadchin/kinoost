@@ -11,10 +11,11 @@ import com.j256.ormlite.table.DatabaseTable;
 @DatabaseTable(tableName = "performer")
 public class Performer implements Serializable {
 	public final static String ID_FIELD_NAME = "id";
+	public final static String NAME_FIELD_NAME = "name";
 	
 	@DatabaseField(id = true, columnName = ID_FIELD_NAME)
 	int id;
-	@DatabaseField(index = true)
+	@DatabaseField(index = true, columnName = NAME_FIELD_NAME)
 	String name;
 	
 	public Performer() {

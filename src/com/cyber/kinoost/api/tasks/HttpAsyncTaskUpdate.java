@@ -83,6 +83,18 @@ public class HttpAsyncTaskUpdate extends AsyncTask<String, Void, String> {
 
 			List<Music> music = musicRepo.findMusicByName("", 0, 10);
 			Log.d("kinoost-musicRepo-findMusicByName", music.toString());
+			
+			List<Music> musicrus = musicRepo.findMusicByName("Песня охотника", 0, 10);
+			Log.d("kinoost-musicRepo-findMusicByNameRus", musicrus.toString());
+			
+			List<Music> musics1 = musicRepo.findMusicByFullName("", "Tangerine Dream", 0, 10);
+			Log.d("kinoost-musicRepo-findMusicByFullName1", musics1.toString());
+			
+			List<Music> musics2 = musicRepo.findMusicByFullName("Annie & Father", "", 0, 10);
+			Log.d("kinoost-musicRepo-findMusicByFullName2", musics2.toString());
+			
+			List<Music> musics3 = musicRepo.findMusicByFullName("Annie & Father", "Tangerine Dream", 0, 10);
+			Log.d("kinoost-musicRepo-findMusicByFullName3", musics3.toString());
 
 			List<Performer> performer = performerRepo.findPerformerByName("",0, 10);
 			Log.d("kinoost-performerRepo-findPeromerByName",performer.toString());
