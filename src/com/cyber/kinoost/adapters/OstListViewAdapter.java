@@ -14,22 +14,18 @@ import com.cyber.kinoost.R;
 import com.cyber.kinoost.api.ApiHelper;
 import com.cyber.kinoost.db.models.Music;
 import com.cyber.kinoost.db.models.Performer;
-import com.cyber.kinoost.img.ImageLoader;
 
 public class OstListViewAdapter extends BaseAdapter {
     
 	private Context mContext;
     
 	private List<Music> music;
-    
-	private ImageLoader imageLoader;
 	
 	final ApiHelper apiHelper = new ApiHelper();
 	
     public OstListViewAdapter(Context c, List<Music> sounds) {
         mContext = c;
         this.music = sounds;
-        this.imageLoader = new ImageLoader(c);
     }
 
     public int getCount() {
@@ -64,8 +60,7 @@ public class OstListViewAdapter extends BaseAdapter {
 			row.setTag(holder);
 
 		} else
-			holder = (ViewHolder) row.getTag();
-		
+			holder = (ViewHolder) row.getTag();		
 		Music song = music.get(position);
 		Performer performer = song.getPerformer();
 		String performerName = (performer != null) ? performer.getName() : "";

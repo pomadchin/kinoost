@@ -14,6 +14,8 @@ import android.media.MediaPlayer.OnCompletionListener;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,8 +25,10 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.cyber.kinoost.KinoostActivity;
 import com.cyber.kinoost.R;
 import com.cyber.kinoost.db.models.Music;
+import com.cyber.kinoost.listeners.OnSwipeTouchListener;
 import com.cyber.kinoost.mediaplayer.SongsManager;
 import com.cyber.kinoost.mediaplayer.Utilities;
 
@@ -70,6 +74,16 @@ public class KPlayerFragment extends Fragment implements OnCompletionListener,
 		getActivity().getActionBar().show();
 			
 	}
+	private void startFilmFragment() {	
+		Fragment newFragment = new FilmsFragment();
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit);
+        transaction.replace(R.id.content_frame, newFragment);
+        transaction.addToBackStack("player fragment");
+        transaction.commit();
+       
+    }
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -78,6 +92,12 @@ public class KPlayerFragment extends Fragment implements OnCompletionListener,
 		getActivity().getActionBar().hide();
 		getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		myFragmentView = inflater.inflate(R.layout.player, container, false);
+		myFragmentView.setOnTouchListener(new OnSwipeTouchListener(getActivity()) {
+		    @Override
+		    public void onSwipeLeft() {
+		        startFilmFragment();
+		    }
+		});
 
 		// Get music
 		music = (Music) getArguments().getSerializable(MUSIC_CLASS_NAME);
