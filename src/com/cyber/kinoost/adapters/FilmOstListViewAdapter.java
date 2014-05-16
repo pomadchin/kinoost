@@ -21,7 +21,7 @@ import com.cyber.kinoost.db.models.Film;
 import com.cyber.kinoost.db.models.Music;
 import com.cyber.kinoost.img.ImageLoader;
 
-public class ListViewAdapter extends BaseAdapter {
+public class FilmOstListViewAdapter extends BaseAdapter {
     
 	private Context mContext;
     
@@ -33,7 +33,7 @@ public class ListViewAdapter extends BaseAdapter {
 	
 	final ApiHelper apiHelper = new ApiHelper();
 	
-    public ListViewAdapter(Context c, Film film, List<Music> sounds) {
+    public FilmOstListViewAdapter(Context c, Film film, List<Music> sounds) {
         mContext = c;
         this.film = film;
         this.music = sounds;
@@ -89,7 +89,7 @@ public class ListViewAdapter extends BaseAdapter {
 		TextView musicHolder;
 		if (row == null || row.getTag() instanceof FilmInfoHolder) {
 			LayoutInflater inflater = LayoutInflater.from(mContext);
-			row = inflater.inflate(R.layout.row_list, parent, false);
+			row = inflater.inflate(R.layout.film_ost_row, parent, false);
 			musicHolder = (TextView) row
 					.findViewById(R.id.film_name);
 			musicHolder.setText(music.get(position).getName());

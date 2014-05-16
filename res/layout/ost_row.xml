@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/RelativeLayout"
+    android:layout_width="fill_parent"
+    android:layout_height="?android:attr/listPreferredItemHeight"
+    android:padding="6dip" >
+
+    <ImageView
+        android:id="@+id/image"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_margin="5dip" />
+
+    <TextView
+        android:id="@+id/performer"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/image"
+        android:lines="1"
+        android:text="Name"
+        android:textColor="#FFF"
+        android:textSize="20dip" />
+
+    <TextView
+        android:id="@+id/song_name"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/performer"
+        android:layout_toRightOf="@+id/image"
+        android:lines="1"
+        android:text="Address"
+        android:textColor="#FFF"
+        android:textSize="15dip" />
+
+</RelativeLayout>

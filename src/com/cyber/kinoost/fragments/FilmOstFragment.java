@@ -14,7 +14,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.cyber.kinoost.R;
-import com.cyber.kinoost.adapters.ListViewAdapter;
+import com.cyber.kinoost.adapters.FilmOstListViewAdapter;
 import com.cyber.kinoost.db.models.Film;
 import com.cyber.kinoost.db.models.Music;
 import com.cyber.kinoost.db.repositories.FilmMusicRepository;
@@ -50,7 +50,7 @@ public class FilmOstFragment extends Fragment {
 		year = Integer.toString(film.getYear());
 		rating = Double.toString(film.getRating());
 
-		View myFragmentView = inflater.inflate(R.layout.soundlist, container,
+		View myFragmentView = inflater.inflate(R.layout.fragment_film_ost, container,
 				false);
 
 		FilmMusicRepository filmMusicRepo = new FilmMusicRepository(
@@ -64,7 +64,7 @@ public class FilmOstFragment extends Fragment {
 		}
 
 		ListView list = (ListView) myFragmentView.findViewById(R.id.soundlist);
-		list.setAdapter(new ListViewAdapter(getActivity(), film, music));
+		list.setAdapter(new FilmOstListViewAdapter(getActivity(), film, music));
 		return myFragmentView;
 
 	}

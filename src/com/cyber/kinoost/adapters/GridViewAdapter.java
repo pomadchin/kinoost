@@ -59,7 +59,7 @@ public class GridViewAdapter extends BaseAdapter {
     	
     	if (row == null) { 
     		LayoutInflater inflater = LayoutInflater.from(mContext);
-    		row = inflater.inflate(R.layout.row_grid, parent, false); 
+    		row = inflater.inflate(R.layout.film_row, parent, false); 
     		holder = new ViewHolder(); 
     		holder.name = (TextView) row.findViewById(R.id.item_text); 
     		holder.image = (ImageView) row.findViewById(R.id.item_image); 
