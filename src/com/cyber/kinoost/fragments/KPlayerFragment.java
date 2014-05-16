@@ -14,6 +14,8 @@ import android.media.MediaPlayer.OnCompletionListener;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +27,7 @@ import android.widget.Toast;
 
 import com.cyber.kinoost.R;
 import com.cyber.kinoost.db.models.Music;
+import com.cyber.kinoost.listeners.OnSwipeTouchListener;
 import com.cyber.kinoost.mediaplayer.SongsManager;
 import com.cyber.kinoost.mediaplayer.Utilities;
 
@@ -36,7 +39,6 @@ public class KPlayerFragment extends Fragment implements OnCompletionListener,
 	RelativeLayout imgContainer;
 	RelativeLayout headContainer;
 	View myFragmentView;
-
 	private final String MUSIC_CLASS_NAME = "com.cyber.kinoost.db.models.Music";
 	private Music music;
 	private ImageButton btnPlay;
@@ -70,17 +72,36 @@ public class KPlayerFragment extends Fragment implements OnCompletionListener,
 		getActivity().getActionBar().show();
 			
 	}
+	private void startFilmFragment() {
+		Bundle bundle = new Bundle();
+		bundle.putSerializable("music", music);
+		Fragment newFragment = new FilmsFragment();
+		newFragment.setArguments(bundle);
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit);
+        transaction.replace(R.id.content_frame, newFragment);
+        transaction.addToBackStack("player fragment");
+        transaction.commit();
+    }
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-
+		
 		getActivity().getActionBar().hide();
 		getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-		myFragmentView = inflater.inflate(R.layout.player, container, false);
-
+		
 		// Get music
 		music = (Music) getArguments().getSerializable(MUSIC_CLASS_NAME);
+		
+		myFragmentView = inflater.inflate(R.layout.player, container, false);
+		myFragmentView.setOnTouchListener(new OnSwipeTouchListener(getActivity()) {
+		    @Override
+		    public void onSwipeLeft() {
+		        startFilmFragment();
+		    }
+		});
 
 		// All player buttons
 		btnPlay = (ImageButton) myFragmentView.findViewById(R.id.btnPlay);

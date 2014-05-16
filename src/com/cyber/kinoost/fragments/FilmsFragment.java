@@ -14,6 +14,7 @@ import android.widget.GridView;
 import com.cyber.kinoost.R;
 import com.cyber.kinoost.adapters.GridViewAdapter;
 import com.cyber.kinoost.db.models.Film;
+import com.cyber.kinoost.db.models.Music;
 import com.cyber.kinoost.db.repositories.FilmMusicRepository;
 
 public class FilmsFragment extends Fragment {
@@ -21,26 +22,32 @@ public class FilmsFragment extends Fragment {
     public FilmsFragment() {
         // Empty constructor required for fragment subclasses
     }    
-  
-    @Override
+
+	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-    	String filmName;
-    	try {
-    		filmName = (String) getArguments().getSerializable("filmName");
-    	} catch(Exception e) {
-    		filmName = "";    		
-    	}  	
-    	View myFragmentView = inflater.inflate(R.layout.fragment_grid, container, false);
-        List<Film> films = getFilms(filmName);
+    	List<Film> films;
+    	Bundle bundle = getArguments();
     	
+    	if (bundle != null && bundle.containsKey("filmName"))
+    		films = getFilmsByName(getArguments().getString("filmName"));
+    	else if (bundle != null && getArguments().containsKey("music"))
+    		films = getFilmsByMusic( (Music)getArguments().getSerializable("music"));
+    	else films = getFilmsByName("");
+    	
+     	View myFragmentView = inflater.inflate(R.layout.fragment_grid, container, false);
     	GridView gridview = (GridView) myFragmentView.findViewById(R.id.gridview);
         gridview.setAdapter(new GridViewAdapter(getActivity(), films));
         
         return myFragmentView;
     }
     
-    private List<Film> getFilms(String filmName) {
+    private List<Film> getFilmsByMusic(Music song) {
+    	//TODO: not implemented yet
+    	return null;   
+    }
+    
+    private List<Film> getFilmsByName(String filmName) {
     	FilmMusicRepository filmMusicRepo = new FilmMusicRepository(getActivity().getBaseContext());
     	List<Film> films = null;
     	try {
