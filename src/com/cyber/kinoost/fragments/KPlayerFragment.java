@@ -2,13 +2,18 @@ package com.cyber.kinoost.fragments;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.os.Bundle;
@@ -16,6 +21,7 @@ import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,7 +56,7 @@ public class KPlayerFragment extends Fragment implements OnCompletionListener,
 	private TextView songCurrentDurationLabel;
 	private TextView songTotalDurationLabel;
 	// Media Player
-	private MediaPlayer mp;
+	private static MediaPlayer mp = new MediaPlayer();
 	// Handler to update UI timer, progress bar etc,.
 	private Handler mHandler = new Handler();
 	private SongsManager songManager;
@@ -61,6 +67,8 @@ public class KPlayerFragment extends Fragment implements OnCompletionListener,
 	private boolean isShuffle = false;
 	private boolean isRepeat = false;
 	private ArrayList<HashMap<String, String>> songsList = new ArrayList<HashMap<String, String>>();
+	private int counter = 0;
+	private File downloadingMediaFile;
 
 	public KPlayerFragment() {
 		// Empty constructor required for fragment subclasses
@@ -114,7 +122,6 @@ public class KPlayerFragment extends Fragment implements OnCompletionListener,
 		songTotalDurationLabel = (TextView) myFragmentView.findViewById(R.id.songTotalDurationLabel);
 
 		// Mediaplayer
-		mp = new MediaPlayer();
 		songManager = new SongsManager();
 		utils = new Utilities();
 
@@ -241,36 +248,31 @@ public class KPlayerFragment extends Fragment implements OnCompletionListener,
 	/**
 	 * Function to play a song
 	 * 
-	 * @param songIndex
-	 *            - index of song
+	 * @param songIndex - index of song
 	 * */
 	public void playSong(int songIndex) {
 		// Play song
 		try {
-			File songFile = new File(songsList.get(songIndex).get("songPath"));
-			if (songFile.exists()) {
-				mp.reset();
-				@SuppressWarnings("resource")
-				FileInputStream songFileInputStream = new FileInputStream(
-						songFile);
-				mp.setDataSource(songFileInputStream.getFD());
-				mp.prepare();
-				mp.start();
+			mp.reset();
+			mp.setDataSource(songsList.get(songIndex).get("songPath"));
+			mp.setAudioStreamType(AudioManager.STREAM_MUSIC);
+			mp.prepare();
+			mp.start();
 
-				// Displaying Song title
-				String songTitle = songsList.get(songIndex).get("songTitle");
-				songTitleLabel.setText(songTitle);
+			// Displaying Song title
+			String songTitle = songsList.get(songIndex).get("songTitle");
+			songTitleLabel.setText(songTitle);
 
-				// Changing Button Image to pause image
-				btnPlay.setImageResource(R.drawable.btn_pause);
+			// Changing Button Image to pause image
+			btnPlay.setImageResource(R.drawable.btn_pause);
 
-				// set Progress bar values
-				songProgressBar.setProgress(0);
-				songProgressBar.setMax(100);
+			// set Progress bar values
+			songProgressBar.setProgress(0);
+			songProgressBar.setMax(100);
 
-				// Updating progress bar
-				updateProgressBar();
-			}
+			// Updating progress bar
+			updateProgressBar();
+
 		} catch (IllegalArgumentException e) {
 			e.printStackTrace();
 		} catch (IllegalStateException e) {
@@ -390,5 +392,10 @@ public class KPlayerFragment extends Fragment implements OnCompletionListener,
 		super.onDestroy();
 		mp.release();
 	}
-
+	
+	@Override
+	public void onDetach() {
+		super.onDetach();
+		mp.release();
+	}
 }
