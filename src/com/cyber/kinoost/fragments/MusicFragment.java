@@ -33,8 +33,7 @@ public class MusicFragment extends Fragment {
     		songName = "";    		
     	}  	
     	
-    	List<Music> music = getMusic(songName);
-    	
+    	List<Music> music = getMusic(songName);   	
     	ListView listView = (ListView) rootView.findViewById(R.id.listView);
         listView.setAdapter(new OstListViewAdapter(getActivity(), music));
    	

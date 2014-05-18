@@ -53,18 +53,4 @@ public class FilmsByMusicFragment extends Fragment {
     	return films;
     }
     
-//    private List<Film> getFilmsByName(String filmName) {
-//    	FilmMusicRepository filmMusicRepo = new FilmMusicRepository(getActivity().getBaseContext());
-//    	List<Film> films = null;
-//    	try {
-//			films = filmMusicRepo.findFilmByName(filmName, 0, 30);
-//			Log.d("SIZE", Integer.toString(films.size()));
-//		} catch (SQLException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//    	return films;
-//    } 
-
-    
 }

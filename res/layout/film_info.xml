@@ -2,7 +2,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" 
-    android:background="#222">
+    android:background="#111">
 
     <ImageView
         android:id="@+id/film_image"
@@ -10,7 +10,7 @@
         android:layout_height="200dp"
         android:layout_gravity="center"
         android:adjustViewBounds="true"
-        android:background="#555"
+        android:background="#333"
         android:src="@drawable/home" >
     </ImageView>
 

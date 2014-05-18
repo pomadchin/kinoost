@@ -51,6 +51,7 @@ public class GridViewAdapter extends BaseAdapter {
 	{
 		public ImageView image;
 		public TextView name;
+		public TextView year;
 	}
     
     public View getView(final int position, View convertView, ViewGroup parent) {
@@ -61,18 +62,18 @@ public class GridViewAdapter extends BaseAdapter {
     		LayoutInflater inflater = LayoutInflater.from(mContext);
     		row = inflater.inflate(R.layout.film_row, parent, false); 
     		holder = new ViewHolder(); 
-    		holder.name = (TextView) row.findViewById(R.id.item_text); 
-    		holder.image = (ImageView) row.findViewById(R.id.item_image); 
+    		holder.name = (TextView) row.findViewById(R.id.name); 
+    		holder.year = (TextView) row.findViewById(R.id.year); 
+    		holder.image = (ImageView) row.findViewById(R.id.image); 
     		row.setTag(holder); 
     		} 
     	else { 
     		holder = (ViewHolder) row.getTag(); 
     	} 
     	Film film = films.get(position); 
-    	holder.name.setText(film.getName()); 
-    	holder.name.setSelected(true
-    			);
-    	//holder.image.setImageResource(R.drawable.sample_2);
+    	holder.name.setText(film.getName());  	
+    	holder.name.setSelected(true);
+    	holder.year.setText(String.valueOf(film.getYear()));
     	imageLoader.DisplayImage(film.getImgUrl(), holder.image);
     	holder.image.setOnClickListener(new OnClickListener() {
 

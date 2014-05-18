@@ -32,7 +32,6 @@ import com.cyber.kinoost.db.DatabaseHelper;
 import com.cyber.kinoost.fragments.FilmsByNameFragment;
 import com.cyber.kinoost.fragments.InfoFragment;
 import com.cyber.kinoost.fragments.MusicFragment;
-import com.cyber.kinoost.fragments.TopRatedFragment;
 
 public class KinoostActivity extends FragmentActivity implements TabListener, OnQueryTextListener {
 
@@ -51,7 +50,7 @@ public class KinoostActivity extends FragmentActivity implements TabListener, On
 	public static final String APP_PREFERENCES_UPDATE_DATE = "com.cyber.kinoost.update.date";
 	public static final long APP_PREFERENCES_DAYS_UPDATE = 1;
 
-	private String[] tabs = { "ФИЛЬМЫ", "САУНДТРЕКИ", "ТОП 10" };
+	private String[] tabs = { "ФИЛЬМЫ", "САУНДТРЕКИ"};
 
 	DatabaseHelper dbHelper;
 	SharedPreferences prefs;
@@ -202,9 +201,6 @@ public class KinoostActivity extends FragmentActivity implements TabListener, On
 		case 1:
 			fragment = new MusicFragment();
 			break;
-		case 2:
-			fragment = new TopRatedFragment();
-			break;
 		case 4:
 			fragment = new InfoFragment();
 			actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
@@ -308,7 +304,8 @@ public class KinoostActivity extends FragmentActivity implements TabListener, On
 			fragment = new MusicFragment();
 			bundle.putString("songName", query);
 			break;
-		default: fragment = new FilmsByNameFragment();
+		default: 
+			fragment = new FilmsByNameFragment();
 		}
 		fragment.setArguments(bundle);
 		replaceFragment(fragment);

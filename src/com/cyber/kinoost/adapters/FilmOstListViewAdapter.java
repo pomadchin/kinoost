@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.cyber.kinoost.R;
@@ -19,6 +20,7 @@ import com.cyber.kinoost.api.ApiHelper;
 import com.cyber.kinoost.api.vk.sources.Api;
 import com.cyber.kinoost.db.models.Film;
 import com.cyber.kinoost.db.models.Music;
+import com.cyber.kinoost.db.models.Performer;
 import com.cyber.kinoost.img.ImageLoader;
 
 public class FilmOstListViewAdapter extends BaseAdapter {
@@ -58,17 +60,24 @@ public class FilmOstListViewAdapter extends BaseAdapter {
 		public TextView name;
 	}
     
+    public static class MusicInfoHolder
+   	{
+   		public ImageView image;
+   		public TextView name;
+   		public TextView performer;
+   	}
+    
 	public View getView(final int position, View convertView, ViewGroup parent) {
 		if(position == 0)
 			return getImageView(convertView, parent);
 		else
-			return getTextView(position-1, convertView, parent);
+			return getMusicView(position-1, convertView, parent);
 	}
 	
 	public View getImageView(View convertView, ViewGroup parent) {
 		View row = convertView;
 		FilmInfoHolder filmInfoHolder;
-		if (row == null || row.getTag() instanceof TextView) {
+		if (row == null || row.getTag() instanceof MusicInfoHolder) {
 			LayoutInflater inflater = LayoutInflater.from(mContext);
 			row = inflater.inflate(R.layout.film_info, parent, false);
 			filmInfoHolder = new FilmInfoHolder();
@@ -79,22 +88,22 @@ public class FilmOstListViewAdapter extends BaseAdapter {
 		} else
 			filmInfoHolder = (FilmInfoHolder) row.getTag();
 		
-		filmInfoHolder.name.setText(film.getName());
+		filmInfoHolder.name.setText(film.getName() + " (" + String.valueOf(film.getYear()) + ")");
 		imageLoader.DisplayImage(film.getImgUrl(), filmInfoHolder.image);
 		return row;
 	}
 	
-	public View getTextView(final int position, View convertView, ViewGroup parent) {
+	public View getMusicView(final int position, View convertView, ViewGroup parent) {
 		View row = convertView;
-		TextView musicHolder;
+		MusicInfoHolder musicHolder;
 		if (row == null || row.getTag() instanceof FilmInfoHolder) {
 			LayoutInflater inflater = LayoutInflater.from(mContext);
-			row = inflater.inflate(R.layout.film_ost_row, parent, false);
-			musicHolder = (TextView) row
-					.findViewById(R.id.film_name);
-			musicHolder.setText(music.get(position).getName());
+			row = inflater.inflate(R.layout.ost_row, parent, false);
+			musicHolder = new MusicInfoHolder();
+			musicHolder.image = (ImageView) row.findViewById(R.id.image);
+			musicHolder.name =  (TextView) row.findViewById(R.id.name);
 			row.setTag(musicHolder);
-			FrameLayout musicRow = (FrameLayout) row;
+			RelativeLayout musicRow = (RelativeLayout) row;
 			musicRow.setOnClickListener(new OnClickListener() {
 	             @Override
 	             public void onClick(View v) {
@@ -107,8 +116,14 @@ public class FilmOstListViewAdapter extends BaseAdapter {
 	             }
 	         });
 		} else
-			musicHolder = (TextView) row.getTag();
-		musicHolder.setText(music.get(position).getName());
+			musicHolder = (MusicInfoHolder) row.getTag();
+		
+		Music song = music.get(position);
+		Performer performer = song.getPerformer();
+		String performerName = (performer != null && performer.getName() != null) ? performer.getName() + " - " : "";
+		musicHolder.name.setText(performerName + song.getName());
+		musicHolder.name.setSelected(true);
+		musicHolder.image.setImageResource(R.drawable.music);
     	return row;
 	}
 
