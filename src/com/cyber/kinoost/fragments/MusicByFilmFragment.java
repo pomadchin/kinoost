@@ -19,7 +19,7 @@ import com.cyber.kinoost.db.models.Film;
 import com.cyber.kinoost.db.models.Music;
 import com.cyber.kinoost.db.repositories.FilmMusicRepository;
 
-public class FilmOstFragment extends Fragment {
+public class MusicByFilmFragment extends Fragment {
 
 	RelativeLayout menuContainer;
 	RelativeLayout listContainer;
@@ -31,7 +31,7 @@ public class FilmOstFragment extends Fragment {
 	String rating = "";
 	Film film = null;
 
-	public FilmOstFragment() {
+	public MusicByFilmFragment() {
 		// Empty constructor required for fragment subclasses
 	}
 

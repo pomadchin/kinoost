@@ -18,7 +18,7 @@ import android.widget.TextView;
 import com.cyber.kinoost.KinoostActivity;
 import com.cyber.kinoost.R;
 import com.cyber.kinoost.db.models.Film;
-import com.cyber.kinoost.fragments.FilmOstFragment;
+import com.cyber.kinoost.fragments.MusicByFilmFragment;
 import com.cyber.kinoost.img.ImageLoader;
 
 public class GridViewAdapter extends BaseAdapter {
@@ -87,7 +87,7 @@ public class GridViewAdapter extends BaseAdapter {
     
     private void startFilmFragment(int position) {
     	KinoostActivity activity = (KinoostActivity) mContext;
-		Fragment newFragment = new FilmOstFragment(); 
+		Fragment newFragment = new MusicByFilmFragment(); 
 		Bundle bundle = new Bundle();
 		bundle.putSerializable("film", films.get(position));
 		newFragment.setArguments(bundle);

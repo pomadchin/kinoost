@@ -29,9 +29,9 @@ import android.widget.SearchView.OnQueryTextListener;
 
 import com.cyber.kinoost.api.ApiHelper;
 import com.cyber.kinoost.db.DatabaseHelper;
-import com.cyber.kinoost.fragments.FilmsFragment;
+import com.cyber.kinoost.fragments.FilmsByNameFragment;
 import com.cyber.kinoost.fragments.InfoFragment;
-import com.cyber.kinoost.fragments.OstFragment;
+import com.cyber.kinoost.fragments.MusicFragment;
 import com.cyber.kinoost.fragments.TopRatedFragment;
 
 public class KinoostActivity extends FragmentActivity implements TabListener, OnQueryTextListener {
@@ -195,12 +195,12 @@ public class KinoostActivity extends FragmentActivity implements TabListener, On
 		Fragment fragment;
 		switch (position) {
 		case 0:
-			fragment = new FilmsFragment();
+			fragment = new FilmsByNameFragment();
 			if (actionBar.getNavigationMode() != ActionBar.NAVIGATION_MODE_TABS)
 				actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 			break;
 		case 1:
-			fragment = new OstFragment();
+			fragment = new MusicFragment();
 			break;
 		case 2:
 			fragment = new TopRatedFragment();
@@ -210,7 +210,7 @@ public class KinoostActivity extends FragmentActivity implements TabListener, On
 			actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
 			break;
 		default:
-			fragment = new FilmsFragment();
+			fragment = new FilmsByNameFragment();
 			break;
 		}
 		
@@ -301,14 +301,14 @@ public class KinoostActivity extends FragmentActivity implements TabListener, On
 		Bundle bundle = new Bundle();
 		switch (actionBar.getSelectedTab().getPosition()) {
 		case 0:
-			fragment = new FilmsFragment();
+			fragment = new FilmsByNameFragment();
 			bundle.putString("filmName", query);
 			break;
 		case 1:
-			fragment = new OstFragment();
+			fragment = new MusicFragment();
 			bundle.putString("songName", query);
 			break;
-		default: fragment = new FilmsFragment();
+		default: fragment = new FilmsByNameFragment();
 		}
 		fragment.setArguments(bundle);
 		replaceFragment(fragment);

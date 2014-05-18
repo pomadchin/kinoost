@@ -14,12 +14,11 @@ import android.widget.GridView;
 import com.cyber.kinoost.R;
 import com.cyber.kinoost.adapters.GridViewAdapter;
 import com.cyber.kinoost.db.models.Film;
-import com.cyber.kinoost.db.models.Music;
 import com.cyber.kinoost.db.repositories.FilmMusicRepository;
 
-public class FilmsFragment extends Fragment {
+public class FilmsByNameFragment extends Fragment {
     
-    public FilmsFragment() {
+    public FilmsByNameFragment() {
         // Empty constructor required for fragment subclasses
     }    
 
@@ -27,12 +26,9 @@ public class FilmsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
     	List<Film> films;
-    	Bundle bundle = getArguments();
-    	
+    	Bundle bundle = getArguments();   	
     	if (bundle != null && bundle.containsKey("filmName"))
     		films = getFilmsByName(getArguments().getString("filmName"));
-    	else if (bundle != null && getArguments().containsKey("music"))
-    		films = getFilmsByMusic( (Music)getArguments().getSerializable("music"));
     	else films = getFilmsByName("");
     	
      	View myFragmentView = inflater.inflate(R.layout.fragment_grid, container, false);
@@ -40,11 +36,6 @@ public class FilmsFragment extends Fragment {
         gridview.setAdapter(new GridViewAdapter(getActivity(), films));
         
         return myFragmentView;
-    }
-    
-    private List<Film> getFilmsByMusic(Music song) {
-    	//TODO: not implemented yet
-    	return null;   
     }
     
     private List<Film> getFilmsByName(String filmName) {

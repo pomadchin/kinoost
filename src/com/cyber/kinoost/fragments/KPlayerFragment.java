@@ -69,13 +69,13 @@ public class KPlayerFragment extends Fragment implements OnCompletionListener,
 	@Override
 	public void onDestroyView() {
 		super.onDestroyView();
-		getActivity().getActionBar().show();
-			
+		getActivity().getActionBar().show();			
 	}
+	
 	private void startFilmFragment() {
 		Bundle bundle = new Bundle();
 		bundle.putSerializable("music", music);
-		Fragment newFragment = new FilmsFragment();
+		Fragment newFragment = new FilmsByMusicFragment();
 		newFragment.setArguments(bundle);
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();

@@ -16,9 +16,9 @@ import com.cyber.kinoost.adapters.OstListViewAdapter;
 import com.cyber.kinoost.db.models.Music;
 import com.cyber.kinoost.db.repositories.MusicRepository;
 
-public class OstFragment extends Fragment {
+public class MusicFragment extends Fragment {
     
-    public OstFragment() {
+    public MusicFragment() {
         // Empty constructor required for fragment subclasses
     }
   
