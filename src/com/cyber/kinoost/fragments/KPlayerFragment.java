@@ -56,7 +56,7 @@ public class KPlayerFragment extends Fragment implements OnCompletionListener,
 	private TextView songCurrentDurationLabel;
 	private TextView songTotalDurationLabel;
 	// Media Player
-	private MediaPlayer mp;
+	private static MediaPlayer mp = new MediaPlayer();
 	// Handler to update UI timer, progress bar etc,.
 	private Handler mHandler = new Handler();
 	private SongsManager songManager;
@@ -122,7 +122,6 @@ public class KPlayerFragment extends Fragment implements OnCompletionListener,
 		songTotalDurationLabel = (TextView) myFragmentView.findViewById(R.id.songTotalDurationLabel);
 
 		// Mediaplayer
-		mp = new MediaPlayer();
 		songManager = new SongsManager();
 		utils = new Utilities();
 
@@ -395,15 +394,8 @@ public class KPlayerFragment extends Fragment implements OnCompletionListener,
 	}
 	
 	@Override
-	public void setUserVisibleHint(boolean isVisibleToUser) {
-		super.setUserVisibleHint(isVisibleToUser);
-		if (this.isVisible()) {
-			if (!isVisibleToUser) {
-				mp.stop();
-			} else {
-
-			}
-		}
-}
-
+	public void onDetach() {
+		super.onDetach();
+		mp.release();
+	}
 }
