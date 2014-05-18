@@ -1,7 +1,7 @@
 package com.cyber.kinoost.api;
 
 import java.io.BufferedReader;
-import java.io.File;
+//import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -145,14 +145,13 @@ public class ApiHelper {
 
 	// getSong via vk api
 	public void getSongMusic(Context context, Api api, Music music) {
-		if (music.getFileName() != null) {
+		/*if (music.getFileName() != null) {
 			File fileMusic = new File(music.getFileName());
 			if (fileMusic.exists()) {
 				startPlayerFragment(context, music);
 				return;
 			}
-		}
-
+		}*/
 		getSong(api, music.getName(), music, context);
 	}
 
