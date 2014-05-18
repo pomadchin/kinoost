@@ -1,12 +1,6 @@
 package com.cyber.kinoost.fragments;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
@@ -21,7 +15,6 @@ import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -67,8 +60,6 @@ public class KPlayerFragment extends Fragment implements OnCompletionListener,
 	private boolean isShuffle = false;
 	private boolean isRepeat = false;
 	private ArrayList<HashMap<String, String>> songsList = new ArrayList<HashMap<String, String>>();
-	private int counter = 0;
-	private File downloadingMediaFile;
 
 	public KPlayerFragment() {
 		// Empty constructor required for fragment subclasses
