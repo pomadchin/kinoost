@@ -20,7 +20,7 @@ import com.cyber.kinoost.api.vk.sources.Audio;
 import com.cyber.kinoost.api.vk.sources.KException;
 import com.cyber.kinoost.db.models.Music;
 import com.cyber.kinoost.db.repositories.MusicRepository;
-import com.cyber.kinoost.fragments.*;
+import com.cyber.kinoost.fragments.LoginFragment;
 
 public class HttpAsyncTaskVkSong extends AsyncTask<String, Integer, String> {
 	

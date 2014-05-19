@@ -15,13 +15,13 @@ import java.util.WeakHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import com.cyber.kinoost.R;
-
-import android.os.Handler;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Handler;
 import android.widget.ImageView;
+
+import com.cyber.kinoost.R;
 
 public class ImageLoader {
     MemoryCache memoryCache = new MemoryCache();

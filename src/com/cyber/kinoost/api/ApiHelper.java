@@ -25,7 +25,8 @@ import android.util.Log;
 
 import com.cyber.kinoost.KinoostActivity;
 import com.cyber.kinoost.R;
-import com.cyber.kinoost.api.tasks.*;
+import com.cyber.kinoost.api.tasks.HttpAsyncTaskUpdate;
+import com.cyber.kinoost.api.tasks.HttpAsyncTaskVkSong;
 import com.cyber.kinoost.api.vk.sources.Api;
 import com.cyber.kinoost.db.models.Music;
 import com.cyber.kinoost.fragments.KPlayerFragment;

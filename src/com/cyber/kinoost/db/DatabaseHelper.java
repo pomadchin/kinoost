@@ -1,7 +1,5 @@
 package com.cyber.kinoost.db;
 
-import android.content.Context;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -9,12 +7,20 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.sql.SQLException;
+
+import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.cyber.kinoost.*;
-import com.cyber.kinoost.db.models.*;
+import com.cyber.kinoost.R;
+import com.cyber.kinoost.db.models.Favorites;
+import com.cyber.kinoost.db.models.Film;
+import com.cyber.kinoost.db.models.FilmMusic;
+import com.cyber.kinoost.db.models.Music;
+import com.cyber.kinoost.db.models.MusicRating;
+import com.cyber.kinoost.db.models.Performer;
+import com.cyber.kinoost.db.models.User;
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.RuntimeExceptionDao;

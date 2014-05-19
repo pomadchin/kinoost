@@ -6,7 +6,7 @@ import java.util.concurrent.Callable;
 import android.content.Context;
 
 import com.cyber.kinoost.db.DatabaseHelper;
-import com.cyber.kinoost.db.models.*;
+import com.cyber.kinoost.db.models.Music;
 
 public class MusicRepository extends FilmMusicRepository {
 	

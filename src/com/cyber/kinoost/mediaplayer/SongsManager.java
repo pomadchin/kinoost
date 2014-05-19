@@ -4,7 +4,8 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.util.ArrayList;
 import java.util.HashMap;
-import com.cyber.kinoost.db.models.*;
+
+import com.cyber.kinoost.db.models.Music;
 
 public class SongsManager {
 	// SDCard Path

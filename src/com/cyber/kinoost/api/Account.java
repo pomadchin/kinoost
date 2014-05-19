@@ -1,13 +1,13 @@
 package com.cyber.kinoost.api;
 
-import com.cyber.kinoost.api.tasks.PersistUserRunnable;
-import com.cyber.kinoost.db.models.User;
-import com.cyber.kinoost.db.repositories.UserRepository;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.preference.PreferenceManager;
+
+import com.cyber.kinoost.api.tasks.PersistUserRunnable;
+import com.cyber.kinoost.db.models.User;
+import com.cyber.kinoost.db.repositories.UserRepository;
 
 public class Account {
 	private String access_token;

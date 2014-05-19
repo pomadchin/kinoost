@@ -1,27 +1,31 @@
 package com.cyber.kinoost.api.tasks;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.List;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.util.Log;
 
-import com.cyber.kinoost.api.*;
-
-import java.io.IOException;
-import java.util.List;
-
-import com.cyber.kinoost.api.models.*;
+import com.cyber.kinoost.api.ApiHelper;
+import com.cyber.kinoost.api.models.JsonUpdate;
+import com.cyber.kinoost.api.models.JsonUpdateList;
+import com.cyber.kinoost.api.models.UserData;
+import com.cyber.kinoost.db.models.Film;
+import com.cyber.kinoost.db.models.Music;
+import com.cyber.kinoost.db.models.Performer;
+import com.cyber.kinoost.db.repositories.FavoritesRepository;
+import com.cyber.kinoost.db.repositories.FilmRepository;
+import com.cyber.kinoost.db.repositories.MusicRatingRepository;
+import com.cyber.kinoost.db.repositories.MusicRepository;
+import com.cyber.kinoost.db.repositories.PerformerRepository;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import android.os.AsyncTask;
-
-import com.cyber.kinoost.db.models.*;
-import com.cyber.kinoost.db.repositories.*;
 
 public class HttpAsyncTaskUpdate extends AsyncTask<String, Void, String> {
 	public static final String APP_PREFERENCES = "com.cyber.kinoost";

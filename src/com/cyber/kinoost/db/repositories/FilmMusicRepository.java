@@ -1,16 +1,18 @@
 package com.cyber.kinoost.db.repositories;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
-
-import java.sql.SQLException;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 
 import com.cyber.kinoost.db.DatabaseHelper;
-import com.cyber.kinoost.db.models.*;
+import com.cyber.kinoost.db.models.Film;
+import com.cyber.kinoost.db.models.FilmMusic;
+import com.cyber.kinoost.db.models.Music;
+import com.cyber.kinoost.db.models.Performer;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.dao.GenericRawResults;
 import com.j256.ormlite.dao.RawRowMapper;

@@ -3,9 +3,14 @@ package com.cyber.kinoost.db;
 import java.io.IOException;
 import java.sql.SQLException;
 
+import com.cyber.kinoost.db.models.Favorites;
+import com.cyber.kinoost.db.models.Film;
+import com.cyber.kinoost.db.models.FilmMusic;
+import com.cyber.kinoost.db.models.Music;
+import com.cyber.kinoost.db.models.MusicRating;
+import com.cyber.kinoost.db.models.Performer;
+import com.cyber.kinoost.db.models.User;
 import com.j256.ormlite.android.apptools.OrmLiteConfigUtil;
-
-import com.cyber.kinoost.db.models.*;
 
 public class DatabaseConfigUtil extends OrmLiteConfigUtil {
 	

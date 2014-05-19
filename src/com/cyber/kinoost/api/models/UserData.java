@@ -2,7 +2,9 @@ package com.cyber.kinoost.api.models;
 
 
 import java.util.List;
-import com.cyber.kinoost.db.models.*;
+
+import com.cyber.kinoost.db.models.Favorites;
+import com.cyber.kinoost.db.models.MusicRating;
 
 public class UserData {
     

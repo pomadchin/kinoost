@@ -8,10 +8,10 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.preference.PreferenceManager;
 
-import com.cyber.kinoost.api.*;
+import com.cyber.kinoost.api.Account;
 import com.cyber.kinoost.api.vk.sources.Api;
-import com.cyber.kinoost.db.models.*;
-import com.cyber.kinoost.db.repositories.*;
+import com.cyber.kinoost.db.models.User;
+import com.cyber.kinoost.db.repositories.UserRepository;
 
 public class PersistUserRunnable implements Runnable {
 	private Account account;
