@@ -250,6 +250,34 @@ public class FilmMusicRepository {
 		
 		return 	rawResults.getResults();
 	}
+	
+	public List<Film> findFilmByMusicFullName(String name, final String performerName, int offset, int limit) throws SQLException {
+		if(name.length() == 0 && performerName.length() == 0)
+			return new ArrayList<Film>();
+		
+		QueryBuilder<FilmMusic, Integer> filmMusicQb = filmMusicDao.queryBuilder();
+		QueryBuilder<Film, Integer> filmQb = filmDao.queryBuilder();
+		QueryBuilder<Music, Integer> musicQb = musicDao.queryBuilder();
+		QueryBuilder<Performer, Integer> performerQb = performerDao.queryBuilder();
+		if(performerName.length() != 0) {
+			performerQb.where().eq(Performer.NAME_FIELD_NAME, performerName);
+			musicQb.join(performerQb);
+		}
+		
+		if(name.length() != 0)
+			musicQb.where().eq(Music.NAME_FIELD_NAME, name);
+		
+		filmMusicQb.join(musicQb);
+		
+        filmQb.join(filmMusicQb)
+				.selectColumns(Film.ID_FIELD_NAME, Film.NAME_FIELD_NAME, "year", "img", "rating")
+				.distinct();
+        
+        if(offset > 0) filmQb.offset(Long.valueOf(offset));
+        if(limit > 0) filmQb.limit(Long.valueOf(limit));
+        
+        return filmQb.query();
+	}
 
 	protected PreparedQuery<Film> makeFilmsForMusicQuery() throws SQLException {
 		// build our inner query for FilmMusic objects
