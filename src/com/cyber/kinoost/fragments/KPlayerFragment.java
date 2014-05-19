@@ -19,6 +19,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -26,6 +27,7 @@ import android.widget.Toast;
 
 import com.cyber.kinoost.R;
 import com.cyber.kinoost.db.models.Music;
+import com.cyber.kinoost.img.ImageLoader;
 import com.cyber.kinoost.listeners.OnSwipeTouchListener;
 import com.cyber.kinoost.mediaplayer.SongsManager;
 import com.cyber.kinoost.mediaplayer.Utilities;
@@ -39,6 +41,7 @@ public class KPlayerFragment extends Fragment implements OnCompletionListener,
 	RelativeLayout headContainer;
 	View myFragmentView;
 	private final String MUSIC_CLASS_NAME = "com.cyber.kinoost.db.models.Music";
+	private final String FILM_IMG_URL = "filmImgUrl";
 	private Music music;
 	private ImageButton btnPlay;
 	private ImageButton btnForward;
@@ -48,6 +51,8 @@ public class KPlayerFragment extends Fragment implements OnCompletionListener,
 	private TextView songTitleLabel;
 	private TextView songCurrentDurationLabel;
 	private TextView songTotalDurationLabel;
+	private ImageView image;
+	private ImageLoader imageLoader; 
 	// Media Player
 	private static MediaPlayer mp = new MediaPlayer();
 	// Handler to update UI timer, progress bar etc,.
@@ -91,8 +96,11 @@ public class KPlayerFragment extends Fragment implements OnCompletionListener,
 		getActivity().getActionBar().hide();
 		getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		
+		imageLoader =  new ImageLoader(getActivity());
+		
 		// Get music
 		music = (Music) getArguments().getSerializable(MUSIC_CLASS_NAME);
+		String imgUrl = getArguments().getString(FILM_IMG_URL);
 		
 		myFragmentView = inflater.inflate(R.layout.player, container, false);
 		myFragmentView.setOnTouchListener(new OnSwipeTouchListener(getActivity()) {
@@ -111,6 +119,10 @@ public class KPlayerFragment extends Fragment implements OnCompletionListener,
 		songTitleLabel = (TextView) myFragmentView.findViewById(R.id.songTitle);
 		songCurrentDurationLabel = (TextView) myFragmentView.findViewById(R.id.songCurrentDurationLabel);
 		songTotalDurationLabel = (TextView) myFragmentView.findViewById(R.id.songTotalDurationLabel);
+		image = (ImageView) myFragmentView.findViewById(R.id.image);
+		
+		if(imgUrl.length() > 0)
+			imageLoader.DisplayImage(imgUrl, image);
 
 		// Mediaplayer
 		songManager = new SongsManager();

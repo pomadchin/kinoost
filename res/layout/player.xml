@@ -37,9 +37,13 @@
         android:paddingBottom="10dp"
         android:gravity="center"
         android:layout_below="@id/player_header_bg">
-    	<ImageView android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/adele"/>    
+        
+    	<ImageView
+    	    android:id="@+id/image"
+    	    android:layout_width="wrap_content"
+    	    android:layout_height="wrap_content"
+    	    android:src="@drawable/adele" />
+    
     </LinearLayout>
     
     <!-- Player Footer -->

@@ -111,7 +111,7 @@ public class FilmOstListViewAdapter extends BaseAdapter {
 					Account account = new Account(mContext);
 					Api api = new Api(account);
 
-					apiHelper.getSongMusic(mContext, api, music.get(position));
+					apiHelper.getSongMusic(mContext, api, music.get(position), film.getImgUrl());
 
 	             }
 	         });

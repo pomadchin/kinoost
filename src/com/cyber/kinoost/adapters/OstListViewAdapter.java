@@ -70,7 +70,7 @@ public class OstListViewAdapter extends BaseAdapter {
 					Account account = new Account(mContext);
 					Api api = new Api(account);
 
-					apiHelper.getSongMusic(mContext, api, music.get(position));
+					apiHelper.getSongMusic(mContext, api, music.get(position), "");
 
 	             }
 	         });
