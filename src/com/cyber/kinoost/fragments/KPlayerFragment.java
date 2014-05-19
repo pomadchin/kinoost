@@ -267,6 +267,8 @@ public class KPlayerFragment extends Fragment implements OnCompletionListener,
 		} catch (IllegalArgumentException e) {
 			e.printStackTrace();
 		} catch (IllegalStateException e) {
+			mp.reset();
+			playSong(songIndex);
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -287,27 +289,29 @@ public class KPlayerFragment extends Fragment implements OnCompletionListener,
 	 * */
 	private Runnable mUpdateTimeTask = new Runnable() {
 		public void run() {
-			long totalDuration = 0;
-			long currentDuration = 0;
-			try {
-				totalDuration = mp.getDuration();
-				currentDuration = mp.getCurrentPosition();
-			} catch (Exception e) {
+			if (mp.isPlaying()) {
+				long totalDuration = 0;
+				long currentDuration = 0;
+				try {
+					totalDuration = mp.getDuration();
+					currentDuration = mp.getCurrentPosition();
+				} catch (Exception e) {
 
+				}
+
+				// Displaying Total Duration time
+				songTotalDurationLabel.setText(""
+						+ utils.milliSecondsToTimer(totalDuration));
+				// Displaying time completed playing
+				songCurrentDurationLabel.setText(""
+						+ utils.milliSecondsToTimer(currentDuration));
+
+				// Updating progress bar
+				int progress = (int) (utils.getProgressPercentage(
+						currentDuration, totalDuration));
+				// Log.d("Progress", ""+progress);
+				songProgressBar.setProgress(progress);
 			}
-
-			// Displaying Total Duration time
-			songTotalDurationLabel.setText(""
-					+ utils.milliSecondsToTimer(totalDuration));
-			// Displaying time completed playing
-			songCurrentDurationLabel.setText(""
-					+ utils.milliSecondsToTimer(currentDuration));
-
-			// Updating progress bar
-			int progress = (int) (utils.getProgressPercentage(currentDuration,
-					totalDuration));
-			// Log.d("Progress", ""+progress);
-			songProgressBar.setProgress(progress);
 
 			// Running this thread after 100 milliseconds
 			mHandler.postDelayed(this, 100);
@@ -381,12 +385,14 @@ public class KPlayerFragment extends Fragment implements OnCompletionListener,
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		mp.release();
+		mp.reset();
+		mp.pause();
 	}
 	
 	@Override
 	public void onDetach() {
 		super.onDetach();
-		mp.release();
+		mp.reset();
+		mp.pause();
 	}
 }
