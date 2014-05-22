@@ -30,8 +30,9 @@ public class HttpAsyncTaskVkSong extends AsyncTask<String, Integer, String> {
 	private Music music;
 	private Boolean login;
 	private ApiHelper apiHelper;
+	private String imgUrl;
 	
-	public HttpAsyncTaskVkSong(Api api, String request, Music music,
+	public HttpAsyncTaskVkSong(Api api, String request, Music music, String imgUrl,
 			Context context, ApiHelper apiHelper) {
 		super();
 		this.context = context;
@@ -40,6 +41,7 @@ public class HttpAsyncTaskVkSong extends AsyncTask<String, Integer, String> {
 		this.music = music;
 		this.login = true;
 		this.apiHelper = apiHelper;
+		this.imgUrl = imgUrl;
 	}
 
 	private void startLoginFragment() {
@@ -85,6 +87,6 @@ public class HttpAsyncTaskVkSong extends AsyncTask<String, Integer, String> {
 
 	@Override
 	protected void onPostExecute(String result) {
-		if (login) apiHelper.startPlayerFragment(context, music);
+		if (login) apiHelper.startPlayerFragment(context, music, imgUrl);
 	}
 }

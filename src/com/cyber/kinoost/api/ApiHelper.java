@@ -34,6 +34,7 @@ import com.cyber.kinoost.fragments.KPlayerFragment;
 public class ApiHelper {
 	
 	private final String MUSIC_CLASS_NAME = "com.cyber.kinoost.db.models.Music";
+	private final String FILM_IMG_URL = "filmImgUrl";
 
 	public static void dbUpdate(Context updateContext, Date date) {
 
@@ -145,7 +146,7 @@ public class ApiHelper {
 	}
 
 	// getSong via vk api
-	public void getSongMusic(Context context, Api api, Music music) {
+	public void getSongMusic(Context context, Api api, Music music, String imgUrl) {
 		/*if (music.getFileName() != null) {
 			File fileMusic = new File(music.getFileName());
 			if (fileMusic.exists()) {
@@ -153,18 +154,19 @@ public class ApiHelper {
 				return;
 			}
 		}*/
-		getSong(api, music.getName(), music, context);
+		getSong(api, music.getName(), music, imgUrl, context);
 	}
 
-	public void getSong(Api api, String request, Music music, Context context) {
-		new HttpAsyncTaskVkSong(api, request, music, context, this).execute(request);
+	public void getSong(Api api, String request, Music music, String imgUrl, Context context) {
+		new HttpAsyncTaskVkSong(api, request, music, imgUrl, context, this).execute(request);
 	}
 	
-	public void startPlayerFragment(Context context, Music music) {
+	public void startPlayerFragment(Context context, Music music, String imgUrl) {
 		KinoostActivity activity = (KinoostActivity) context;
 		Fragment newFragment = new KPlayerFragment(); 
 		Bundle bundle = new Bundle();
 		bundle.putSerializable(MUSIC_CLASS_NAME, music);
+		bundle.putString(FILM_IMG_URL, imgUrl);
 		newFragment.setArguments(bundle);
 
 		FragmentManager fragmentManager = activity.getSupportFragmentManager();

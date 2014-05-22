@@ -20,7 +20,7 @@ import com.cyber.kinoost.api.vk.sources.Api;
 import com.cyber.kinoost.db.models.Film;
 import com.cyber.kinoost.db.models.Music;
 import com.cyber.kinoost.db.models.Performer;
-import com.cyber.kinoost.img.ImageLoader;
+import com.squareup.picasso.Picasso;
 
 public class FilmOstListViewAdapter extends BaseAdapter {
     
@@ -29,8 +29,6 @@ public class FilmOstListViewAdapter extends BaseAdapter {
 	private List<Music> music;
 	
 	private Film film;
-    
-	private ImageLoader imageLoader;
 	
 	final ApiHelper apiHelper = new ApiHelper();
 	
@@ -38,7 +36,6 @@ public class FilmOstListViewAdapter extends BaseAdapter {
         mContext = c;
         this.film = film;
         this.music = sounds;
-        this.imageLoader = new ImageLoader(c);
     }
 
     public int getCount() {
@@ -88,7 +85,11 @@ public class FilmOstListViewAdapter extends BaseAdapter {
 			filmInfoHolder = (FilmInfoHolder) row.getTag();
 		
 		filmInfoHolder.name.setText(film.getName() + " (" + String.valueOf(film.getYear()) + ")");
-		imageLoader.DisplayImage(film.getImgUrl(), filmInfoHolder.image);
+		
+		Picasso.with(mContext).load(film.getImgUrl())
+				.placeholder(R.drawable.placeholder).fit()
+				.into(filmInfoHolder.image);
+		
 		return row;
 	}
 	
@@ -110,7 +111,7 @@ public class FilmOstListViewAdapter extends BaseAdapter {
 					Account account = new Account(mContext);
 					Api api = new Api(account);
 
-					apiHelper.getSongMusic(mContext, api, music.get(position));
+					apiHelper.getSongMusic(mContext, api, music.get(position), film.getImgUrl());
 
 	             }
 	         });
