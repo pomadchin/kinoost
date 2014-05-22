@@ -12,7 +12,7 @@ import com.j256.ormlite.table.DatabaseTable;
 public class Film implements Serializable{
 	public final static String ID_FIELD_NAME = "id";
 	public final static String NAME_FIELD_NAME = "name";
-	public final static String HOST_NAME = " http://kinoserver-cybern223.rhcloud.com/kinoserver/mobile/image/";
+	public final static String HOST_NAME = "http://kinoserver-cybern223.rhcloud.com/kinoserver/mobile/image/";
 	
 	@DatabaseField(id = true, columnName = ID_FIELD_NAME)
 	int id;

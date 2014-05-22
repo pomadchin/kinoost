@@ -13,31 +13,33 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.FutureTask;
 
-
 /**
  * A class similar but unrelated to android's {@link android.os.AsyncTask}.
  * <p/>
  * Unlike AsyncTask, this class properly propagates exceptions.
  * <p/>
- * If you're familiar with AsyncTask and are looking for {@link android.os.AsyncTask#doInBackground(Object[])},
- * we've named it {@link #call()} here to conform with java 1.5's {@link java.util.concurrent.Callable} interface.
+ * If you're familiar with AsyncTask and are looking for
+ * {@link android.os.AsyncTask#doInBackground(Object[])}, we've named it
+ * {@link #call()} here to conform with java 1.5's
+ * {@link java.util.concurrent.Callable} interface.
  * <p/>
  * Current limitations: does not yet handle progress, although it shouldn't be
  * hard to add.
  * <p/>
- * If using your own executor, you must call future() to get a runnable you can execute.
- *
+ * If using your own executor, you must call future() to get a runnable you can
+ * execute.
+ * 
  * @param <ResultT>
  */
 public abstract class SafeAsyncTask<ResultT> implements Callable<ResultT> {
 	public static final int DEFAULT_POOL_SIZE = 25;
-	protected static final Executor DEFAULT_EXECUTOR = Executors.newFixedThreadPool(DEFAULT_POOL_SIZE);
+	protected static final Executor DEFAULT_EXECUTOR = Executors
+			.newFixedThreadPool(DEFAULT_POOL_SIZE);
 
 	protected Handler handler;
 	protected Executor executor;
 	protected StackTraceElement[] launchLocation;
 	protected FutureTask<Void> future;
-
 
 	/**
 	 * Sets executor to Executors.newFixedThreadPool(DEFAULT_POOL_SIZE) and
@@ -66,7 +68,6 @@ public abstract class SafeAsyncTask<ResultT> implements Callable<ResultT> {
 		this.handler = handler;
 		this.executor = executor;
 	}
-
 
 	public FutureTask<Void> future() {
 		future = new FutureTask<Void>(newTask());
@@ -101,46 +102,53 @@ public abstract class SafeAsyncTask<ResultT> implements Callable<ResultT> {
 	}
 
 	public boolean cancel(boolean mayInterruptIfRunning) {
-		if (future == null) throw new UnsupportedOperationException("You cannot cancel this task before calling future()");
+		if (future == null)
+			throw new UnsupportedOperationException(
+					"You cannot cancel this task before calling future()");
 
 		return future.cancel(mayInterruptIfRunning);
 	}
 
-
 	/**
-	 * @throws Exception, captured on passed to onException() if present.
+	 * @throws Exception
+	 *             , captured on passed to onException() if present.
 	 */
 	protected void onPreExecute() throws Exception {
 	}
 
 	/**
-	 * @param t the result of {@link #call()}
-	 * @throws Exception, captured on passed to onException() if present.
+	 * @param t
+	 *            the result of {@link #call()}
+	 * @throws Exception
+	 *             , captured on passed to onException() if present.
 	 */
-	@SuppressWarnings({"UnusedDeclaration"})
+	@SuppressWarnings({ "UnusedDeclaration" })
 	protected void onSuccess(ResultT t) throws Exception {
 	}
 
 	/**
-	 * Called when the thread has been interrupted, likely because
-	 * the task was canceled.
+	 * Called when the thread has been interrupted, likely because the task was
+	 * canceled.
 	 * <p/>
-	 * By default, calls {@link #onException(Exception)}, but this method
-	 * may be overridden to handle interruptions differently than other
-	 * exceptions.
-	 *
-	 * @param e an InterruptedException or InterruptedIOException
+	 * By default, calls {@link #onException(Exception)}, but this method may be
+	 * overridden to handle interruptions differently than other exceptions.
+	 * 
+	 * @param e
+	 *            an InterruptedException or InterruptedIOException
 	 */
 	protected void onInterrupted(Exception e) {
 		onException(e);
 	}
 
 	/**
-	 * Logs the exception as an Error by default, but this method may
-	 * be overridden by subclasses.
-	 *
-	 * @param e the exception thrown from {@link #onPreExecute()}, {@link #call()}, or {@link #onSuccess(Object)}
-	 * @throws RuntimeException, ignored
+	 * Logs the exception as an Error by default, but this method may be
+	 * overridden by subclasses.
+	 * 
+	 * @param e
+	 *            the exception thrown from {@link #onPreExecute()},
+	 *            {@link #call()}, or {@link #onSuccess(Object)}
+	 * @throws RuntimeException
+	 *             , ignored
 	 */
 	protected void onException(Exception e) throws RuntimeException {
 		onThrowable(e);
@@ -151,16 +159,15 @@ public abstract class SafeAsyncTask<ResultT> implements Callable<ResultT> {
 	}
 
 	/**
-	 * @throws RuntimeException, ignored
+	 * @throws RuntimeException
+	 *             , ignored
 	 */
 	protected void onFinally() throws RuntimeException {
 	}
 
-
 	protected Task<ResultT> newTask() {
 		return new Task<ResultT>(this);
 	}
-
 
 	public static class Task<ResultT> implements Callable<Void> {
 		protected SafeAsyncTask<ResultT> parent;
@@ -168,7 +175,8 @@ public abstract class SafeAsyncTask<ResultT> implements Callable<ResultT> {
 
 		public Task(SafeAsyncTask<ResultT> parent) {
 			this.parent = parent;
-			this.handler = parent.handler != null ? parent.handler : new Handler(Looper.getMainLooper());
+			this.handler = parent.handler != null ? parent.handler
+					: new Handler(Looper.getMainLooper());
 		}
 
 		public Void call() throws Exception {
@@ -222,14 +230,19 @@ public abstract class SafeAsyncTask<ResultT> implements Callable<ResultT> {
 
 		protected void doException(final Exception e) throws Exception {
 			if (parent.launchLocation != null) {
-				final ArrayList<StackTraceElement> stack = new ArrayList<StackTraceElement>(Arrays.asList(e.getStackTrace()));
+				final ArrayList<StackTraceElement> stack = new ArrayList<StackTraceElement>(
+						Arrays.asList(e.getStackTrace()));
 				stack.addAll(Arrays.asList(parent.launchLocation));
-				e.setStackTrace(stack.toArray(new StackTraceElement[stack.size()]));
+				e.setStackTrace(stack.toArray(new StackTraceElement[stack
+						.size()]));
 			}
 			postToUiThreadAndWait(new Callable<Object>() {
 				public Object call() throws Exception {
-					if (e instanceof InterruptedException || e instanceof InterruptedIOException) parent.onInterrupted(e);
-					else parent.onException(e);
+					if (e instanceof InterruptedException
+							|| e instanceof InterruptedIOException)
+						parent.onInterrupted(e);
+					else
+						parent.onException(e);
 					return null;
 				}
 			});
@@ -237,9 +250,11 @@ public abstract class SafeAsyncTask<ResultT> implements Callable<ResultT> {
 
 		protected void doThrowable(final Throwable e) throws Exception {
 			if (parent.launchLocation != null) {
-				final ArrayList<StackTraceElement> stack = new ArrayList<StackTraceElement>(Arrays.asList(e.getStackTrace()));
+				final ArrayList<StackTraceElement> stack = new ArrayList<StackTraceElement>(
+						Arrays.asList(e.getStackTrace()));
 				stack.addAll(Arrays.asList(parent.launchLocation));
-				e.setStackTrace(stack.toArray(new StackTraceElement[stack.size()]));
+				e.setStackTrace(stack.toArray(new StackTraceElement[stack
+						.size()]));
 			}
 			postToUiThreadAndWait(new Callable<Object>() {
 				public Object call() throws Exception {
@@ -258,14 +273,15 @@ public abstract class SafeAsyncTask<ResultT> implements Callable<ResultT> {
 			});
 		}
 
-
 		/**
-		 * Posts the specified runnable to the UI thread using a handler,
-		 * and waits for operation to finish.  If there's an exception,
-		 * it captures it and rethrows it.
-		 *
-		 * @param c the callable to post
-		 * @throws Exception on error
+		 * Posts the specified runnable to the UI thread using a handler, and
+		 * waits for operation to finish. If there's an exception, it captures
+		 * it and rethrows it.
+		 * 
+		 * @param c
+		 *            the callable to post
+		 * @throws Exception
+		 *             on error
 		 */
 		protected void postToUiThreadAndWait(final Callable c) throws Exception {
 			final CountDownLatch latch = new CountDownLatch(1);
@@ -290,7 +306,8 @@ public abstract class SafeAsyncTask<ResultT> implements Callable<ResultT> {
 			// Wait for onSuccess to finish
 			latch.await();
 
-			if (exceptions[0] != null) throw exceptions[0];
+			if (exceptions[0] != null)
+				throw exceptions[0];
 
 		}
 
