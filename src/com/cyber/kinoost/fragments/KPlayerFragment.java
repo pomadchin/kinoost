@@ -23,7 +23,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.cyber.kinoost.R;
 import com.cyber.kinoost.db.models.Music;
@@ -46,7 +45,6 @@ public class KPlayerFragment extends Fragment implements OnCompletionListener,
 	private ImageButton btnPlay;
 	private ImageButton btnForward;
 	private ImageButton btnBackward;
-	private ImageButton btnRepeat;
 	private SeekBar songProgressBar;
 	private TextView songTitleLabel;
 	private TextView songCurrentDurationLabel;
@@ -111,7 +109,6 @@ public class KPlayerFragment extends Fragment implements OnCompletionListener,
 		btnPlay = (ImageButton) myFragmentView.findViewById(R.id.btnPlay);
 		btnForward = (ImageButton) myFragmentView.findViewById(R.id.btnForward);
 		btnBackward = (ImageButton) myFragmentView.findViewById(R.id.btnBackward);
-		btnRepeat = (ImageButton) myFragmentView.findViewById(R.id.btnRepeat);
 		songProgressBar = (SeekBar) myFragmentView.findViewById(R.id.songProgressBar);
 		songTitleLabel = (TextView) myFragmentView.findViewById(R.id.songTitle);
 		songCurrentDurationLabel = (TextView) myFragmentView.findViewById(R.id.songCurrentDurationLabel);
@@ -201,31 +198,6 @@ public class KPlayerFragment extends Fragment implements OnCompletionListener,
 					mp.seekTo(0);
 				}
 
-			}
-		});
-
-		/**
-		 * Button Click event for Repeat button Enables repeat flag to true
-		 * */
-		btnRepeat.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-				if (isRepeat) {
-					isRepeat = false;
-					Toast.makeText(getActivity(), "Повтор выключен",
-							Toast.LENGTH_SHORT).show();
-					btnRepeat.setImageResource(R.drawable.btn_repeat);
-				} else {
-					// make repeat to true
-					isRepeat = true;
-					Toast.makeText(getActivity(), "Повтор включен",
-							Toast.LENGTH_SHORT).show();
-					// make shuffle to false
-					isShuffle = false;
-					btnRepeat.setImageResource(R.drawable.btn_repeat_focused);
-					// btnShuffle.setImageResource(R.drawable.btn_shuffle);
-				}
 			}
 		});
 

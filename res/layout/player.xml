@@ -139,13 +139,6 @@
         android:layout_height="wrap_content"
         android:layout_above="@id/timerDisplay"
         android:gravity="center">
-        <!-- Repeat Button -->
-        <ImageButton 
-            android:id="@+id/btnRepeat"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/btn_repeat"
-            android:layout_marginRight="5dp"
-            android:background="@null"/>
+        
     </LinearLayout>
 </RelativeLayout>
