@@ -19,20 +19,17 @@ import com.cyber.kinoost.KinoostActivity;
 import com.cyber.kinoost.R;
 import com.cyber.kinoost.db.models.Film;
 import com.cyber.kinoost.fragments.MusicByFilmFragment;
-import com.cyber.kinoost.img.ImageLoader;
+import com.squareup.picasso.Picasso;
 
 public class GridViewAdapter extends BaseAdapter {
     
 	private Context mContext;
     
 	private List<Film> films;
-    
-	private ImageLoader imageLoader;
 
     public GridViewAdapter(Context c, List<Film> films) {
         mContext = c;
         this.films = films;
-        this.imageLoader = new ImageLoader(c);
     }
 
     public int getCount() {
@@ -74,7 +71,10 @@ public class GridViewAdapter extends BaseAdapter {
     	holder.name.setText(film.getName());  	
     	holder.name.setSelected(true);
     	holder.year.setText(String.valueOf(film.getYear()));
-    	imageLoader.DisplayImage(film.getImgUrl(), holder.image);
+    	
+		Picasso.with(mContext).load(film.getImgUrl())
+				.placeholder(R.drawable.placeholder).fit().into(holder.image);
+    	
     	holder.image.setOnClickListener(new OnClickListener() {
 
              @Override

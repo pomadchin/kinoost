@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -21,7 +20,7 @@ import com.cyber.kinoost.api.vk.sources.Api;
 import com.cyber.kinoost.db.models.Film;
 import com.cyber.kinoost.db.models.Music;
 import com.cyber.kinoost.db.models.Performer;
-import com.cyber.kinoost.img.ImageLoader;
+import com.squareup.picasso.Picasso;
 
 public class FilmOstListViewAdapter extends BaseAdapter {
     
@@ -30,8 +29,6 @@ public class FilmOstListViewAdapter extends BaseAdapter {
 	private List<Music> music;
 	
 	private Film film;
-    
-	private ImageLoader imageLoader;
 	
 	final ApiHelper apiHelper = new ApiHelper();
 	
@@ -39,7 +36,6 @@ public class FilmOstListViewAdapter extends BaseAdapter {
         mContext = c;
         this.film = film;
         this.music = sounds;
-        this.imageLoader = new ImageLoader(c);
     }
 
     public int getCount() {
@@ -89,7 +85,11 @@ public class FilmOstListViewAdapter extends BaseAdapter {
 			filmInfoHolder = (FilmInfoHolder) row.getTag();
 		
 		filmInfoHolder.name.setText(film.getName() + " (" + String.valueOf(film.getYear()) + ")");
-		imageLoader.DisplayImage(film.getImgUrl(), filmInfoHolder.image);
+		
+		Picasso.with(mContext).load(film.getImgUrl())
+				.placeholder(R.drawable.placeholder).fit()
+				.into(filmInfoHolder.image);
+		
 		return row;
 	}
 	
