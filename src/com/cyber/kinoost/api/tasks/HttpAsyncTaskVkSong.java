@@ -28,20 +28,25 @@ public class HttpAsyncTaskVkSong extends AsyncTask<String, Integer, String> {
 	private Api api;
 	private String request;
 	private Music music;
+	private ArrayList<Music> musicList;
 	private Boolean login;
 	private ApiHelper apiHelper;
 	private String imgUrl;
+	private int currentSongIndex;
 	
-	public HttpAsyncTaskVkSong(Api api, String request, Music music, String imgUrl,
+	public HttpAsyncTaskVkSong(Api api, String request, Music music,
+			ArrayList<Music> musicList, String imgUrl, int currentSongIndex,
 			Context context, ApiHelper apiHelper) {
 		super();
 		this.context = context;
 		this.api = api;
 		this.request = request;
 		this.music = music;
+		this.musicList = musicList;
 		this.login = true;
 		this.apiHelper = apiHelper;
 		this.imgUrl = imgUrl;
+		this.currentSongIndex = currentSongIndex;
 	}
 
 	private void startLoginFragment() {
@@ -57,12 +62,14 @@ public class HttpAsyncTaskVkSong extends AsyncTask<String, Integer, String> {
 	@Override
 	protected String doInBackground(String... params) {
 		try {
-			ArrayList<Audio> songsList = api.searchAudio(params[0], "2", "0", (long) 1, (long) 0, null, null);
+			ArrayList<Audio> songsList = api.searchAudio(params[0], "2", "0",
+					(long) 1, (long) 0, null, null);
 
 			MusicRepository musicRepository = new MusicRepository(context);
 			music.setFileName(songsList.get(0).url);
 
 			musicRepository.editMusic(music);
+			musicList.set(currentSongIndex, music);
 
 			return songsList.get(0).url;
 		} catch (IOException e) {
@@ -70,15 +77,15 @@ public class HttpAsyncTaskVkSong extends AsyncTask<String, Integer, String> {
 		} catch (JSONException e) {
 			e.printStackTrace();
 		} catch (KException e) {
-			Log.i(this.getClass().getName(),e.getMessage());
-			if(e.getMessage().contains("authorization failed")) {
+			Log.i(this.getClass().getName(), e.getMessage());
+			if (e.getMessage().contains("authorization failed")) {
 				login = false;
 				startLoginFragment();
 			}
-			
-			//e.printStackTrace();
+
+			// e.printStackTrace();
 		} catch (Exception e) {
-			//e.printStackTrace();
+			// e.printStackTrace();
 		}
 
 		return "";
@@ -87,6 +94,6 @@ public class HttpAsyncTaskVkSong extends AsyncTask<String, Integer, String> {
 
 	@Override
 	protected void onPostExecute(String result) {
-		if (login) apiHelper.startPlayerFragment(context, music, imgUrl);
+		if (login) apiHelper.startPlayerFragment(context, music, imgUrl, musicList, currentSongIndex);
 	}
 }

@@ -2,19 +2,23 @@ package com.cyber.kinoost.fragments;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.List;
 import java.util.Random;
+
+import org.json.JSONException;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
+import android.media.MediaPlayer.OnPreparedListener;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,8 +28,14 @@ import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.cyber.kinoost.KinoostActivity;
 import com.cyber.kinoost.R;
+import com.cyber.kinoost.api.Account;
+import com.cyber.kinoost.api.vk.sources.Api;
+import com.cyber.kinoost.api.vk.sources.Audio;
+import com.cyber.kinoost.api.vk.sources.KException;
 import com.cyber.kinoost.db.models.Music;
+import com.cyber.kinoost.db.repositories.MusicRepository;
 import com.cyber.kinoost.listeners.OnSwipeTouchListener;
 import com.cyber.kinoost.mediaplayer.SongsManager;
 import com.cyber.kinoost.mediaplayer.Utilities;
@@ -40,11 +50,15 @@ public class KPlayerFragment extends Fragment implements OnCompletionListener,
 	RelativeLayout headContainer;
 	View myFragmentView;
 	private final String MUSIC_CLASS_NAME = "com.cyber.kinoost.db.models.Music";
+	private final String MUSIC_LIST_CLASS_NAME = "List<com.cyber.kinoost.db.models.Music>";
 	private final String FILM_IMG_URL = "filmImgUrl";
+	private final String CURRENT_SONG_INDEX = "currentSongIndex";
 	private Music music;
+	private List<Music> musicList;
+	private String imgUrl;
 	private ImageButton btnPlay;
-	private ImageButton btnForward;
-	private ImageButton btnBackward;
+	private ImageButton btnNext;
+	private ImageButton btnPrevious;
 	private SeekBar songProgressBar;
 	private TextView songTitleLabel;
 	private TextView songCurrentDurationLabel;
@@ -58,10 +72,11 @@ public class KPlayerFragment extends Fragment implements OnCompletionListener,
 	private Utilities utils;
 	private int seekForwardTime = 5000; // 5000 milliseconds
 	private int seekBackwardTime = 5000; // 5000 milliseconds
-	private int currentSongIndex = 0;
+	private int currentSongIndex;
 	private boolean isShuffle = false;
 	private boolean isRepeat = false;
-	private ArrayList<HashMap<String, String>> songsList = new ArrayList<HashMap<String, String>>();
+	// api
+	private Api api;
 
 	public KPlayerFragment() {
 		// Empty constructor required for fragment subclasses
@@ -86,6 +101,7 @@ public class KPlayerFragment extends Fragment implements OnCompletionListener,
         transaction.commit();
     }
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -93,9 +109,14 @@ public class KPlayerFragment extends Fragment implements OnCompletionListener,
 		getActivity().getActionBar().hide();
 		getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		
-		// Get music
+		// Get music info
 		music = (Music) getArguments().getSerializable(MUSIC_CLASS_NAME);
-		String imgUrl = getArguments().getString(FILM_IMG_URL);
+		musicList = (List<Music>) getArguments().getSerializable(MUSIC_LIST_CLASS_NAME);
+		imgUrl = getArguments().getString(FILM_IMG_URL);
+		currentSongIndex = getArguments().getInt(CURRENT_SONG_INDEX);
+		
+		// api
+		api = new Api(new Account(getActivity()));
 		
 		myFragmentView = inflater.inflate(R.layout.player, container, false);
 		myFragmentView.setOnTouchListener(new OnSwipeTouchListener(getActivity()) {
@@ -107,8 +128,8 @@ public class KPlayerFragment extends Fragment implements OnCompletionListener,
 
 		// All player buttons
 		btnPlay = (ImageButton) myFragmentView.findViewById(R.id.btnPlay);
-		btnForward = (ImageButton) myFragmentView.findViewById(R.id.btnForward);
-		btnBackward = (ImageButton) myFragmentView.findViewById(R.id.btnBackward);
+		btnNext = (ImageButton) myFragmentView.findViewById(R.id.btnNext);
+		btnPrevious = (ImageButton) myFragmentView.findViewById(R.id.btnPrevious);
 		songProgressBar = (SeekBar) myFragmentView.findViewById(R.id.songProgressBar);
 		songTitleLabel = (TextView) myFragmentView.findViewById(R.id.songTitle);
 		songCurrentDurationLabel = (TextView) myFragmentView.findViewById(R.id.songCurrentDurationLabel);
@@ -126,12 +147,9 @@ public class KPlayerFragment extends Fragment implements OnCompletionListener,
 		// Listeners
 		songProgressBar.setOnSeekBarChangeListener(this); // Important
 		mp.setOnCompletionListener(this); // Important
-
-		// Getting all songs list
-		songsList = songManager.getPlayList(music);
-
-		// By default play first song
-		playSong(0);
+		
+		// By play passed song (default -- first song)
+		playSong(currentSongIndex);
 
 		/**
 		 * Play button click event plays a song and changes button to pause
@@ -161,43 +179,54 @@ public class KPlayerFragment extends Fragment implements OnCompletionListener,
 		});
 
 		/**
-		 * Forward button click event Forwards song specified seconds
+		 * Next button click event
+		 * Plays next song by taking currentSongIndex + 1
 		 * */
-		btnForward.setOnClickListener(new View.OnClickListener() {
+		btnNext.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
-				// get current song position
-				int currentPosition = mp.getCurrentPosition();
-				// check if seekForward time is lesser than song duration
-				if (currentPosition + seekForwardTime <= mp.getDuration()) {
-					// forward song
-					mp.seekTo(currentPosition + seekForwardTime);
-				} else {
-					// forward to end position
-					mp.seekTo(mp.getDuration());
-				}
+				new Thread(new Runnable() {
+					public void run() {
+						// check if next song is there or not
+						if (currentSongIndex < (musicList.size() - 1)) {
+							refreshMusicList(currentSongIndex + 1);
+							playSong(currentSongIndex + 1);
+							currentSongIndex = currentSongIndex + 1;
+						} else {
+							// play first song
+							refreshMusicList(0);
+							playSong(0);
+							currentSongIndex = 0;
+						}
+					}
+				}).start();
 			}
+			
 		});
-
+		
 		/**
-		 * Backward button click event Backward song to specified seconds
+		 * Back button click event
+		 * Plays previous song by currentSongIndex - 1
 		 * */
-		btnBackward.setOnClickListener(new View.OnClickListener() {
+		btnPrevious.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
-				// get current song position
-				int currentPosition = mp.getCurrentPosition();
-				// check if seekBackward time is greater than 0 sec
-				if (currentPosition - seekBackwardTime >= 0) {
-					// forward song
-					mp.seekTo(currentPosition - seekBackwardTime);
-				} else {
-					// backward to starting position
-					mp.seekTo(0);
-				}
-
+				new Thread(new Runnable() {
+					public void run() {
+						if (currentSongIndex > 0) {
+							refreshMusicList(currentSongIndex - 1);
+							playSong(currentSongIndex - 1);
+							currentSongIndex = currentSongIndex - 1;
+						} else {
+							// play last song
+							refreshMusicList(musicList.size() - 1);
+							playSong(musicList.size() - 1);
+							currentSongIndex = musicList.size() - 1;
+						}
+					}
+				}).start();
 			}
 		});
 
@@ -223,28 +252,40 @@ public class KPlayerFragment extends Fragment implements OnCompletionListener,
 	 * 
 	 * @param songIndex - index of song
 	 * */
-	public void playSong(int songIndex) {
+	public void playSong(final int songIndex) {
+
 		// Play song
 		try {
 			mp.reset();
-			mp.setDataSource(songsList.get(songIndex).get("songPath"));
+			mp.setDataSource(musicList.get(songIndex).getFileName());
 			mp.setAudioStreamType(AudioManager.STREAM_MUSIC);
-			mp.prepare();
-			mp.start();
+			mp.setOnPreparedListener(new OnPreparedListener() {
+				public void onPrepared(MediaPlayer mp) {
+					mp.start();
+					
+					Music music = musicList.get(songIndex);
 
-			// Displaying Song title
-			String songTitle = songsList.get(songIndex).get("songTitle");
-			songTitleLabel.setText(songTitle);
+					// Displaying Song title
+					String songTitle = music.getName();
+					
+					if(music.getPerformer() != null && music.getPerformer().getName() != null) 
+						songTitle = music.getPerformer() + " - " + songTitle;
+					
+					songTitleLabel.setText(songTitle);
 
-			// Changing Button Image to pause image
-			btnPlay.setImageResource(R.drawable.btn_pause);
+					// Changing Button Image to pause image
+					btnPlay.setImageResource(R.drawable.btn_pause);
 
-			// set Progress bar values
-			songProgressBar.setProgress(0);
-			songProgressBar.setMax(100);
+					// set Progress bar values
+					songProgressBar.setProgress(0);
+					songProgressBar.setMax(100);
 
-			// Updating progress bar
-			updateProgressBar();
+					// Updating progress bar
+					updateProgressBar();
+				}
+			});
+			mp.prepareAsync();
+			// mp.start();
 
 		} catch (IllegalArgumentException e) {
 			e.printStackTrace();
@@ -341,27 +382,76 @@ public class KPlayerFragment extends Fragment implements OnCompletionListener,
 	 * */
 	@Override
 	public void onCompletion(MediaPlayer arg0) {
-
-		// check for repeat is ON or OFF
-		if (isRepeat) {
-			// repeat is on play same song again
-			playSong(currentSongIndex);
-		} else if (isShuffle) {
-			// shuffle is on - play a random song
-			Random rand = new Random();
-			currentSongIndex = rand.nextInt((songsList.size() - 1) - 0 + 1) + 0;
-			playSong(currentSongIndex);
-		} else {
-			// no repeat or shuffle ON - play next song
-			if (currentSongIndex < (songsList.size() - 1)) {
-				playSong(currentSongIndex + 1);
-				currentSongIndex = currentSongIndex + 1;
-			} else {
-				// play first song
-				playSong(0);
-				currentSongIndex = 0;
+		new Thread(new Runnable() {
+			public void run() {
+				// check for repeat is ON or OFF
+				if (isRepeat) {
+					// repeat is on play same song again
+					playSong(currentSongIndex);
+				} else if (isShuffle) {
+					// shuffle is on - play a random song
+					Random rand = new Random();
+					currentSongIndex = rand.nextInt((musicList.size() - 1) - 0 + 1) + 0;
+					refreshMusicList(currentSongIndex);
+					playSong(currentSongIndex);
+				} else {
+					// no repeat or shuffle ON - play next song
+					if (currentSongIndex < (musicList.size() - 1)) {
+						refreshMusicList(currentSongIndex + 1);
+						playSong(currentSongIndex + 1);
+						currentSongIndex = currentSongIndex + 1;
+					} else {
+						// play first song
+						refreshMusicList(0);
+						playSong(0);
+						currentSongIndex = 0;
+					}
+				}
 			}
+		}).start();
+	}
+	
+	public void refreshMusicList(int position) {
+		if (position < 0 || musicList.size() < position)
+			return;
+
+		Music music = musicList.get(position);
+		
+		if (music.getName() == null || music.getName().length() == 0)
+			return;
+
+		try {
+			ArrayList<Audio> songsVkList = api.searchAudio(music.getName(),
+					"2", "0", (long) 1, (long) 0, null, null);
+
+			MusicRepository musicRepository = new MusicRepository(getActivity());
+			music.setFileName(songsVkList.get(0).url);
+			musicRepository.editMusic(music);
+			musicList.set(position, music);
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (JSONException e) {
+			e.printStackTrace();
+		} catch (KException e) {
+			Log.i(this.getClass().getName(), e.getMessage());
+			if (e.getMessage().contains("authorization failed")) {
+				startLoginFragment();
+			}
+
+			// e.printStackTrace();
+		} catch (Exception e) {
+			// e.printStackTrace();
 		}
+
+	}
+	
+	private void startLoginFragment() {
+		KinoostActivity activity = (KinoostActivity) getActivity();
+		Fragment newFragment = new LoginFragment();
+		FragmentManager fragmentManager = activity.getSupportFragmentManager();
+		FragmentTransaction transaction = fragmentManager.beginTransaction();
+		transaction.replace(R.id.content_frame, newFragment);
+		transaction.commit();
 	}
 
 	@Override

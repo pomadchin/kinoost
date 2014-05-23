@@ -1,25 +1,18 @@
 package com.cyber.kinoost.adapters;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
+import android.view.*;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
+import android.widget.*;
 
 import com.cyber.kinoost.R;
-import com.cyber.kinoost.api.Account;
-import com.cyber.kinoost.api.ApiHelper;
+import com.cyber.kinoost.api.*;
 import com.cyber.kinoost.api.vk.sources.Api;
-import com.cyber.kinoost.db.models.Film;
-import com.cyber.kinoost.db.models.Music;
-import com.cyber.kinoost.db.models.Performer;
+import com.cyber.kinoost.db.models.*;
 import com.squareup.picasso.Picasso;
 
 public class FilmOstListViewAdapter extends BaseAdapter {
@@ -105,16 +98,17 @@ public class FilmOstListViewAdapter extends BaseAdapter {
 			row.setTag(musicHolder);
 			RelativeLayout musicRow = (RelativeLayout) row;
 			musicRow.setOnClickListener(new OnClickListener() {
-	             @Override
-	             public void onClick(View v) {
+				@Override
+				public void onClick(View v) {
 					Log.i("ListAdapter", music.get(position).getName());
 					Account account = new Account(mContext);
 					Api api = new Api(account);
 
-					apiHelper.getSongMusic(mContext, api, music.get(position), film.getImgUrl());
-
-	             }
-	         });
+					apiHelper.getSongMusic(mContext, api, music.get(position),
+							(ArrayList<Music>) music, film.getImgUrl(),
+							position);
+				}
+			});
 		} else
 			musicHolder = (MusicInfoHolder) row.getTag();
 		

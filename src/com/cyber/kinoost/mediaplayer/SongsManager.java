@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import com.cyber.kinoost.db.models.Music;
 
@@ -39,7 +40,7 @@ public class SongsManager {
 	}
 	
 	/**
-	 * Function to read all downloaded tracks of a current film
+	 * Function to read one downloaded track of a current film
 	 * and store the details in ArrayList
 	 * */
 	public ArrayList<HashMap<String, String>> getPlayList(Music music) {
@@ -56,6 +57,31 @@ public class SongsManager {
 		// Adding song to SongList
 		songsList.add(song);
 		
+		// return songs list array
+		return songsList;
+	}
+	
+	/**
+	 * Function to read all downloaded tracks of a current film
+	 * and store the details in ArrayList
+	 * */
+	public ArrayList<HashMap<String, String>> getPlayList(List<Music> musicList) {
+		for (Music music : musicList) {
+			HashMap<String, String> song = new HashMap<String, String>();
+			String musicName = "";
+			if (music.getPerformer().getName() != null)
+				musicName = music.getPerformer().getName() + " - "
+						+ music.getName();
+			else
+				musicName = music.getName();
+
+			song.put("songTitle", musicName);
+			song.put("songPath", music.getFileName());
+
+			// Adding song to SongList
+			songsList.add(song);
+		}
+
 		// return songs list array
 		return songsList;
 	}

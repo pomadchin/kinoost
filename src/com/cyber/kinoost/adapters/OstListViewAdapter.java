@@ -1,24 +1,19 @@
 package com.cyber.kinoost.adapters;
 
-import java.util.List;
+import java.sql.SQLException;
+import java.util.*;
 
 import android.content.Context;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
+import android.view.*;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
+import android.widget.*;
 
 import com.cyber.kinoost.R;
-import com.cyber.kinoost.api.Account;
-import com.cyber.kinoost.api.ApiHelper;
+import com.cyber.kinoost.api.*;
 import com.cyber.kinoost.api.vk.sources.Api;
-import com.cyber.kinoost.db.models.Music;
-import com.cyber.kinoost.db.models.Performer;
+import com.cyber.kinoost.db.models.*;
+import com.cyber.kinoost.db.repositories.*;
 
 public class OstListViewAdapter extends BaseAdapter {
     
@@ -63,17 +58,33 @@ public class OstListViewAdapter extends BaseAdapter {
 			holder.name = (TextView) row.findViewById(R.id.name);
 			row.setTag(holder);
 			RelativeLayout musicRow = (RelativeLayout) row;
+			
 			musicRow.setOnClickListener(new OnClickListener() {
-	             @Override
-	             public void onClick(View v) {
+				@Override
+				public void onClick(View v) {
 					Log.i("ListAdapter", music.get(position).getName());
 					Account account = new Account(mContext);
 					Api api = new Api(account);
+					
+					String imgUrl = "";
+					
+					try {
+						FilmRepository filmRepo = new FilmRepository(mContext);
+						List<Film> film = filmRepo.lookupFilmsForMusic(music.get(position));
+						if(film.size() > 0) {
+							imgUrl = film.get(0).getImgUrl();
+						}
+					} catch (SQLException e) {
+						imgUrl = "";
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
+					apiHelper.getSongMusic(mContext, api, music.get(position),
+							(ArrayList<Music>) music, imgUrl, position);
 
-					apiHelper.getSongMusic(mContext, api, music.get(position), "");
-
-	             }
-	         });
+				}
+			});
 
 		} else
 			holder = (ViewHolder) row.getTag();		
