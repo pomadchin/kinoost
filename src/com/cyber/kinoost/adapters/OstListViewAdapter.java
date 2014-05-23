@@ -11,7 +11,6 @@ import android.widget.*;
 
 import com.cyber.kinoost.R;
 import com.cyber.kinoost.api.*;
-import com.cyber.kinoost.api.vk.sources.Api;
 import com.cyber.kinoost.db.models.*;
 import com.cyber.kinoost.db.repositories.*;
 
@@ -63,8 +62,6 @@ public class OstListViewAdapter extends BaseAdapter {
 				@Override
 				public void onClick(View v) {
 					Log.i("ListAdapter", music.get(position).getName());
-					Account account = new Account(mContext);
-					Api api = new Api(account);
 					
 					String imgUrl = "";
 					
@@ -80,8 +77,9 @@ public class OstListViewAdapter extends BaseAdapter {
 						e.printStackTrace();
 					}
 					
-					apiHelper.getSongMusic(mContext, api, music.get(position),
-							(ArrayList<Music>) music, imgUrl, position);
+					apiHelper.startPlayerFragment(mContext,
+							music.get(position), imgUrl,
+							(ArrayList<Music>) music, position);
 
 				}
 			});

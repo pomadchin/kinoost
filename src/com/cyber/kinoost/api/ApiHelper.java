@@ -27,8 +27,6 @@ import android.util.Log;
 import com.cyber.kinoost.KinoostActivity;
 import com.cyber.kinoost.R;
 import com.cyber.kinoost.api.tasks.HttpAsyncTaskUpdate;
-import com.cyber.kinoost.api.tasks.HttpAsyncTaskVkSong;
-import com.cyber.kinoost.api.vk.sources.Api;
 import com.cyber.kinoost.db.models.Music;
 import com.cyber.kinoost.fragments.KPlayerFragment;
 
@@ -146,25 +144,6 @@ public class ApiHelper {
 			return true;
 		else
 			return false;
-	}
-
-	// getSong via vk api
-	public void getSongMusic(Context context, Api api, Music music,
-			ArrayList<Music> musicList, String imgUrl, int currentSongIndex) {
-		/*
-		 * if (music.getFileName() != null) { File fileMusic = new
-		 * File(music.getFileName()); if (fileMusic.exists()) {
-		 * startPlayerFragment(context, music); return; } }
-		 */
-		getSong(api, music.getName(), music, musicList, imgUrl,
-				currentSongIndex, context);
-	}
-
-	public void getSong(Api api, String request, Music music,
-			ArrayList<Music> musicList, String imgUrl, int currentSongIndex,
-			Context context) {
-		new HttpAsyncTaskVkSong(api, request, music, musicList, imgUrl,
-				currentSongIndex, context, this).execute(request);
 	}
 
 	public void startPlayerFragment(Context context, Music music,

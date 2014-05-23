@@ -16,9 +16,7 @@ import android.widget.TextView;
 
 import com.cyber.kinoost.R;
 import com.cyber.kinoost.adapters.OstListViewAdapter.ViewHolder;
-import com.cyber.kinoost.api.Account;
 import com.cyber.kinoost.api.ApiHelper;
-import com.cyber.kinoost.api.vk.sources.Api;
 import com.cyber.kinoost.db.models.Film;
 import com.cyber.kinoost.db.models.Music;
 import com.cyber.kinoost.db.models.Performer;
@@ -67,8 +65,6 @@ public class PagingMusicAdapter extends PagingBaseAdapter<Music> {
 				@Override
 				public void onClick(View v) {
 					Log.i("ListAdapter", getItem(position).getName());
-					Account account = new Account(context);
-					Api api = new Api(account);
 					
 					String imgUrl = "";
 					
@@ -84,8 +80,8 @@ public class PagingMusicAdapter extends PagingBaseAdapter<Music> {
 						e.printStackTrace();
 					}
 					
-					apiHelper.getSongMusic(context, api, getItem(position),
-							(ArrayList<Music>) items, imgUrl, position);
+					apiHelper.startPlayerFragment(context, getItem(position),
+							imgUrl, (ArrayList<Music>) items, position);
 
 				}
 			});

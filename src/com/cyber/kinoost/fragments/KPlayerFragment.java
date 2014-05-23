@@ -34,7 +34,9 @@ import com.cyber.kinoost.api.Account;
 import com.cyber.kinoost.api.vk.sources.Api;
 import com.cyber.kinoost.api.vk.sources.Audio;
 import com.cyber.kinoost.api.vk.sources.KException;
+import com.cyber.kinoost.db.models.Film;
 import com.cyber.kinoost.db.models.Music;
+import com.cyber.kinoost.db.repositories.FilmRepository;
 import com.cyber.kinoost.db.repositories.MusicRepository;
 import com.cyber.kinoost.listeners.OnSwipeTouchListener;
 import com.cyber.kinoost.mediaplayer.SongsManager;
@@ -149,7 +151,14 @@ public class KPlayerFragment extends Fragment implements OnCompletionListener,
 		mp.setOnCompletionListener(this); // Important
 		
 		// By play passed song (default -- first song)
-		playSong(currentSongIndex);
+		new Thread(new Runnable() {
+			public void run() {
+				if (currentSongIndex > 0) {
+					refreshMusicList(currentSongIndex);
+					playSong(currentSongIndex);
+				}
+			}
+		}).start();
 
 		/**
 		 * Play button click event plays a song and changes button to pause
@@ -428,6 +437,14 @@ public class KPlayerFragment extends Fragment implements OnCompletionListener,
 			music.setFileName(songsVkList.get(0).url);
 			musicRepository.editMusic(music);
 			musicList.set(position, music);
+			
+			List<Film> films = new FilmRepository(getActivity()).lookupFilmsForMusic(music);
+			if(films.size() > 0)
+				imgUrl = films.get(0).getImgUrl();
+			
+			if (imgUrl.length() > 0)
+				Picasso.with(getActivity()).load(imgUrl)
+						.placeholder(R.drawable.placeholder).fit().into(image);
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (JSONException e) {

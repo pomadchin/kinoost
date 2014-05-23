@@ -11,7 +11,6 @@ import android.widget.*;
 
 import com.cyber.kinoost.R;
 import com.cyber.kinoost.api.*;
-import com.cyber.kinoost.api.vk.sources.Api;
 import com.cyber.kinoost.db.models.*;
 import com.squareup.picasso.Picasso;
 
@@ -101,12 +100,10 @@ public class FilmOstListViewAdapter extends BaseAdapter {
 				@Override
 				public void onClick(View v) {
 					Log.i("ListAdapter", music.get(position).getName());
-					Account account = new Account(mContext);
-					Api api = new Api(account);
 
-					apiHelper.getSongMusic(mContext, api, music.get(position),
-							(ArrayList<Music>) music, film.getImgUrl(),
-							position);
+					apiHelper.startPlayerFragment(mContext,
+							music.get(position), film.getImgUrl(),
+							(ArrayList<Music>) music, position);
 				}
 			});
 		} else
