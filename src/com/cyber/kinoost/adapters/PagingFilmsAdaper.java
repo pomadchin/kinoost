@@ -1,7 +1,5 @@
 package com.cyber.kinoost.adapters;
 
-import java.util.List;
-
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
