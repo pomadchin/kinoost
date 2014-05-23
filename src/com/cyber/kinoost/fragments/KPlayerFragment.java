@@ -153,7 +153,7 @@ public class KPlayerFragment extends Fragment implements OnCompletionListener,
 		// By play passed song (default -- first song)
 		new Thread(new Runnable() {
 			public void run() {
-				if (currentSongIndex > 0) {
+				if (currentSongIndex >= 0 && currentSongIndex < musicList.size()) {
 					refreshMusicList(currentSongIndex);
 					playSong(currentSongIndex);
 				}
