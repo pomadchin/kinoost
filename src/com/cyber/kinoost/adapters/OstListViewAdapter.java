@@ -1,5 +1,6 @@
 package com.cyber.kinoost.adapters;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
@@ -64,16 +65,17 @@ public class OstListViewAdapter extends BaseAdapter {
 			row.setTag(holder);
 			RelativeLayout musicRow = (RelativeLayout) row;
 			musicRow.setOnClickListener(new OnClickListener() {
-	             @Override
-	             public void onClick(View v) {
+				@Override
+				public void onClick(View v) {
 					Log.i("ListAdapter", music.get(position).getName());
 					Account account = new Account(mContext);
 					Api api = new Api(account);
 
-					apiHelper.getSongMusic(mContext, api, music.get(position), "");
+					apiHelper.getSongMusic(mContext, api, music.get(position),
+							(ArrayList<Music>) music, "", position);
 
-	             }
-	         });
+				}
+			});
 
 		} else
 			holder = (ViewHolder) row.getTag();		

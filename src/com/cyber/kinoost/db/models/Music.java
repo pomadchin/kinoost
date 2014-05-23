@@ -93,6 +93,7 @@ public class Music implements Serializable {
 	@Override
 	public String toString() {
 		return "Music [id=" + id + ", name=" + name + ", rating=" + rating
-				+ ", performer=" + performer + "]";
+				+ ", performer=" + performer + ", fileName=" + fileName + "]";
 	}
+
 }
