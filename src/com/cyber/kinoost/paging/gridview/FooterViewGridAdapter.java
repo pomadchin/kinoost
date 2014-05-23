@@ -1,4 +1,4 @@
-package com.cyber.kinoost.PagingGridView;
+package com.cyber.kinoost.paging.gridview;
 
 import android.database.DataSetObserver;
 import android.view.View;

@@ -1,5 +1,10 @@
-<ListView  xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+<com.cyber.kinoost.paging.listview.PagingListView
     android:id="@+id/listView"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content" >
-</ListView>
+    android:layout_height="wrap_content" />
+
+</RelativeLayout>

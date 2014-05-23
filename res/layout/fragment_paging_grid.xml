@@ -2,7 +2,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <com.cyber.kinoost.PagingGridView.PagingGridView
+    <com.cyber.kinoost.paging.gridview.PagingGridView
         android:id="@+id/gridview"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"

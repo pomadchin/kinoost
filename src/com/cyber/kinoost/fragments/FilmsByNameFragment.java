@@ -12,11 +12,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.cyber.kinoost.R;
-import com.cyber.kinoost.PagingGridView.PagingGridView;
-import com.cyber.kinoost.adapters.PagingAdaper;
+import com.cyber.kinoost.adapters.PagingFilmsAdaper;
 import com.cyber.kinoost.api.tasks.SafeAsyncTask;
 import com.cyber.kinoost.db.models.Film;
 import com.cyber.kinoost.db.repositories.FilmMusicRepository;
+import com.cyber.kinoost.paging.gridview.PagingGridView;
 
 public class FilmsByNameFragment extends Fragment {
     
@@ -34,7 +34,7 @@ public class FilmsByNameFragment extends Fragment {
     
     private boolean noFilmsLeft = false;
     
-    private final static int FILMS_PER_PAGE = 30;
+    private final static int FILMS_PER_PAGE = 15;
     
     public void createProgressDialog() {
 		loadingDialog = new ProgressDialog(getActivity());
@@ -113,7 +113,7 @@ public class FilmsByNameFragment extends Fragment {
 		protected void onSuccess(List<Film> newItems) throws Exception {
 			super.onSuccess(newItems);
 			pager++;
-			PagingAdaper adapter = new PagingAdaper(getActivity());
+			PagingFilmsAdaper adapter = new PagingFilmsAdaper(getActivity());
 			if(gridView.getAdapter() == null) {
 				gridView.setAdapter(adapter);
 			}

@@ -1,9 +1,11 @@
-package com.cyber.kinoost.PagingGridView;
+package com.cyber.kinoost.paging.listview;
+
+import com.cyber.kinoost.R;
 
 import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.LinearLayout;
-import com.cyber.kinoost.R;
+
 
 
 public class LoadingView extends LinearLayout {

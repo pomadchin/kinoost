@@ -16,17 +16,17 @@ import android.widget.TextView;
 
 import com.cyber.kinoost.KinoostActivity;
 import com.cyber.kinoost.R;
-import com.cyber.kinoost.PagingGridView.PagingBaseAdapter;
 import com.cyber.kinoost.db.models.Film;
 import com.cyber.kinoost.fragments.MusicByFilmFragment;
+import com.cyber.kinoost.paging.gridview.PagingBaseAdapter;
 import com.squareup.picasso.Picasso;
 
 
-public class PagingAdaper extends PagingBaseAdapter<Film> {
+public class PagingFilmsAdaper extends PagingBaseAdapter<Film> {
 	
 	private Context context;
 	
-	public PagingAdaper(Context c) {
+	public PagingFilmsAdaper(Context c) {
 		this.context = c;
 
 	}
