@@ -1,7 +1,7 @@
 package com.cyber.kinoost.api;
 
 import java.io.BufferedReader;
-import java.io.File;
+//import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -17,14 +17,24 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 
-import com.cyber.kinoost.api.tasks.*;
+import com.cyber.kinoost.KinoostActivity;
+import com.cyber.kinoost.R;
+import com.cyber.kinoost.api.tasks.HttpAsyncTaskUpdate;
+import com.cyber.kinoost.api.tasks.HttpAsyncTaskVkSong;
 import com.cyber.kinoost.api.vk.sources.Api;
 import com.cyber.kinoost.db.models.Music;
-import com.cyber.kinoost.views.KPlayer;
+import com.cyber.kinoost.fragments.KPlayerFragment;
 
 public class ApiHelper {
+	
+	private final String MUSIC_CLASS_NAME = "com.cyber.kinoost.db.models.Music";
+	private final String FILM_IMG_URL = "filmImgUrl";
 
 	public static void dbUpdate(Context updateContext, Date date) {
 
@@ -136,20 +146,34 @@ public class ApiHelper {
 	}
 
 	// getSong via vk api
-	public void getSongMusic(Context context, Api api, Music music, KPlayer kPlayer) {
-		if (music.getFileName() != null) {
+	public void getSongMusic(Context context, Api api, Music music, String imgUrl) {
+		/*if (music.getFileName() != null) {
 			File fileMusic = new File(music.getFileName());
 			if (fileMusic.exists()) {
-				kPlayer.play(music.getFileName());
+				startPlayerFragment(context, music);
 				return;
 			}
-		}
-
-		getSong(api, music.getName(), music, context, kPlayer);
+		}*/
+		getSong(api, music.getName(), music, imgUrl, context);
 	}
 
-	public void getSong(Api api, String request, Music music, Context context, KPlayer kPlayer) {
-		new HttpAsyncTaskVkSong(api, request, music, context, kPlayer).execute(request);
+	public void getSong(Api api, String request, Music music, String imgUrl, Context context) {
+		new HttpAsyncTaskVkSong(api, request, music, imgUrl, context, this).execute(request);
+	}
+	
+	public void startPlayerFragment(Context context, Music music, String imgUrl) {
+		KinoostActivity activity = (KinoostActivity) context;
+		Fragment newFragment = new KPlayerFragment(); 
+		Bundle bundle = new Bundle();
+		bundle.putSerializable(MUSIC_CLASS_NAME, music);
+		bundle.putString(FILM_IMG_URL, imgUrl);
+		newFragment.setArguments(bundle);
+
+		FragmentManager fragmentManager = activity.getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.content_frame, newFragment);
+        transaction.addToBackStack("player fragment");
+        transaction.commit();
 	}
 
 }

@@ -1,5 +1,5 @@
 #
-# generated on 2014/04/22 11:53:29
+# generated on 2014/05/11 11:28:32
 #
 # --table-start--
 dataClass=com.cyber.kinoost.db.models.Favorites
@@ -159,6 +159,9 @@ id=true
 # --field-end--
 # --field-start--
 fieldName=name
+# --field-end--
+# --field-start--
+fieldName=token
 # --field-end--
 # --table-fields-end--
 # --table-end--

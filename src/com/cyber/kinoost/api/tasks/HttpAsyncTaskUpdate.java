@@ -1,26 +1,31 @@
 package com.cyber.kinoost.api.tasks;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.List;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.util.Log;
 
-import com.cyber.kinoost.api.*;
-
-import java.io.IOException;
-import java.util.List;
-
-import com.cyber.kinoost.api.models.*;
+import com.cyber.kinoost.api.ApiHelper;
+import com.cyber.kinoost.api.models.JsonUpdate;
+import com.cyber.kinoost.api.models.JsonUpdateList;
+import com.cyber.kinoost.api.models.UserData;
+import com.cyber.kinoost.db.models.Film;
+import com.cyber.kinoost.db.models.Music;
+import com.cyber.kinoost.db.models.Performer;
+import com.cyber.kinoost.db.repositories.FavoritesRepository;
+import com.cyber.kinoost.db.repositories.FilmRepository;
+import com.cyber.kinoost.db.repositories.MusicRatingRepository;
+import com.cyber.kinoost.db.repositories.MusicRepository;
+import com.cyber.kinoost.db.repositories.PerformerRepository;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import android.os.AsyncTask;
-import com.cyber.kinoost.db.models.*;
-import com.cyber.kinoost.db.repositories.*;
 
 public class HttpAsyncTaskUpdate extends AsyncTask<String, Void, String> {
 	public static final String APP_PREFERENCES = "com.cyber.kinoost";
@@ -79,12 +84,24 @@ public class HttpAsyncTaskUpdate extends AsyncTask<String, Void, String> {
 		try {
 			List<Film> film = filmRepo.findFilmByName("", 0, 10);
 			Log.d("kinoost-filmRepo-findFilmByName", film.toString());
-			
-			List<Tuple<Film, Film>> tfilm = filmRepo.findTuplesFilmByName("", 0, 10);
-			Log.d("kinoost-filmRepo-findFilmByName", tfilm.toString());
 
 			List<Music> music = musicRepo.findMusicByName("", 0, 10);
 			Log.d("kinoost-musicRepo-findMusicByName", music.toString());
+			
+			List<Music> musicrus = musicRepo.findMusicByName("Песня охотника", 0, 10);
+			Log.d("kinoost-musicRepo-findMusicByNameRus", musicrus.toString());
+			
+			List<Music> musics1 = musicRepo.findMusicByFullName("", "Tangerine Dream", 0, 10);
+			Log.d("kinoost-musicRepo-findMusicByFullName1", musics1.toString());
+			
+			List<Music> musics2 = musicRepo.findMusicByFullName("Annie & Father", "", 0, 10);
+			Log.d("kinoost-musicRepo-findMusicByFullName2", musics2.toString());
+			
+			List<Music> musics3 = musicRepo.findMusicByFullName("Annie & Father", "Tangerine Dream", 0, 10);
+			Log.d("kinoost-musicRepo-findMusicByFullName3", musics3.toString());
+			
+			List<Film> f1 = filmRepo.findFilmByMusicFullName("Annie & Father", "Tangerine Dream", 0, 10);
+			Log.d("kinoost-filmRepo-findFilmByMusicFullName3", f1.toString());
 
 			List<Performer> performer = performerRepo.findPerformerByName("",0, 10);
 			Log.d("kinoost-performerRepo-findPeromerByName",performer.toString());

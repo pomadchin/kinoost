@@ -1,7 +1,5 @@
 package com.cyber.kinoost.db;
 
-import android.content.Context;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -9,16 +7,25 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.sql.SQLException;
+
+import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.cyber.kinoost.*;
-import com.cyber.kinoost.db.models.*;
+import com.cyber.kinoost.R;
+import com.cyber.kinoost.db.models.Favorites;
+import com.cyber.kinoost.db.models.Film;
+import com.cyber.kinoost.db.models.FilmMusic;
+import com.cyber.kinoost.db.models.Music;
+import com.cyber.kinoost.db.models.MusicRating;
+import com.cyber.kinoost.db.models.Performer;
+import com.cyber.kinoost.db.models.User;
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.RuntimeExceptionDao;
 import com.j256.ormlite.support.ConnectionSource;
+//import com.j256.ormlite.table.TableUtils;
 
 public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 
@@ -50,7 +57,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 	private RuntimeExceptionDao<User, Integer> userRuntimeDao = null;
 
 	public DatabaseHelper(Context context) {
-		// super(context, DATABASE_NAME, null, DATABASE_VERSION, R.raw.ormlite_config);
+		//super(context, DATABASE_NAME, null, DATABASE_VERSION, R.raw.ormlite_config);
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
 		if (android.os.Build.VERSION.SDK_INT >= 17)
 			DATABASE_PATH = context.getApplicationInfo().dataDir
@@ -235,30 +242,33 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 	// db dump to sd card
 	public void dbDump() {
 		File f = new File(DATABASE_PATH + DATABASE_NAME);
-		FileInputStream fis = null;
-		FileOutputStream fos = null;
+		if (f.exists()) {
+			FileInputStream fis = null;
+			FileOutputStream fos = null;
 
-		try {
-			fis = new FileInputStream(f);
-			fos = new FileOutputStream("/mnt/sdcard/" + DATABASE_NAME);
-			while (true) {
-				int i = fis.read();
-				if (i != -1) {
-					fos.write(i);
-				} else {
-					break;
-				}
-			}
-			fos.flush();
-			Toast.makeText(context, "DB dump OK", Toast.LENGTH_LONG).show();
-		} catch (Exception e) {
-			e.printStackTrace();
-			Toast.makeText(context, "DB dump ERROR", Toast.LENGTH_LONG).show();
-		} finally {
 			try {
-				fos.close();
-				fis.close();
-			} catch (IOException ioe) {
+				fis = new FileInputStream(f);
+				fos = new FileOutputStream("/mnt/sdcard/" + DATABASE_NAME);
+				while (true) {
+					int i = fis.read();
+					if (i != -1) {
+						fos.write(i);
+					} else {
+						break;
+					}
+				}
+				fos.flush();
+				Toast.makeText(context, "DB dump OK", Toast.LENGTH_LONG).show();
+			} catch (Exception e) {
+				e.printStackTrace();
+				Toast.makeText(context, "DB dump ERROR", Toast.LENGTH_LONG)
+						.show();
+			} finally {
+				try {
+					fos.close();
+					fis.close();
+				} catch (IOException ioe) {
+				}
 			}
 		}
 	}

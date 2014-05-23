@@ -1,8 +1,9 @@
 package com.cyber.kinoost.api.vk.sources;
 
+import java.io.Serializable;
+
 import org.json.JSONException;
 import org.json.JSONObject;
-import java.io.Serializable;
 
 public class Album implements Serializable {
     public long aid;

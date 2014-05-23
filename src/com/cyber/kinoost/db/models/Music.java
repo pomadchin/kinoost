@@ -1,5 +1,7 @@
 package com.cyber.kinoost.db.models;
 
+import java.io.Serializable;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -8,11 +10,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
+@SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown = true)
 @DatabaseTable(tableName = "music")
-public class Music {
+public class Music implements Serializable {
 	
 	public final static String ID_FIELD_NAME = "id";
+	public final static String NAME_FIELD_NAME = "name";
 	public final static String PERFORMER_ID_FIELD_NAME = "performer_id";
 	
 	@DatabaseField(id = true, columnName = ID_FIELD_NAME)

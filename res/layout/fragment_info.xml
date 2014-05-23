@@ -2,25 +2,26 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ffffff"
-    tools:context=".MainActivity" >
+    android:background="#111">
 
     <TextView
         android:id="@+id/textView1"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:text="KinoOST"
+        android:layout_gravity="center"
+       	android:gravity="center"
+       	android:textAlignment="gravity"
         android:textColor="#F16005"
-        android:textSize="30dp" />
+        android:textSize="35sp" 
+        android:text="KinoOST"/>
 
     <TextView
         android:id="@+id/text_info"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/textView1"
-        android:text="Данное приложение создано в рамках учебного проекта группой К8-223 с ненавистью к миру" />
+        android:padding="10dp"
+        android:textSize="15sp" 
+		android:textColor="#FFF"
+        android:layout_below="@+id/textView1" />
 
 </RelativeLayout>

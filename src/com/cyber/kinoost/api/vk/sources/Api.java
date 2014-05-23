@@ -8,15 +8,16 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.zip.GZIPInputStream;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.util.Log;
+
 import com.cyber.kinoost.api.Account;
 import com.cyber.kinoost.api.vk.utils.Utils;
 import com.cyber.kinoost.api.vk.utils.WrongResponseCodeException;
-
-import android.util.Log;
 
 public class Api {
     static final String TAG="Kate.Api";

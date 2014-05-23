@@ -1,17 +1,21 @@
 package com.cyber.kinoost.db.repositories;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.Callable;
 
-import java.sql.SQLException;
-
+import android.annotation.SuppressLint;
 import android.content.Context;
 
 import com.cyber.kinoost.db.DatabaseHelper;
-import com.cyber.kinoost.db.models.*;
+import com.cyber.kinoost.db.models.Film;
+import com.cyber.kinoost.db.models.FilmMusic;
+import com.cyber.kinoost.db.models.Music;
+import com.cyber.kinoost.db.models.Performer;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
+import com.j256.ormlite.dao.GenericRawResults;
+import com.j256.ormlite.dao.RawRowMapper;
 import com.j256.ormlite.dao.RuntimeExceptionDao;
 import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.stmt.QueryBuilder;
@@ -163,30 +167,13 @@ public class FilmMusicRepository {
 	    return filmList;
 	}
 	
-	public ArrayList<Tuple<Film, Film>> findTuplesFilmByName(String name, int offset, int limit) throws SQLException {
-		List<Film> filmList = findFilmByName(name, offset, limit);
-		ArrayList<Tuple<Film, Film>> result = new ArrayList<Tuple<Film, Film>>();
-		
-		Iterator<Film> iterator = filmList.iterator();
-		while (iterator.hasNext()) {
-			Film fst = iterator.next();
-			Film snd = null;
-			
-			if(iterator.hasNext())
-				snd = iterator.next();
-			
-			result.add(new Tuple<Film, Film>(fst, snd));
-		}
-		
-		return result;
-	}
-	
 	public List<Music> findMusicByName(String name, int offset, int limit) throws SQLException {
 	    List<Music> musicList = new ArrayList<Music>();
 	    QueryBuilder<Music, Integer> queryBuilder = musicDao.queryBuilder();
 	    if(offset > 0) queryBuilder.offset(Long.valueOf(offset));
 	    if(limit > 0) queryBuilder.limit(Long.valueOf(limit));
 	    if(name.length() > 0) queryBuilder.where().like("name", "%"+name+"%");
+	    
 	    musicList = musicDao.query(queryBuilder.prepare());
 
 	    return musicList;
@@ -205,18 +192,7 @@ public class FilmMusicRepository {
 	}
 	
 	public List<Music> findMusicByPerformer(String name, int offset, int limit) throws SQLException {
-		Performer performer = null;
-		List<Performer> performerList = performerRepo.findPerformerByName(name, 0, 1);
-		if(performerList.size() > 0) performer = performerList.get(0);
-	    List<Music> musicList = new ArrayList<Music>();
-	    if(performer != null){
-	    	QueryBuilder<Music, Integer> queryBuilder = musicDao.queryBuilder();
-	    	if(offset > 0) queryBuilder.offset(Long.valueOf(offset));
-	    	if(limit > 0) queryBuilder.limit(Long.valueOf(limit));
-	    	queryBuilder.where().eq(Music.PERFORMER_ID_FIELD_NAME, performer);
-	    	musicList = musicDao.query(queryBuilder.prepare());
-	    }	    
-	    return musicList;
+		return findMusicByFullName("", name, offset, limit);
 	}
 
 	public List<Film> lookupFilmsForMusic(Music music) throws SQLException {
@@ -234,6 +210,75 @@ public class FilmMusicRepository {
 		}
 		musicForFilmQuery.setArgumentHolderValue(0, film);
 		return musicDao.query(musicForFilmQuery);
+	}
+	
+	// raw method, due to join of query builder cannot map foreign entity automatically
+	@SuppressLint("UseValueOf")
+	public List<Music> findMusicByFullName(String name, final String performerName, int offset, int limit) throws SQLException {
+		if(name.length() == 0 && performerName.length() == 0)
+			return new ArrayList<Music>();
+		
+		String query = "SELECT `music`.*, `performer`.* FROM `music` JOIN `performer` ON `music`.`performer_id` = `performer`.`id`";
+		
+		if(name != null && name.length() > 0 && performerName != null && performerName.length() > 0)
+			query += "WHERE `music`.`name` LIKE '%" + name + "%' AND (`performer`.`name` LIKE '%" + performerName + "%' )";
+		
+		if((name == null || name.length() == 0) && performerName != null && performerName.length() > 0)
+			query += "WHERE (`performer`.`name` LIKE '%" + performerName + "%' )";
+		
+		if((name != null && name.length() > 0) && (performerName == null || performerName.length() == 0))
+			query += "WHERE `music`.`name` LIKE '%" + name + "%'";
+		
+		if(limit > 0)
+			query += " LIMIT " + new Integer(limit).toString();
+		
+		if(offset > 0)
+			query += " OFFSET " + new Integer(offset).toString();
+		
+		GenericRawResults<Music> rawResults =
+		    musicDao.queryRaw(query,
+		        new RawRowMapper<Music>() {
+				    public Music mapRow(String[] columnNames, String[] resultColumns) {
+				        return new Music(
+				                   Integer.parseInt(resultColumns[0]), resultColumns[1], 
+				                   Double.parseDouble(resultColumns[2]),
+				                   new Performer(
+				                       Integer.parseInt(resultColumns[5]),
+				                       resultColumns[6]
+				                   )
+				               );
+				    }
+				});
+		
+		return 	rawResults.getResults();
+	}
+	
+	public List<Film> findFilmByMusicFullName(String name, final String performerName, int offset, int limit) throws SQLException {
+		if (name.length() == 0 && performerName.length() == 0)
+			return new ArrayList<Film>();
+
+		QueryBuilder<FilmMusic, Integer> filmMusicQb = filmMusicDao.queryBuilder();
+		QueryBuilder<Film, Integer> filmQb = filmDao.queryBuilder();
+		QueryBuilder<Music, Integer> musicQb = musicDao.queryBuilder();
+		QueryBuilder<Performer, Integer> performerQb = performerDao.queryBuilder();
+		if (performerName.length() != 0) {
+			performerQb.where().eq(Performer.NAME_FIELD_NAME, performerName);
+			musicQb.join(performerQb);
+		}
+
+		if (name.length() != 0)
+			musicQb.where().eq(Music.NAME_FIELD_NAME, name);
+
+		filmMusicQb.join(musicQb);
+
+		filmQb.join(filmMusicQb)
+			  .selectColumns(Film.ID_FIELD_NAME, Film.NAME_FIELD_NAME, "year", "img", "rating")
+			  .distinct();
+
+		if (offset > 0) filmQb.offset(Long.valueOf(offset));
+		if (limit > 0) filmQb.limit(Long.valueOf(limit));
+
+		return filmQb.query();
 	}
 
 	protected PreparedQuery<Film> makeFilmsForMusicQuery() throws SQLException {
