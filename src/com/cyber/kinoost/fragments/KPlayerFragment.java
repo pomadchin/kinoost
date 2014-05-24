@@ -265,6 +265,7 @@ public class KPlayerFragment extends Fragment implements OnCompletionListener,
 						songTitle = music.getPerformer() + " - " + songTitle;
 					
 					songTitleLabel.setText(songTitle);
+					songTitleLabel.setSelected(true);
 
 					// Changing Button Image to pause image
 					btnPlay.setImageResource(R.drawable.btn_pause);
