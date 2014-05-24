@@ -34,7 +34,7 @@ import com.cyber.kinoost.fragments.InfoFragment;
 import com.cyber.kinoost.fragments.MusicFragment;
 
 public class KinoostActivity extends FragmentActivity implements TabListener, OnQueryTextListener {
-
+	
 	private DrawerLayout mDrawerLayout;
 	private ListView mDrawerList;
 	private ActionBarDrawerToggle mDrawerToggle;
@@ -109,12 +109,12 @@ public class KinoostActivity extends FragmentActivity implements TabListener, On
 			}
 		};
 		mDrawerLayout.setDrawerListener(mDrawerToggle);
-
+		
 		if (savedInstanceState == null) {
 			selectItem(0);
-		}
-		
+		}	
 	}
+	
 
 	@Override
 	protected void onStart() {

@@ -19,6 +19,8 @@ import com.cyber.kinoost.db.repositories.MusicRepository;
 import com.cyber.kinoost.paging.listview.PagingListView;
 
 public class MusicFragment extends Fragment {
+	
+	private static final String TAG = MusicFragment.class.getSimpleName();
     
     public MusicFragment() {
         // Empty constructor required for fragment subclasses
@@ -41,6 +43,7 @@ public class MusicFragment extends Fragment {
 		loadingDialog.setIndeterminate(true);
 		loadingDialog.setMessage(getString(R.string.loading_films));
 	}
+    
 
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -36,6 +37,8 @@ public class FilmsByNameFragment extends Fragment {
     
     private final static int FILMS_PER_PAGE = 15;
     
+    private Context context;
+    
     public void createProgressDialog() {
 		loadingDialog = new ProgressDialog(getActivity());
 		loadingDialog.setIndeterminate(true);
@@ -45,7 +48,8 @@ public class FilmsByNameFragment extends Fragment {
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-		
+		pager = 0;	
+		this.context = getActivity();
     	Bundle bundle = getArguments();   	
     	if (bundle != null && bundle.containsKey("filmName"))
     		filmname = getArguments().getString("filmName");
@@ -73,7 +77,7 @@ public class FilmsByNameFragment extends Fragment {
     }
     
     private List<Film> getFilms(int offset) {
-    	FilmMusicRepository filmMusicRepo = new FilmMusicRepository(getActivity());
+    	FilmMusicRepository filmMusicRepo = new FilmMusicRepository(context);
     	List<Film> films = null;
     	try {
 			films = filmMusicRepo.findFilmByName(filmname, offset, FILMS_PER_PAGE);
@@ -113,7 +117,7 @@ public class FilmsByNameFragment extends Fragment {
 		protected void onSuccess(List<Film> newItems) throws Exception {
 			super.onSuccess(newItems);
 			pager++;
-			PagingFilmsAdaper adapter = new PagingFilmsAdaper(getActivity());
+			PagingFilmsAdaper adapter = new PagingFilmsAdaper(context);
 			if(gridView.getAdapter() == null) {
 				gridView.setAdapter(adapter);
 			}
