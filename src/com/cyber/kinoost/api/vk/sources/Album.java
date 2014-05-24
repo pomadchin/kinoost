@@ -6,7 +6,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class Album implements Serializable {
-    public long aid;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -991164966707725913L;
+	public long aid;
     public long thumb_id;
     public long owner_id;
     public String title;

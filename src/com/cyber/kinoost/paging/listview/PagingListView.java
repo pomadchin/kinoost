@@ -62,6 +62,7 @@ public class PagingListView extends ListView {
 	}
 
 
+	@SuppressWarnings("unchecked")
 	public void onFinishLoading(boolean hasMoreItems, List<? extends Object> newItems) {
 		setHasMoreItems(hasMoreItems);
 		setIsLoading(false);
