@@ -18,8 +18,10 @@ import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
@@ -39,7 +41,6 @@ import com.cyber.kinoost.db.models.Music;
 import com.cyber.kinoost.db.repositories.FilmRepository;
 import com.cyber.kinoost.db.repositories.MusicRepository;
 import com.cyber.kinoost.listeners.OnSwipeTouchListener;
-import com.cyber.kinoost.mediaplayer.SongsManager;
 import com.cyber.kinoost.mediaplayer.Utilities;
 import com.squareup.picasso.Picasso;
 
@@ -70,10 +71,8 @@ public class KPlayerFragment extends Fragment implements OnCompletionListener,
 	private static MediaPlayer mp = new MediaPlayer();
 	// Handler to update UI timer, progress bar etc,.
 	private Handler mHandler = new Handler();
-	private SongsManager songManager;
+	// private SongsManager songManager;
 	private Utilities utils;
-	private int seekForwardTime = 5000; // 5000 milliseconds
-	private int seekBackwardTime = 5000; // 5000 milliseconds
 	private int currentSongIndex;
 	private boolean isShuffle = false;
 	private boolean isRepeat = false;
@@ -143,7 +142,7 @@ public class KPlayerFragment extends Fragment implements OnCompletionListener,
 					.placeholder(R.drawable.placeholder).fit().into(image);
 
 		// Mediaplayer
-		songManager = new SongsManager();
+		// songManager = new SongsManager();
 		utils = new Utilities();
 
 		// Listeners
@@ -246,13 +245,17 @@ public class KPlayerFragment extends Fragment implements OnCompletionListener,
 	 * Receiving song index from playlist view and play the song
 	 * */
 	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+	public void onActivityResult(int requestCode, final int resultCode, final Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		if (resultCode == 100) {
-			currentSongIndex = data.getExtras().getInt("songIndex");
-			// play selected song
-			playSong(currentSongIndex);
-		}
+		new Thread(new Runnable() {
+			public void run() {
+				if (resultCode == 100) {
+					currentSongIndex = data.getExtras().getInt("songIndex");
+					// play selected song
+					playSong(currentSongIndex);
+				}
+			}
+		}).start();
 
 	}
 
