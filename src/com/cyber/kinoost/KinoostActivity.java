@@ -29,6 +29,7 @@ import android.widget.SearchView.OnQueryTextListener;
 
 import com.cyber.kinoost.api.ApiHelper;
 import com.cyber.kinoost.db.DatabaseHelper;
+import com.cyber.kinoost.fragments.FavoritesFragment;
 import com.cyber.kinoost.fragments.FilmsByNameFragment;
 import com.cyber.kinoost.fragments.InfoFragment;
 import com.cyber.kinoost.fragments.MusicFragment;
@@ -199,7 +200,7 @@ public class KinoostActivity extends FragmentActivity implements TabListener, On
 				actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 			break;
 		case 1:
-			fragment = new MusicFragment();
+			fragment = new FavoritesFragment();
 			break;
 		case 4:
 			fragment = new InfoFragment();
