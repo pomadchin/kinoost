@@ -17,7 +17,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -201,7 +200,6 @@ public class KinoostActivity extends FragmentActivity implements TabListener, On
 				actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 			break;
 		case 1:
-			Log.d("FavoritesFrgament", "FavoritesFrgament");
 			if(isTopBar)
 				fragment = new MusicFragment();
 			else
@@ -307,7 +305,6 @@ public class KinoostActivity extends FragmentActivity implements TabListener, On
 			bundle.putString("filmName", query);
 			break;
 		case 1:
-			Log.d("MusicFrgament", "MusicFrgament");
 			fragment = new MusicFragment();
 			bundle.putString("songName", query);
 			break;
