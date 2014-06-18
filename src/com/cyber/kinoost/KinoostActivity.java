@@ -200,7 +200,7 @@ public class KinoostActivity extends FragmentActivity implements TabListener, On
 				actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 			break;
 		case 1:
-			fragment = new FavoritesFragment();
+			fragment = new MusicFragment();
 			break;
 		case 4:
 			fragment = new InfoFragment();
