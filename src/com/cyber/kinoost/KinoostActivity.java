@@ -17,6 +17,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -112,7 +113,7 @@ public class KinoostActivity extends FragmentActivity implements TabListener, On
 		mDrawerLayout.setDrawerListener(mDrawerToggle);
 		
 		if (savedInstanceState == null) {
-			selectItem(0);
+			selectItem(0, false);
 		}	
 	}
 	
@@ -178,20 +179,20 @@ public class KinoostActivity extends FragmentActivity implements TabListener, On
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position,
 				long id) {
-			selectItem(position);
+			selectItem(position, false);
 		}
 	}
 
 	// <string-array name="menu_items">
 	// <item>Главная</item>
 	// <item>Избранное</item>
-	// <item>Сохраненное</item>
-	// <item>Рейтинг</item>
+	// <!-- <item>Сохраненное</item> -->
+	// <!-- <item>Рейтинг</item> -->
 	// <item>Информация</item>
 	// <item>Настройки</item>
 	// </string-array>
 
-	private void selectItem(int position) {
+	private void selectItem(int position, boolean isTopBar) {
 		Fragment fragment;
 		switch (position) {
 		case 0:
@@ -200,7 +201,11 @@ public class KinoostActivity extends FragmentActivity implements TabListener, On
 				actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 			break;
 		case 1:
-			fragment = new FavoritesFragment();
+			Log.d("FavoritesFrgament", "FavoritesFrgament");
+			if(isTopBar)
+				fragment = new MusicFragment();
+			else
+				fragment = new FavoritesFragment();
 			break;
 		case 4:
 			fragment = new InfoFragment();
@@ -273,7 +278,7 @@ public class KinoostActivity extends FragmentActivity implements TabListener, On
 			searchView.setVisibility(View.INVISIBLE);
 		else if (searchView != null)
 			searchView.setVisibility(View.VISIBLE);
-		selectItem(tab.getPosition());
+		selectItem(tab.getPosition(), true);
 	}
 
 	@Override
@@ -302,6 +307,7 @@ public class KinoostActivity extends FragmentActivity implements TabListener, On
 			bundle.putString("filmName", query);
 			break;
 		case 1:
+			Log.d("MusicFrgament", "MusicFrgament");
 			fragment = new MusicFragment();
 			bundle.putString("songName", query);
 			break;

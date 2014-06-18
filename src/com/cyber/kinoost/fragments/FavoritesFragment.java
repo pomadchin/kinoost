@@ -13,12 +13,9 @@ import android.view.ViewGroup;
 
 import com.cyber.kinoost.R;
 import com.cyber.kinoost.adapters.PagingFavoritesAdapter;
-import com.cyber.kinoost.adapters.PagingMusicAdapter;
 import com.cyber.kinoost.api.tasks.SafeAsyncTask;
 import com.cyber.kinoost.db.models.Favorites;
-import com.cyber.kinoost.db.models.Music;
 import com.cyber.kinoost.db.repositories.FavoritesRepository;
-import com.cyber.kinoost.db.repositories.MusicRepository;
 import com.cyber.kinoost.paging.listview.PagingListView;
 
 public class FavoritesFragment extends Fragment {
