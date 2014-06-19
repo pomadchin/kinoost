@@ -21,17 +21,25 @@ import com.cyber.kinoost.db.models.Favorites;
 import com.cyber.kinoost.db.models.Film;
 import com.cyber.kinoost.db.models.Music;
 import com.cyber.kinoost.db.models.Performer;
+import com.cyber.kinoost.db.models.User;
+import com.cyber.kinoost.db.repositories.FavoritesRepository;
 import com.cyber.kinoost.db.repositories.FilmRepository;
+import com.cyber.kinoost.db.repositories.UserRepository;
 import com.cyber.kinoost.paging.listview.PagingBaseAdapter;
 
 public class PagingFavoritesAdapter extends PagingBaseAdapter<Favorites> {
 	
 	private Context context;
-	
 	final ApiHelper apiHelper = new ApiHelper();
+	private FavoritesRepository favRepo;
+	private UserRepository userRepo;
+	private User user;
 	
 	public PagingFavoritesAdapter(Context c) {
 		this.context = c;
+		this.favRepo = new FavoritesRepository(c);
+		this.userRepo = new UserRepository(c);
+		this.user = userRepo.getUser();
 	}
 	
 	@Override
@@ -59,12 +67,13 @@ public class PagingFavoritesAdapter extends PagingBaseAdapter<Favorites> {
 	@Override
 	public View getView(final int position, View convertView, ViewGroup parent) {
 		View row = convertView;
-		ViewHolder holder;
+		final ViewHolder holder;
 		if (row == null) {
 			LayoutInflater inflater = LayoutInflater.from(context);
 			row = inflater.inflate(R.layout.ost_row, parent, false);
 			holder = new ViewHolder();
 			holder.image = (ImageView) row.findViewById(R.id.image);
+			holder.btnFav = (ImageView) row.findViewById(R.id.btnFav);
 			holder.name = (TextView) row.findViewById(R.id.name);
 			row.setTag(holder);
 			RelativeLayout musicRow = (RelativeLayout) row;
@@ -93,6 +102,18 @@ public class PagingFavoritesAdapter extends PagingBaseAdapter<Favorites> {
 
 				}
 			});
+			
+			/**
+			 * Remove song from favorites
+			 **/
+			holder.btnFav.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View arg0) {
+					Music m = getItem(position).getMusic();
+					favRepo.deleteFavorites(m);
+					holder.btnFav.setImageResource(R.drawable.img_btn_fav);
+				}
+			});
 
 		} else
 			holder = (ViewHolder) row.getTag();		
@@ -102,6 +123,8 @@ public class PagingFavoritesAdapter extends PagingBaseAdapter<Favorites> {
 		holder.name.setText(performerName + song.getName());
 		holder.name.setSelected(true);
 		holder.image.setImageResource(R.drawable.music);
+		holder.btnFav.setImageResource(R.drawable.img_btn_fav_pressed);
+		
 		return row;
 		
 	}

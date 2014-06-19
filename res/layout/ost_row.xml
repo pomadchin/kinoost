@@ -16,16 +16,28 @@
 
     <TextView
         android:id="@+id/name"
-        android:layout_width="fill_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/image"
         android:layout_centerVertical="true"
-        android:lines="1"
-        android:textColor="#fff"
-        android:textSize="18sp" 
+        android:layout_toLeftOf="@+id/btnFav"
+        android:layout_toRightOf="@+id/image"
         android:ellipsize="marquee"
-        android:singleLine="true"
+        android:lines="1"
+        android:marqueeRepeatLimit="marquee_forever"
         android:scrollHorizontally="true"
-        android:marqueeRepeatLimit="marquee_forever"/>
+        android:singleLine="true"
+        android:textColor="#fff"
+        android:textSize="18sp" />
+    
+    <ImageView
+        android:id="@+id/btnFav"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_margin="5dip"
+        android:focusable="true"
+        android:clickable="true"
+        android:src="@drawable/btn_fav" />
 
 </RelativeLayout>

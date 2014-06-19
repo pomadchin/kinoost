@@ -121,7 +121,7 @@ public class FilmsByNameFragment extends Fragment {
 			if(gridView.getAdapter() == null) {
 				gridView.setAdapter(adapter);
 			}
-			gridView.onFinishLoading(true, newItems);
+			gridView.onFinishLoading(newItems.size() == 0 ? false : true, newItems);
 		}
 
 		@Override

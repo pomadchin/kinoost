@@ -8,7 +8,7 @@ import java.util.concurrent.Callable;
 import android.content.Context;
 
 import com.cyber.kinoost.db.DatabaseHelper;
-import com.cyber.kinoost.db.models.Favorites;
+import com.cyber.kinoost.db.models.*;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.dao.RuntimeExceptionDao;
 import com.j256.ormlite.stmt.QueryBuilder;
@@ -32,6 +32,13 @@ public class FavoritesRepository {
 	
 	public void createFavorites(Favorites favorites) {
 		if(favorites == null) return;
+		
+		favoritesDao.create(favorites);
+	}
+	
+	public void createFavorites(User user, Music music) {
+		if(user == null || music == null) return;
+		Favorites favorites = new Favorites(user, music);
 		
 		favoritesDao.create(favorites);
 	}
@@ -76,6 +83,21 @@ public class FavoritesRepository {
 		favoritesDao.delete(favorites);
 	}
 	
+	public void deleteFavorites(Music music) {
+		if (music == null) return;
+		List<Favorites> favoritesList = new ArrayList<Favorites>();
+
+		try {
+			favoritesList = getFavorites(music);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		if (favoritesList.size() > 0)
+			deleteFavoritesList(favoritesList);
+	}
+	
 	public void deleteFavoritesList(List<Favorites> favorites) {
 		if(favorites == null) return;
 		
@@ -90,5 +112,38 @@ public class FavoritesRepository {
 	    favoritesList = favoritesDao.query(queryBuilder.prepare());
 
 	    return favoritesList;
+	}
+	
+	public boolean isFavorite(Music music) throws SQLException {
+		QueryBuilder<Favorites, Integer> queryBuilder = favoritesDao.queryBuilder();
+		queryBuilder.where().eq(Favorites.MUSIC_ID_FIELD_NAME, music);
+		List<Favorites> favoritesList = favoritesDao.query(queryBuilder.prepare());
+		
+		return favoritesList.size() == 0 ? false : true;
+	}
+	
+	public List<String> getFavoritesIds(List<Music> music) throws SQLException {
+		List<String> musicIdsList = new ArrayList<String>();
+		
+		QueryBuilder<Favorites, Integer> queryBuilder = favoritesDao.queryBuilder();
+		queryBuilder.where().in(Favorites.MUSIC_ID_FIELD_NAME, music);
+		List<Favorites> favoritesList = favoritesDao.query(queryBuilder.prepare());
+		
+		for(Favorites fv : favoritesList)
+			musicIdsList.add(Integer.toString(fv.getMusic().getId()));
+		
+		return musicIdsList;
+	}
+	
+	public List<Favorites> getFavorites(List<Music> music) throws SQLException {		
+		QueryBuilder<Favorites, Integer> queryBuilder = favoritesDao.queryBuilder();
+		queryBuilder.where().in(Favorites.MUSIC_ID_FIELD_NAME, music);
+		return favoritesDao.query(queryBuilder.prepare());
+	}
+	
+	public List<Favorites> getFavorites(Music music) throws SQLException {		
+		QueryBuilder<Favorites, Integer> queryBuilder = favoritesDao.queryBuilder();
+		queryBuilder.where().eq(Favorites.MUSIC_ID_FIELD_NAME, music);
+		return favoritesDao.query(queryBuilder.prepare());
 	}
 }

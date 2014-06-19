@@ -36,6 +36,13 @@ public class Favorites {
 		this.music = music;
 		this.date = new Date(System.currentTimeMillis());
 	}
+	
+	public Favorites(User user, Music music) {
+		super();
+		this.user = user;
+		this.music = music;
+		this.date = new Date(System.currentTimeMillis());
+	}
 
 	public User getUser() {
 		return user;
