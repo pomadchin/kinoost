@@ -140,7 +140,7 @@ public class KinoostActivity extends ActionBarActivity implements TabListener, O
 		inflater.inflate(R.menu.main, menu);
 		SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
 		MenuItem item = menu.findItem(R.id.action_search);
-		SearchView searchView = (SearchView) MenuItemCompat.getActionView(item);
+		searchView = (SearchView) MenuItemCompat.getActionView(item);
 
 		searchView.setSearchableInfo(searchManager
 				.getSearchableInfo(getComponentName()));
