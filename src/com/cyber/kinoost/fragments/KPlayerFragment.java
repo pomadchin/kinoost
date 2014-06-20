@@ -1,26 +1,44 @@
 package com.cyber.kinoost.fragments;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 import org.json.JSONException;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.media.*;
-import android.media.MediaPlayer.*;
-import android.os.*;
-import android.support.v4.app.*;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
+import android.media.MediaPlayer.OnCompletionListener;
+import android.media.MediaPlayer.OnPreparedListener;
+import android.os.Bundle;
+import android.os.Handler;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
-import android.view.*;
-import android.widget.*;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.SeekBar;
+import android.widget.TextView;
 
 import com.cyber.kinoost.KinoostActivity;
 import com.cyber.kinoost.R;
-import com.cyber.kinoost.api.*;
-import com.cyber.kinoost.api.vk.sources.*;
-import com.cyber.kinoost.db.models.*;
-import com.cyber.kinoost.db.repositories.*;
+import com.cyber.kinoost.api.Account;
+import com.cyber.kinoost.api.vk.sources.Api;
+import com.cyber.kinoost.api.vk.sources.Audio;
+import com.cyber.kinoost.api.vk.sources.KException;
+import com.cyber.kinoost.db.models.Film;
+import com.cyber.kinoost.db.models.Music;
+import com.cyber.kinoost.db.repositories.FilmRepository;
+import com.cyber.kinoost.db.repositories.MusicRepository;
 import com.cyber.kinoost.listeners.OnSwipeTouchListener;
 import com.cyber.kinoost.mediaplayer.Utilities;
 import com.squareup.picasso.Picasso;
@@ -67,7 +85,7 @@ public class KPlayerFragment extends Fragment implements OnCompletionListener,
 	@Override
 	public void onDestroyView() {
 		super.onDestroyView();
-		getActivity().getActionBar().show();			
+		((ActionBarActivity) getActivity()).getSupportActionBar().show();			
 	}
 	
 	private void startFilmFragment() {
@@ -88,7 +106,7 @@ public class KPlayerFragment extends Fragment implements OnCompletionListener,
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		
-		getActivity().getActionBar().hide();
+		((ActionBarActivity) getActivity()).getSupportActionBar().hide();
 		getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		
 		// Get music info
