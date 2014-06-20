@@ -26,7 +26,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.SearchView.OnQueryTextListener;
-
 import com.cyber.kinoost.api.ApiHelper;
 import com.cyber.kinoost.db.DatabaseHelper;
 import com.cyber.kinoost.fragments.FavoritesFragment;
@@ -120,8 +119,6 @@ public class KinoostActivity extends FragmentActivity implements TabListener, On
 	@Override
 	protected void onStart() {
 		super.onStart();
-
-		// check data update on start
 		Date storedDate = new Date(prefs.getLong(
 				APP_PREFERENCES_UPDATE_DATETIME, 0));
 		Date newDate = new Date();
@@ -181,15 +178,6 @@ public class KinoostActivity extends FragmentActivity implements TabListener, On
 			selectItem(position, false);
 		}
 	}
-
-	// <string-array name="menu_items">
-	// <item>Главная</item>
-	// <item>Избранное</item>
-	// <!-- <item>Сохраненное</item> -->
-	// <!-- <item>Рейтинг</item> -->
-	// <item>Информация</item>
-	// <item>Настройки</item>
-	// </string-array>
 
 	private void selectItem(int position, boolean isTopBar) {
 		Fragment fragment;
