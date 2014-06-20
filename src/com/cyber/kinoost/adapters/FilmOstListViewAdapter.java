@@ -2,20 +2,25 @@ package com.cyber.kinoost.adapters;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import android.content.Context;
-import android.util.Log;
-import android.view.*;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.*;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.cyber.kinoost.R;
-import com.cyber.kinoost.api.*;
-import com.cyber.kinoost.db.models.*;
+import com.cyber.kinoost.api.ApiHelper;
+import com.cyber.kinoost.db.models.Film;
+import com.cyber.kinoost.db.models.Music;
+import com.cyber.kinoost.db.models.Performer;
+import com.cyber.kinoost.db.models.User;
 import com.cyber.kinoost.db.repositories.FavoritesRepository;
-import com.cyber.kinoost.db.repositories.FilmRepository;
 import com.cyber.kinoost.db.repositories.UserRepository;
 import com.squareup.picasso.Picasso;
 
@@ -36,6 +41,7 @@ public class FilmOstListViewAdapter extends BaseAdapter {
         this.film = film;
         this.music = sounds;
         this.favRepo = new FavoritesRepository(c);
+        this.userRepo = new UserRepository(c);
         this.user = userRepo.getUser();
         
         try {

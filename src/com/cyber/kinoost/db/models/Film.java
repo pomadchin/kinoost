@@ -2,6 +2,7 @@ package com.cyber.kinoost.db.models;
 
 import java.io.Serializable;
 
+import com.cyber.kinoost.api.Constants;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
@@ -12,7 +13,6 @@ import com.j256.ormlite.table.DatabaseTable;
 public class Film implements Serializable{
 	public final static String ID_FIELD_NAME = "id";
 	public final static String NAME_FIELD_NAME = "name";
-	public final static String HOST_NAME = "http://kinoserver-cybern223.rhcloud.com/kinoserver/mobile/image/";
 	
 	@DatabaseField(id = true, columnName = ID_FIELD_NAME)
 	int id;
@@ -78,7 +78,7 @@ public class Film implements Serializable{
 	}
 	
 	public String getImgUrl() {
-		return HOST_NAME + img;
+		return Constants.IMAGE_PATH + img;
 	}
 
 	@Override
