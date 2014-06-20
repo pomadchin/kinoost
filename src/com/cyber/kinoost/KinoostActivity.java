@@ -2,9 +2,10 @@ package com.cyber.kinoost;
 
 import java.util.Date;
 
-import android.app.ActionBar;
-import android.app.ActionBar.Tab;
-import android.app.ActionBar.TabListener;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBar.Tab;
+import android.support.v7.app.ActionBar.TabListener;
+import android.support.v7.app.ActionBarActivity;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -12,10 +13,10 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -24,8 +25,9 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.SearchView;
-import android.widget.SearchView.OnQueryTextListener;
+import android.support.v7.widget.SearchView;
+import android.support.v7.widget.SearchView.OnQueryTextListener;
+
 import com.cyber.kinoost.api.ApiHelper;
 import com.cyber.kinoost.db.DatabaseHelper;
 import com.cyber.kinoost.fragments.FavoritesFragment;
@@ -33,8 +35,7 @@ import com.cyber.kinoost.fragments.FilmsByNameFragment;
 import com.cyber.kinoost.fragments.InfoFragment;
 import com.cyber.kinoost.fragments.MusicFragment;
 
-public class KinoostActivity extends FragmentActivity implements TabListener, OnQueryTextListener {
-	
+public class KinoostActivity extends ActionBarActivity implements TabListener, OnQueryTextListener {
 	private DrawerLayout mDrawerLayout;
 	private ListView mDrawerList;
 	private ActionBarDrawerToggle mDrawerToggle;
@@ -63,7 +64,7 @@ public class KinoostActivity extends FragmentActivity implements TabListener, On
 		prefs = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
 		editor = prefs.edit();
 
-		actionBar = getActionBar();
+		actionBar = getSupportActionBar();
 		mTitle = mDrawerTitle = getTitle();
 		menuTitles = getResources().getStringArray(R.array.menu_items);
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -97,14 +98,14 @@ public class KinoostActivity extends FragmentActivity implements TabListener, On
 		R.string.drawer_close /* "close drawer" description for accessibility */
 		) {
 			public void onDrawerClosed(View view) {
-				getActionBar().setTitle(mTitle);
-				invalidateOptionsMenu(); // creates call to
+				getSupportActionBar().setTitle(mTitle);
+				supportInvalidateOptionsMenu(); // creates call to
 											// onPrepareOptionsMenu()
 			}
 
 			public void onDrawerOpened(View drawerView) {
-				getActionBar().setTitle(mDrawerTitle);
-				invalidateOptionsMenu(); // creates call to
+				getSupportActionBar().setTitle(mDrawerTitle);
+				supportInvalidateOptionsMenu(); // creates call to
 											// onPrepareOptionsMenu()
 			}
 		};
@@ -138,8 +139,9 @@ public class KinoostActivity extends FragmentActivity implements TabListener, On
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.main, menu);
 		SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-		searchView = (SearchView) menu.findItem(R.id.action_search)
-				.getActionView();
+		MenuItem item = menu.findItem(R.id.action_search);
+		searchView = (SearchView) MenuItemCompat.getActionView(item);
+
 		searchView.setSearchableInfo(searchManager
 				.getSearchableInfo(getComponentName()));
 		searchView.setOnQueryTextListener(this);
@@ -220,7 +222,7 @@ public class KinoostActivity extends FragmentActivity implements TabListener, On
 	@Override
 	public void setTitle(CharSequence title) {
 		mTitle = title;
-		getActionBar().setTitle(mTitle);
+		getSupportActionBar().setTitle(mTitle);
 	}
 
 	/**
@@ -252,13 +254,13 @@ public class KinoostActivity extends FragmentActivity implements TabListener, On
 	}
 
 	@Override
-	public void onTabReselected(Tab tab, android.app.FragmentTransaction ft) {
+	public void onTabReselected(Tab tab, FragmentTransaction ft) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void onTabSelected(Tab tab, android.app.FragmentTransaction ft) {
+	public void onTabSelected(Tab tab, FragmentTransaction ft) {
 		int id = tab.getPosition();
 		if (searchView != null && id == 2)
 			searchView.setVisibility(View.INVISIBLE);
@@ -268,7 +270,7 @@ public class KinoostActivity extends FragmentActivity implements TabListener, On
 	}
 
 	@Override
-	public void onTabUnselected(Tab tab, android.app.FragmentTransaction ft) {
+	public void onTabUnselected(Tab tab, FragmentTransaction ft) {
 		// TODO Auto-generated method stub
 
 	}
