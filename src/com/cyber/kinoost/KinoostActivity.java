@@ -20,7 +20,6 @@ import android.support.v7.app.ActionBar.TabListener;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.SearchView.OnQueryTextListener;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -70,7 +69,6 @@ public class KinoostActivity extends ActionBarActivity implements TabListener, O
 		menuTitles = getResources().getStringArray(R.array.menu_items);
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		mDrawerList = (ListView) findViewById(R.id.left_drawer);
-
 		// set a custom shadow that overlays the main content when the drawer
 		// opens
 		mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow,
@@ -79,6 +77,7 @@ public class KinoostActivity extends ActionBarActivity implements TabListener, O
 		mDrawerList.setAdapter(new ArrayAdapter<String>(this,
 				R.layout.drawer_list_item, menuTitles));
 		mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
+		mDrawerList.setItemChecked(0, true);
 
 		// enable ActionBar app icon to behave as action to toggle nav drawer
 		actionBar.setDisplayHomeAsUpEnabled(true);
@@ -140,9 +139,8 @@ public class KinoostActivity extends ActionBarActivity implements TabListener, O
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.main, menu);
 		SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-		MenuItem item = menu.findItem(R.id.action_search);
-		searchView = (SearchView) MenuItemCompat.getActionView(item);
-
+		MenuItem searchItem = menu.findItem(R.id.action_search);
+		searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
 		searchView.setSearchableInfo(searchManager
 				.getSearchableInfo(getComponentName()));
 		searchView.setOnQueryTextListener(this);
@@ -154,10 +152,9 @@ public class KinoostActivity extends ActionBarActivity implements TabListener, O
 	/* Called whenever we call invalidateOptionsMenu() */
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
-		// If the nav drawer is open, hide action items related to the content
-		// view
-		boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
-		menu.findItem(R.id.action_search).setVisible(!drawerOpen);
+		// If the nav drawer is open, hide action items related to the content view
+		boolean condition = mDrawerLayout.isDrawerOpen(mDrawerList) || mDrawerList.getCheckedItemPosition() != 0;
+		menu.findItem(R.id.action_search).setVisible(!condition);
 		return super.onPrepareOptionsMenu(menu);
 	}
 
@@ -192,10 +189,12 @@ public class KinoostActivity extends ActionBarActivity implements TabListener, O
 		case 1:
 			fragment = new FavoritesFragment();
 			actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+			//searchItem.setVisible(false);
 			break;
 		case 2:
 			fragment = new InfoFragment();
 			actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+			//searchItem.setVisible(false);
 			break;
 		default:
 			if (actionBar.getNavigationMode() != ActionBar.NAVIGATION_MODE_TABS)
@@ -207,11 +206,11 @@ public class KinoostActivity extends ActionBarActivity implements TabListener, O
 		replaceFragment(fragment);
 		//check if it's a tab or menu item
 		if(position < 1) {
-			mDrawerList.setItemChecked(0, true);
+			//mDrawerList.setItemChecked(0, true);
 			setTitle(menuTitles[0]);
 		}
 		else { 
-			mDrawerList.setItemChecked(position, true);
+			//mDrawerList.setItemChecked(position, true);
 			setTitle(menuTitles[position]);
 		}
 		mDrawerLayout.closeDrawer(mDrawerList);
@@ -266,8 +265,6 @@ public class KinoostActivity extends ActionBarActivity implements TabListener, O
 
 	@Override
 	public void onTabSelected(Tab tab, FragmentTransaction ft) {
-		if (searchView != null)
-			searchView.setVisibility(View.VISIBLE);
 		selectItem(tab.getPosition() - 2);
 	}
 
