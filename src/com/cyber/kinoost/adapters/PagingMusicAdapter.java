@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -17,13 +16,8 @@ import android.widget.TextView;
 import com.cyber.kinoost.R;
 import com.cyber.kinoost.adapters.OstListViewAdapter.ViewHolder;
 import com.cyber.kinoost.api.ApiHelper;
-import com.cyber.kinoost.db.models.Film;
-import com.cyber.kinoost.db.models.Music;
-import com.cyber.kinoost.db.models.Performer;
-import com.cyber.kinoost.db.models.User;
-import com.cyber.kinoost.db.repositories.FavoritesRepository;
-import com.cyber.kinoost.db.repositories.FilmRepository;
-import com.cyber.kinoost.db.repositories.UserRepository;
+import com.cyber.kinoost.db.models.*;
+import com.cyber.kinoost.db.repositories.*;
 import com.cyber.kinoost.paging.listview.PagingBaseAdapter;
 
 public class PagingMusicAdapter extends PagingBaseAdapter<Music> {
@@ -82,8 +76,6 @@ public class PagingMusicAdapter extends PagingBaseAdapter<Music> {
 			musicRow.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					Log.i("ListAdapter", getItem(position).getName());
-					
 					String imgUrl = "";
 					
 					try {
@@ -111,9 +103,6 @@ public class PagingMusicAdapter extends PagingBaseAdapter<Music> {
 				@Override
 				public void onClick(View arg0) {
 					Music m = getItem(position);
-					Log.d("Music", m.toString());
-					Log.d("MusicId", Integer.toString(m.getId()));
-					
 					boolean isFavorite = false;
 					
 					try {
