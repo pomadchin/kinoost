@@ -1,13 +1,13 @@
 package com.cyber.kinoost.paging.listview;
 
+import java.util.List;
+
 import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.AbsListView;
 import android.widget.HeaderViewListAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
-
-import java.util.List;
 
 
 public class PagingListView extends ListView {

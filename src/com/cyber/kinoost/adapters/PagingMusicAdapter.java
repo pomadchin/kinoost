@@ -16,8 +16,13 @@ import android.widget.TextView;
 import com.cyber.kinoost.R;
 import com.cyber.kinoost.adapters.OstListViewAdapter.ViewHolder;
 import com.cyber.kinoost.api.ApiHelper;
-import com.cyber.kinoost.db.models.*;
-import com.cyber.kinoost.db.repositories.*;
+import com.cyber.kinoost.db.models.Film;
+import com.cyber.kinoost.db.models.Music;
+import com.cyber.kinoost.db.models.Performer;
+import com.cyber.kinoost.db.models.User;
+import com.cyber.kinoost.db.repositories.FavoritesRepository;
+import com.cyber.kinoost.db.repositories.FilmRepository;
+import com.cyber.kinoost.db.repositories.UserRepository;
 import com.cyber.kinoost.paging.listview.PagingBaseAdapter;
 
 public class PagingMusicAdapter extends PagingBaseAdapter<Music> {
@@ -71,70 +76,67 @@ public class PagingMusicAdapter extends PagingBaseAdapter<Music> {
 			holder.btnFav = (ImageView) row.findViewById(R.id.btnFav);
 			holder.name = (TextView) row.findViewById(R.id.name);
 			row.setTag(holder);
-			RelativeLayout musicRow = (RelativeLayout) row;
 			
-			musicRow.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					String imgUrl = "";
-					
-					try {
-						FilmRepository filmRepo = new FilmRepository(context);
-						List<Film> film = filmRepo.lookupFilmsForMusic(getItem(position));
-						if(film.size() > 0) {
-							imgUrl = film.get(0).getImgUrl();
-						}
-					} catch (SQLException e) {
-						imgUrl = "";
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					
-					apiHelper.startPlayerFragment(context, getItem(position),
-							imgUrl, (ArrayList<Music>) items, position);
-
-				}
-			});
-			
-			/**
-			 * Add or remove song from favorites
-			 **/
-			holder.btnFav.setOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(View arg0) {
-					Music m = getItem(position);
-					boolean isFavorite = false;
-					
-					try {
-						isFavorite = favRepo.isFavorite(m);
-					} catch (SQLException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					
-					if(isFavorite) {
-						favRepo.deleteFavorites(m);
-						holder.btnFav.setImageResource(R.drawable.img_btn_fav);
-						musicFavoritesIds.remove(Integer.toString(m.getId()));
-					} else {
-						favRepo.createFavorites(user, m);
-						holder.btnFav.setImageResource(R.drawable.img_btn_fav_pressed);
-						musicFavoritesIds.add(Integer.toString(m.getId()));
-					}
-				}
-			});
-
 		} else
-			holder = (ViewHolder) row.getTag();		
+			holder = (ViewHolder) row.getTag();
+		
+		RelativeLayout musicRow = (RelativeLayout) row;		
+		musicRow.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				String imgUrl = "";				
+				try {
+					FilmRepository filmRepo = new FilmRepository(context);
+					List<Film> film = filmRepo.lookupFilmsForMusic(getItem(position));
+					if(film.size() > 0) {
+						imgUrl = film.get(0).getImgUrl();
+					}
+				} catch (SQLException e) {
+					imgUrl = "";
+					e.printStackTrace();
+				}
+				
+				apiHelper.startPlayerFragment(context, getItem(position),
+						imgUrl, (ArrayList<Music>) items, position);
+
+			}
+		});
+		
+		holder.btnFav.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View arg0) {
+				Music m = getItem(position);
+				boolean isFavorite = false;
+				
+				try {
+					isFavorite = favRepo.isFavorite(m);
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+				
+				if(isFavorite) {
+					favRepo.deleteFavorites(m);
+					holder.btnFav.setImageResource(R.drawable.img_btn_fav);
+					musicFavoritesIds.remove(Integer.toString(m.getId()));
+				} else {
+					favRepo.createFavorites(user, m);
+					holder.btnFav.setImageResource(R.drawable.img_btn_fav_pressed);
+					musicFavoritesIds.add(Integer.toString(m.getId()));
+				}
+			}
+		});	
+		
 		Music song = getItem(position);
 		Performer performer = song.getPerformer();
 		String performerName = (performer != null && performer.getName() != null) ? performer.getName() + " - " : "";
 		holder.name.setText(performerName + song.getName());
 		holder.name.setSelected(true);
 		holder.image.setImageResource(R.drawable.music);
-		
+	
 		if(musicFavoritesIds.contains(Integer.toString(song.getId())))
 			holder.btnFav.setImageResource(R.drawable.img_btn_fav_pressed);
+		else
+			holder.btnFav.setImageResource(R.drawable.img_btn_fav);
 		
 		return row;
 		

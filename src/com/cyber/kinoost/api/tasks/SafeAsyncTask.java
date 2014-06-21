@@ -1,9 +1,5 @@
 package com.cyber.kinoost.api.tasks;
 
-import android.os.Handler;
-import android.os.Looper;
-import android.util.Log;
-
 import java.io.InterruptedIOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,6 +8,10 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.FutureTask;
+
+import android.os.Handler;
+import android.os.Looper;
+import android.util.Log;
 
 /**
  * A class similar but unrelated to android's {@link android.os.AsyncTask}.

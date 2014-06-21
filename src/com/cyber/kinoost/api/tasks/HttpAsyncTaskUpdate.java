@@ -5,14 +5,20 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 
-import android.content.*;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.util.Log;
 
 import com.cyber.kinoost.api.ApiHelper;
-import com.cyber.kinoost.api.models.*;
-import com.cyber.kinoost.db.repositories.*;
-import com.fasterxml.jackson.core.*;
+import com.cyber.kinoost.api.models.JsonUpdate;
+import com.cyber.kinoost.api.models.JsonUpdateList;
+import com.cyber.kinoost.api.models.UserData;
+import com.cyber.kinoost.db.repositories.FavoritesRepository;
+import com.cyber.kinoost.db.repositories.MusicRatingRepository;
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class HttpAsyncTaskUpdate extends AsyncTask<String, Void, String> {

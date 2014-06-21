@@ -17,8 +17,11 @@ import android.widget.TextView;
 import com.cyber.kinoost.R;
 import com.cyber.kinoost.adapters.OstListViewAdapter.ViewHolder;
 import com.cyber.kinoost.api.ApiHelper;
-import com.cyber.kinoost.db.models.*;
-import com.cyber.kinoost.db.repositories.*;
+import com.cyber.kinoost.db.models.Film;
+import com.cyber.kinoost.db.models.Music;
+import com.cyber.kinoost.db.models.Performer;
+import com.cyber.kinoost.db.repositories.FavoritesRepository;
+import com.cyber.kinoost.db.repositories.FilmRepository;
 import com.cyber.kinoost.paging.listview.PagingBaseAdapter;
 
 public class PagingFavoritesAdapter extends PagingBaseAdapter<Music> {

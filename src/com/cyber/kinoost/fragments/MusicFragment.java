@@ -48,7 +48,7 @@ public class MusicFragment extends Fragment {
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-		
+		pager = 0;
     	Bundle bundle = getArguments();   	
     	if (bundle != null && bundle.containsKey("songName"))
     		songname = getArguments().getString("songName");
