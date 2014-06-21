@@ -81,64 +81,60 @@ public class OstListViewAdapter extends BaseAdapter {
 			holder.btnFav = (ImageView) row.findViewById(R.id.btnFav);
 			holder.name = (TextView) row.findViewById(R.id.name);
 			row.setTag(holder);
-			RelativeLayout musicRow = (RelativeLayout) row;
-			
-			musicRow.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					Log.i("ListAdapter", music.get(position).getName());
-					
-					String imgUrl = "";
-					
-					try {
-						FilmRepository filmRepo = new FilmRepository(mContext);
-						List<Film> film = filmRepo.lookupFilmsForMusic(music.get(position));
-						if(film.size() > 0) {
-							imgUrl = film.get(0).getImgUrl();
-						}
-					} catch (SQLException e) {
-						imgUrl = "";
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					
-					apiHelper.startPlayerFragment(mContext,
-							music.get(position), imgUrl,
-							(ArrayList<Music>) music, position);
-
-				}
-			});
-			
-			/**
-			 * Add or remove song from favorites
-			 **/
-			holder.btnFav.setOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(View arg0) {
-					Music m = music.get(position);
-					boolean isFavorite = false;
-					
-					try {
-						isFavorite = favRepo.isFavorite(m);
-					} catch (SQLException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					
-					if(isFavorite) {
-						favRepo.deleteFavorites(m);
-						holder.btnFav.setImageResource(R.drawable.img_btn_fav);
-						musicFavoritesIds.remove(Integer.toString(m.getId()));
-					} else {
-						favRepo.createFavorites(user, m);
-						holder.btnFav.setImageResource(R.drawable.img_btn_fav_pressed);
-						musicFavoritesIds.add(Integer.toString(m.getId()));
-					}
-				}
-			});
-
 		} else
-			holder = (ViewHolder) row.getTag();		
+			holder = (ViewHolder) row.getTag();	
+		
+		RelativeLayout musicRow = (RelativeLayout) row;		
+		musicRow.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {			
+				String imgUrl = "";
+				try {
+					FilmRepository filmRepo = new FilmRepository(mContext);
+					List<Film> film = filmRepo.lookupFilmsForMusic(music.get(position));
+					if(film.size() > 0) {
+						imgUrl = film.get(0).getImgUrl();
+					}
+				} catch (SQLException e) {
+					imgUrl = "";
+					e.printStackTrace();
+				}
+				
+				apiHelper.startPlayerFragment(mContext,
+						music.get(position), imgUrl,
+						(ArrayList<Music>) music, position);
+			}
+		});
+		
+		/**
+		 * Add or remove song from favorites
+		 **/
+		holder.btnFav.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View arg0) {
+				Music m = music.get(position);
+				boolean isFavorite = false;
+				
+				try {
+					isFavorite = favRepo.isFavorite(m);
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				if(isFavorite) {
+					favRepo.deleteFavorites(m);
+					holder.btnFav.setImageResource(R.drawable.img_btn_fav);
+					musicFavoritesIds.remove(Integer.toString(m.getId()));
+				} else {
+					favRepo.createFavorites(user, m);
+					holder.btnFav.setImageResource(R.drawable.img_btn_fav_pressed);
+					musicFavoritesIds.add(Integer.toString(m.getId()));
+				}
+			}
+		});
+
+		
 		Music song = music.get(position);
 		Performer performer = song.getPerformer();
 		String performerName = (performer != null && performer.getName() != null) ? performer.getName() + " - " : "";
