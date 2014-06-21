@@ -44,3 +44,6 @@ local.properties
 
 # music
 *.mp3
+
+# custom project properties
+project.properties

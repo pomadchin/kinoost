@@ -15,6 +15,7 @@ import com.cyber.kinoost.R;
 import com.cyber.kinoost.adapters.PagingFavoritesAdapter;
 import com.cyber.kinoost.api.tasks.SafeAsyncTask;
 import com.cyber.kinoost.db.models.Favorites;
+import com.cyber.kinoost.db.models.Music;
 import com.cyber.kinoost.db.repositories.FavoritesRepository;
 import com.cyber.kinoost.paging.listview.PagingListView;
 
@@ -75,20 +76,20 @@ public class FavoritesFragment extends Fragment {
         return myFragmentView;
     }
     
-	private List<Favorites> getFavorites(int offset) {
+	private List<Music> getFavoriteMusic(int offset) {
     	FavoritesRepository favoritesRepo = new FavoritesRepository(getActivity().getBaseContext());
-    	List<Favorites> favorites = null;
+    	List<Music> music = null;
     	try {
-			favorites = favoritesRepo.getFavorites(offset, MUSIC_PER_PAGE);
+			music = favoritesRepo.getFavoriteMusic(offset, MUSIC_PER_PAGE);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-    	return favorites;
+    	return music;
     } 
     
     
-    private class MusicAsyncTask extends SafeAsyncTask<List<Favorites>> {
+    private class MusicAsyncTask extends SafeAsyncTask<List<Music>> {
 		private boolean showLoading;
 		public MusicAsyncTask(boolean showLoading) {
 			this.showLoading = showLoading;
@@ -103,8 +104,8 @@ public class FavoritesFragment extends Fragment {
 		}
 
 		@Override
-		public List<Favorites> call() throws Exception {
-			List<Favorites> result = getFavorites(pager * MUSIC_PER_PAGE);
+		public List<Music> call() throws Exception {
+			List<Music> result = getFavoriteMusic(pager * MUSIC_PER_PAGE);
 			if (result.size() < MUSIC_PER_PAGE) 
 				noMusicLeft = true;
 			Thread.sleep(1000);
@@ -112,14 +113,15 @@ public class FavoritesFragment extends Fragment {
 		}
 
 		@Override
-		protected void onSuccess(List<Favorites> newItems) throws Exception {
+		protected void onSuccess(List<Music> newItems) throws Exception {
 			super.onSuccess(newItems);
 			pager++;
 			PagingFavoritesAdapter adapter = new PagingFavoritesAdapter(getActivity());
 			if(listView.getAdapter() == null) {
 				listView.setAdapter(adapter);
 			}
-			listView.onFinishLoading(newItems.size() == 0 ? false : true, newItems);
+			listView.onFinishLoading(((newItems.size() == 0) || (newItems
+					.size() < MUSIC_PER_PAGE)) ? false : true, newItems);
 		}
 
 		@Override

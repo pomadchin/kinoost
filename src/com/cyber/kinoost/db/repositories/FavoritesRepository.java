@@ -17,17 +17,20 @@ public class FavoritesRepository {
 	DatabaseHelper dbHelper;
 	
 	private RuntimeExceptionDao<Favorites, Integer> favoritesDao = null;
+	private MusicRepository musicRepo = null;
 	
 	public FavoritesRepository(Context context) {
 		dbHelper = OpenHelperManager.getHelper(context, DatabaseHelper.class);
 		
 		favoritesDao = dbHelper.getFavoritesRuntimeExceptionDao();
+		musicRepo = new MusicRepository(context);
 	}
 	
 	public FavoritesRepository(DatabaseHelper dbHelper) {
 		this.dbHelper = dbHelper;
 		
 		favoritesDao = dbHelper.getFavoritesRuntimeExceptionDao();
+		musicRepo = new MusicRepository(dbHelper.getContext());
 	}
 	
 	public void createFavorites(Favorites favorites) {
@@ -145,5 +148,15 @@ public class FavoritesRepository {
 		QueryBuilder<Favorites, Integer> queryBuilder = favoritesDao.queryBuilder();
 		queryBuilder.where().eq(Favorites.MUSIC_ID_FIELD_NAME, music);
 		return favoritesDao.query(queryBuilder.prepare());
+	}
+	
+	public List<Music> getFavoriteMusic(int offset, int limit) throws SQLException {
+		List<Favorites> favoritesList = getFavorites(offset, limit);
+		List<Integer> musicIdsList = new ArrayList<Integer>();
+		
+		for(Favorites favorite : favoritesList)
+			musicIdsList.add(favorite.getMusic().getId());
+		
+		return musicRepo.findMusicByIds(musicIdsList, 0, 0);
 	}
 }

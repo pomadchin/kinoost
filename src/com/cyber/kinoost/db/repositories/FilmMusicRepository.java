@@ -179,6 +179,19 @@ public class FilmMusicRepository {
 	    return musicList;
 	}
 	
+	public List<Music> findMusicByIds(List<Integer> ids, int offset, int limit) throws SQLException {
+	    List<Music> musicList = new ArrayList<Music>();
+	    if(ids == null || ids.size() == 0) return musicList;
+	    QueryBuilder<Music, Integer> queryBuilder = musicDao.queryBuilder();
+	    if(offset > 0) queryBuilder.offset(Long.valueOf(offset));
+	    if(limit > 0) queryBuilder.limit(Long.valueOf(limit));
+	    queryBuilder.where().in(Music.ID_FIELD_NAME, ids);
+	    
+	    musicList = musicDao.query(queryBuilder.prepare());
+
+	    return musicList;
+	}
+	
 	public Music findMusicById(int id) throws SQLException {
 		Music result = null;
 		

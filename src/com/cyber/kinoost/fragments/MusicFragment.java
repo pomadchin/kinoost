@@ -119,7 +119,8 @@ public class MusicFragment extends Fragment {
 			if(listView.getAdapter() == null) {
 				listView.setAdapter(adapter);
 			}
-			listView.onFinishLoading(newItems.size() == 0 ? false : true, newItems);
+			listView.onFinishLoading(((newItems.size() == 0) || (newItems
+					.size() < MUSIC_PER_PAGE)) ? false : true, newItems);
 		}
 
 		@Override

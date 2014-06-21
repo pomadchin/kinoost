@@ -206,7 +206,8 @@ public class KinoostActivity extends ActionBarActivity implements TabListener, O
 		
 		replaceFragment(fragment);
 
-		mDrawerList.setItemChecked(position, true);
+		if(!isTopBar)
+			mDrawerList.setItemChecked(position, true);
 		if (position != 1 && position != 2)
 			setTitle(menuTitles[position]);
 		mDrawerLayout.closeDrawer(mDrawerList);

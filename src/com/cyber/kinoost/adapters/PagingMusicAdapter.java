@@ -41,13 +41,6 @@ public class PagingMusicAdapter extends PagingBaseAdapter<Music> {
 		this.favRepo = new FavoritesRepository(c);
 		this.userRepo = new UserRepository(c);
         this.user = userRepo.getUser();
-        
-        try {
-			this.musicFavoritesIds = favRepo.getFavoritesIds(this.items);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 	
 	@Override
@@ -70,6 +63,13 @@ public class PagingMusicAdapter extends PagingBaseAdapter<Music> {
 		View row = convertView;
 		final ViewHolder holder;
 		if (row == null) {
+			try {
+				this.musicFavoritesIds = favRepo.getFavoritesIds(items);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
 			LayoutInflater inflater = LayoutInflater.from(context);
 			row = inflater.inflate(R.layout.ost_row, parent, false);
 			holder = new ViewHolder();
@@ -111,6 +111,9 @@ public class PagingMusicAdapter extends PagingBaseAdapter<Music> {
 				@Override
 				public void onClick(View arg0) {
 					Music m = getItem(position);
+					Log.d("Music", m.toString());
+					Log.d("MusicId", Integer.toString(m.getId()));
+					
 					boolean isFavorite = false;
 					
 					try {
@@ -140,10 +143,6 @@ public class PagingMusicAdapter extends PagingBaseAdapter<Music> {
 		holder.name.setText(performerName + song.getName());
 		holder.name.setSelected(true);
 		holder.image.setImageResource(R.drawable.music);
-		
-		Log.d("mfarr", musicFavoritesIds.toString());
-		Log.d("mfarr2", Boolean.toString(musicFavoritesIds.contains(Integer.toString(song.getId()))));
-		Log.d("mfarr3", Integer.toString(song.getId()));
 		
 		if(musicFavoritesIds.contains(Integer.toString(song.getId())))
 			holder.btnFav.setImageResource(R.drawable.img_btn_fav_pressed);

@@ -108,6 +108,10 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 			e.printStackTrace();
 		}*/
 	}
+	
+	public Context getContext() {
+		return context;
+	}
 
 	public Dao<Favorites, Integer> getFavoritesDao() throws SQLException {
 		if (favoritesDao == null) {

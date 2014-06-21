@@ -17,29 +17,19 @@ import android.widget.TextView;
 import com.cyber.kinoost.R;
 import com.cyber.kinoost.adapters.OstListViewAdapter.ViewHolder;
 import com.cyber.kinoost.api.ApiHelper;
-import com.cyber.kinoost.db.models.Favorites;
-import com.cyber.kinoost.db.models.Film;
-import com.cyber.kinoost.db.models.Music;
-import com.cyber.kinoost.db.models.Performer;
-import com.cyber.kinoost.db.models.User;
-import com.cyber.kinoost.db.repositories.FavoritesRepository;
-import com.cyber.kinoost.db.repositories.FilmRepository;
-import com.cyber.kinoost.db.repositories.UserRepository;
+import com.cyber.kinoost.db.models.*;
+import com.cyber.kinoost.db.repositories.*;
 import com.cyber.kinoost.paging.listview.PagingBaseAdapter;
 
-public class PagingFavoritesAdapter extends PagingBaseAdapter<Favorites> {
+public class PagingFavoritesAdapter extends PagingBaseAdapter<Music> {
 	
 	private Context context;
 	final ApiHelper apiHelper = new ApiHelper();
 	private FavoritesRepository favRepo;
-	private UserRepository userRepo;
-	private User user;
 	
 	public PagingFavoritesAdapter(Context c) {
 		this.context = c;
 		this.favRepo = new FavoritesRepository(c);
-		this.userRepo = new UserRepository(c);
-		this.user = userRepo.getUser();
 	}
 	
 	@Override
@@ -48,20 +38,13 @@ public class PagingFavoritesAdapter extends PagingBaseAdapter<Favorites> {
 	}
 
 	@Override
-	public Favorites getItem(int position) {
+	public Music getItem(int position) {
 		return items.get(position);
 	}
 
 	@Override
 	public long getItemId(int position) {
 		return position;
-	}
-	
-	private List<Music> getMusicList(List<Favorites> favorites) {
-		List<Music> result = new ArrayList<Music>();
-		for (Favorites f : favorites)
-			result.add(f.getMusic());
-		return result;
 	}
 
 	@Override
@@ -81,13 +64,13 @@ public class PagingFavoritesAdapter extends PagingBaseAdapter<Favorites> {
 			musicRow.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					Log.i("ListAdapter", getItem(position).getMusic().getName());
+					Log.i("ListAdapter", getItem(position).getName());
 					
 					String imgUrl = "";
 					
 					try {
 						FilmRepository filmRepo = new FilmRepository(context);
-						List<Film> film = filmRepo.lookupFilmsForMusic(getItem(position).getMusic());
+						List<Film> film = filmRepo.lookupFilmsForMusic(getItem(position));
 						if(film.size() > 0) {
 							imgUrl = film.get(0).getImgUrl();
 						}
@@ -97,8 +80,8 @@ public class PagingFavoritesAdapter extends PagingBaseAdapter<Favorites> {
 						e.printStackTrace();
 					}
 					
-					apiHelper.startPlayerFragment(context, getItem(position).getMusic(),
-							imgUrl, (ArrayList<Music>) getMusicList(items), position);
+					apiHelper.startPlayerFragment(context, getItem(position),
+							imgUrl, (ArrayList<Music>) items, position);
 
 				}
 			});
@@ -109,15 +92,16 @@ public class PagingFavoritesAdapter extends PagingBaseAdapter<Favorites> {
 			holder.btnFav.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View arg0) {
-					Music m = getItem(position).getMusic();
+					Music m = getItem(position);
 					favRepo.deleteFavorites(m);
+					items.remove(m);
 					holder.btnFav.setImageResource(R.drawable.img_btn_fav);
 				}
 			});
 
 		} else
 			holder = (ViewHolder) row.getTag();		
-		Music song = getItem(position).getMusic();
+		Music song = getItem(position);
 		Performer performer = song.getPerformer();
 		String performerName = (performer != null && performer.getName() != null) ? performer.getName() + " - " : "";
 		holder.name.setText(performerName + song.getName());
