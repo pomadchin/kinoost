@@ -67,8 +67,7 @@ public class PagingMusicAdapter extends PagingBaseAdapter<Music> {
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}
-			
+			}			
 			LayoutInflater inflater = LayoutInflater.from(context);
 			row = inflater.inflate(R.layout.ost_row, parent, false);
 			holder = new ViewHolder();

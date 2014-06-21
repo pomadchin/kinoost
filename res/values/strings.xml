@@ -11,10 +11,7 @@
     <string-array name="menu_items">
         <item>Главная</item>
         <item>Избранное</item>
-        <!-- <item>Сохраненное</item> -->
-        <!-- <item>Рейтинг</item> -->
         <item>Информация</item>
-        <item>Настройки</item>
     </string-array>
 
     <string name="drawer_open">Open navigation drawer</string>

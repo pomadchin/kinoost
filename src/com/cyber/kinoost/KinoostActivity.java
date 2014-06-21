@@ -20,6 +20,7 @@ import android.support.v7.app.ActionBar.TabListener;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.SearchView.OnQueryTextListener;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -112,7 +113,7 @@ public class KinoostActivity extends ActionBarActivity implements TabListener, O
 		mDrawerLayout.setDrawerListener(mDrawerToggle);
 		
 		if (savedInstanceState == null) {
-			selectItem(0, false);
+			selectItem(-2);
 		}	
 	}
 	
@@ -169,7 +170,6 @@ public class KinoostActivity extends ActionBarActivity implements TabListener, O
 		}
 
 		return super.onOptionsItemSelected(item);
-
 	}
 
 	/* The click listener for ListView in the navigation drawer */
@@ -177,39 +177,43 @@ public class KinoostActivity extends ActionBarActivity implements TabListener, O
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position,
 				long id) {
-			selectItem(position, false);
+			selectItem(position);
 		}
 	}
-
-	private void selectItem(int position, boolean isTopBar) {
+	
+	private void selectItem(int position) {
 		Fragment fragment;
 		switch (position) {
-		case 0:
-			fragment = new FilmsByNameFragment();
+		case -1:
+			fragment = new MusicFragment();
 			if (actionBar.getNavigationMode() != ActionBar.NAVIGATION_MODE_TABS)
 				actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 			break;
 		case 1:
-			if(isTopBar)
-				fragment = new MusicFragment();
-			else
-				fragment = new FavoritesFragment();
+			fragment = new FavoritesFragment();
+			actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
 			break;
-		case 4:
+		case 2:
 			fragment = new InfoFragment();
 			actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
 			break;
 		default:
+			if (actionBar.getNavigationMode() != ActionBar.NAVIGATION_MODE_TABS)
+				actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+			actionBar.setSelectedNavigationItem(0);
 			fragment = new FilmsByNameFragment();
 			break;
-		}
-		
+		}	
 		replaceFragment(fragment);
-
-		if(!isTopBar)
+		//check if it's a tab or menu item
+		if(position < 1) {
+			mDrawerList.setItemChecked(0, true);
+			setTitle(menuTitles[0]);
+		}
+		else { 
 			mDrawerList.setItemChecked(position, true);
-		if (position != 1 && position != 2)
 			setTitle(menuTitles[position]);
+		}
 		mDrawerLayout.closeDrawer(mDrawerList);
 	}
 	
@@ -262,12 +266,9 @@ public class KinoostActivity extends ActionBarActivity implements TabListener, O
 
 	@Override
 	public void onTabSelected(Tab tab, FragmentTransaction ft) {
-		int id = tab.getPosition();
-		if (searchView != null && id == 2)
-			searchView.setVisibility(View.INVISIBLE);
-		else if (searchView != null)
+		if (searchView != null)
 			searchView.setVisibility(View.VISIBLE);
-		selectItem(tab.getPosition(), true);
+		selectItem(tab.getPosition() - 2);
 	}
 
 	@Override
