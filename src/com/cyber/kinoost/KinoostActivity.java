@@ -45,7 +45,7 @@ public class KinoostActivity extends ActionBarActivity implements TabListener, O
 	private CharSequence mTitle;
 	private String[] menuTitles;
 	private SearchView searchView;
-
+	private MenuItem searchItem;
 	public static final String APP_PREFERENCES = "com.cyber.kinoost";
 	public static final String APP_PREFERENCES_UPDATE_DATETIME = "com.cyber.kinoost.update.datetime";
 	public static final String APP_PREFERENCES_UPDATE_DATE = "com.cyber.kinoost.update.date";
@@ -116,6 +116,10 @@ public class KinoostActivity extends ActionBarActivity implements TabListener, O
 		}	
 	}
 	
+	public void hideSearchItem() {
+		searchItem.setVisible(false);
+	}
+	
 
 	@Override
 	protected void onStart() {
@@ -139,7 +143,7 @@ public class KinoostActivity extends ActionBarActivity implements TabListener, O
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.main, menu);
 		SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-		MenuItem searchItem = menu.findItem(R.id.action_search);
+		searchItem = menu.findItem(R.id.action_search);
 		searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
 		searchView.setSearchableInfo(searchManager
 				.getSearchableInfo(getComponentName()));
@@ -154,7 +158,7 @@ public class KinoostActivity extends ActionBarActivity implements TabListener, O
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		// If the nav drawer is open, hide action items related to the content view
 		boolean condition = mDrawerLayout.isDrawerOpen(mDrawerList) || mDrawerList.getCheckedItemPosition() != 0;
-		menu.findItem(R.id.action_search).setVisible(!condition);
+		searchItem.setVisible(!condition);
 		return super.onPrepareOptionsMenu(menu);
 	}
 
